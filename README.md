@@ -13,12 +13,13 @@ Each app is 100% [TypeScript](https://www.typescriptlang.org/).
 # Contributing
 
 1. Create an **issue**. Assign yourself
-2. Create a **new branch** from `dev` branch. Every branch name should start with task number and contain short description. e.g. **125-navbar-fix**
+2. Create a **new branch** from `dev` branch. Every branch name should start from task type (`feature`, `fix` or
+   `test`), task number and short description. e.g. **feature/125/navbar-fix**
 3. Commit changes
 4. Create a **pull request**
 5. Link pull request to an issue
-6. **Squash and merge** into `dev` branch
-7. **Delete** task branch (e.g. **125-navbar-fix**)
+6. <ins>**Squash and merge**</ins> into `dev` branch
+7. **Delete** task branch (e.g. **feature/125/navbar-fix**)
 
 # How To Launch
 
@@ -29,6 +30,12 @@ If you don't have it installed on your machine, run the following command:
 
 ```bash
 npm i -g pnpm
+```
+
+Install all dependencies:
+
+```bash
+pnpm install
 ```
 
 To install new packages or run any command from `package.json` always use `pnpm` instead of `npm`.  
@@ -42,16 +49,8 @@ pnpm add --save-dev typescript --filter @repo/client
 
 ## Step 2
 
-Install all dependencies:
+To start react app in dev mode:
 
 ```bash
-pnpm install
-```
-
-## Step 3
-
-To start all apps and packages in dev mode:
-
-```bash
-pnpm dev
+pnpm dev:client
 ```
