@@ -36,6 +36,9 @@ importers:
       '@repo/prettier-config':
         specifier: workspace:*
         version: link:../../packages/prettier-config
+      '@repo/ts-config':
+        specifier: workspace:*
+        version: link:../../packages/ts-config
       '@types/react':
         specifier: ^18.3.18
         version: 18.3.18
@@ -88,6 +91,9 @@ importers:
       '@repo/prettier-config':
         specifier: workspace:*
         version: link:../../packages/prettier-config
+      '@repo/ts-config':
+        specifier: workspace:*
+        version: link:../../packages/ts-config
       '@types/express':
         specifier: ^4.17.17
         version: 4.17.21
@@ -179,7 +185,7 @@ importers:
         specifier: ^3.2.5
         version: 3.4.2
 
-  packages/typescript-config: {}
+  packages/ts-config: {}
 
 packages:
 
