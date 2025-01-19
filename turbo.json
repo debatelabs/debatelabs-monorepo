@@ -17,7 +17,24 @@
       "persistent": true
     },
     "test": {
-      "inputs": ["src/**/*.tsx", "src/**/*.ts", "src/**/*.jsx", "src/**/*.js", "test/**/*.ts", "test/**/*.tsx"]
+      "inputs": [
+        "src/**/*.tsx",
+        "src/**/*.ts",
+        "src/**/*.jsx",
+        "src/**/*.js",
+        "test/**/*.ts",
+        "test/**/*.tsx"
+      ]
+    },
+    "test:related": {
+      "inputs": [
+        "src/**/*.tsx",
+        "src/**/*.ts",
+        "src/**/*.jsx",
+        "src/**/*.js",
+        "test/**/*.ts",
+        "test/**/*.tsx"
+      ]
     },
     "lint": {
       "dependsOn": ["^lint"]
