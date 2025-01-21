@@ -27,6 +27,8 @@ out/
 build
 dist
 
+#docker
+database
 
 # Debug
 npm-debug.log*
@@ -35,6 +37,7 @@ yarn-error.log*
 
 # Misc
 .DS_Store
+.fleet
 .vscode
 .idea
 *.pem
