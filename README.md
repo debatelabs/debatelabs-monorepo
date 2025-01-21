@@ -49,8 +49,20 @@ pnpm add --save-dev typescript --filter @repo/client
 
 ## Step 2
 
+Setting .env file.
+
+## Step 3
+
 To start react app in dev mode:
 
 ```bash
 pnpm dev:client
+```
+
+## Step 4
+
+To start nest.js server in dev mode:
+
+```bash
+pnpm dev:server
 ```

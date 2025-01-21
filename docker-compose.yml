@@ -1,0 +1,40 @@
+services:
+  server:
+    image: node:lts
+    container_name: server
+    ports:
+      - "${PORT_SERVER}:${PORT_SERVER}"
+    working_dir: /app
+    volumes:
+      - ./apps/server/:/app
+    depends_on:
+      - postgres
+      - redis
+    env_file:
+      - .env
+
+  postgres:
+    image: postgres
+    container_name: postgres
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      TZ: ${DB_TIMEZONE}
+    volumes:
+      - ./database:/var/lib/postgresql/data
+    ports:
+      - "${DB_PORT}:5432"
+    env_file:
+      - .env
+
+  redis:
+    image: redis:alpine
+    container_name: redis
+    environment:
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
+      - REDIS_DISABLE_COMMANDS=FLUSHDB,FLUSHALL
+    ports:
+      - "${REDIS_PORT}:${REDIS_PORT}"
+    env_file:
+      - .env
