@@ -1,7 +1,7 @@
 services:
   server:
     restart: no
-    command: bash -c "npm i && npx prisma migrate deploy && npm run dev"
+    command: bash -c "npm i && npx prisma migrate deploy && npx prisma generate && npm run dev"
 
   postgres:
     restart: no
