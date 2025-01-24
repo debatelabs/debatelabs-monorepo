@@ -1,0 +1,11 @@
+model UserDevice {
+  id           Int      @id @default(autoincrement())
+  name         String   @db.VarChar(256)
+  ipAddress    String   @default("unknown") @map("ip_address") @db.VarChar(100)
+  accessToken  String   @map("access_token") @db.VarChar(256)
+  refreshToken String   @map("refresh_token") @db.VarChar(256)
+  createdAt    DateTime @default(now()) @db.Timestamptz(6)
+  updatedAt    DateTime @updatedAt @db.Timestamptz(6)
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId       Int      @map("user_id")
+}
