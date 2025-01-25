@@ -1,5 +1,24 @@
 model User {
-  id    Int    @id @default(autoincrement())
-  email String @unique
-  name  String
+  id        Int          @id @default(autoincrement())
+  email     String       @unique @db.VarChar(256)
+  firstName String       @map("first_name") @db.VarChar(256)
+  lastName  String?      @map("last_name") @db.VarChar(256)
+  password  String       @db.VarChar(500)
+  avatar    String?      @db.VarChar(500)
+  role      Role         @default(USER)
+  birthday  DateTime?
+  gender    Boolean?
+  isBlocked Boolean      @default(false) @map("is_blocked")
+  createdAt DateTime     @default(now()) @db.Timestamptz(6)
+  updatedAt DateTime     @updatedAt @db.Timestamptz(6)
+  devices   UserDevice[]
+
+  @@map("user")
+}
+
+enum Role {
+  ADMIN
+  MODER
+  ANALYST
+  USER
 }

@@ -1,0 +1,42 @@
+import { MiddlewareConsumer, Module, RequestMethod } from '@nestjs/common';
+
+import { AuthService } from './auth.service';
+import { AuthController } from './auth.controller';
+import { UserAgentMiddleware } from '../../common/middleware/user-agent.middleware';
+import { PrismaService } from '../../prisma.service';
+import { UserDevicePrisma } from '../../prisma-extend/user-device-prisma';
+import { ProtectRefreshMiddleware } from '../../common/middleware/auth/protect-refresh.middleware';
+
+@Module({
+  providers: [AuthService, PrismaService, UserDevicePrisma],
+  controllers: [AuthController],
+})
+export class AuthModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(ProtectRefreshMiddleware).forRoutes(
+      {
+        path: '/auth/refresh',
+        method: RequestMethod.GET,
+      },
+      {
+        path: '/auth/logout',
+        method: RequestMethod.GET,
+      },
+    );
+
+    consumer.apply(UserAgentMiddleware).forRoutes(
+      {
+        path: '/auth/register',
+        method: RequestMethod.POST,
+      },
+      {
+        path: '/auth/login',
+        method: RequestMethod.POST,
+      },
+      {
+        path: '/auth/refresh',
+        method: RequestMethod.GET,
+      },
+    );
+  }
+}
