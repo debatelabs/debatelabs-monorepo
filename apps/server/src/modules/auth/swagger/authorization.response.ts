@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-export class RegisterResponseType {
+export class AuthorizationResponseType {
   @ApiProperty({ example: 'mail@example.com' })
   email: string;
 

@@ -6,7 +6,6 @@ import { JoiSchema, JoiSchemaOptions } from 'nestjs-joi';
   allowUnknown: false,
 })
 export class LoginDto {
-  @ApiProperty({ required: true, example: 'mail@example.com' })
   @JoiSchema(
     Joi.string()
       .email({ tlds: { allow: false } })
@@ -16,6 +15,7 @@ export class LoginDto {
         'string.empty': 'The email is empty.',
       }),
   )
+  @ApiProperty({ required: true, example: 'mail@example.com' })
   email: string;
 
   @JoiSchema(

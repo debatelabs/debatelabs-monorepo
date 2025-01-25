@@ -1,6 +1,6 @@
 model UserDevice {
   id           Int      @id @default(autoincrement())
-  name         String   @db.VarChar(256)
+  details      Json?
   ipAddress    String   @default("unknown") @map("ip_address") @db.VarChar(100)
   accessToken  String   @map("access_token") @db.VarChar(256)
   refreshToken String   @map("refresh_token") @db.VarChar(256)

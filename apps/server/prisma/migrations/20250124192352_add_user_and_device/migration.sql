@@ -13,7 +13,7 @@ DROP TABLE "User";
 -- CreateTable
 CREATE TABLE "user_device" (
     "id" SERIAL NOT NULL,
-    "name" VARCHAR(256) NOT NULL,
+    "details" JSONB,
     "ip_address" VARCHAR(100) NOT NULL DEFAULT 'unknown',
     "access_token" VARCHAR(256) NOT NULL,
     "refresh_token" VARCHAR(256) NOT NULL,
