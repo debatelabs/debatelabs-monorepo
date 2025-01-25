@@ -2,7 +2,7 @@ import { HttpStatus, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as process from 'process';
 import { Details } from 'express-useragent';
-import { UserDevice } from '@prisma/client';
+import { User, UserDevice } from '@prisma/client';
 
 import { PrismaService } from '../../prisma.service';
 import { TokenType } from '../../common/type/token.type';
@@ -128,6 +128,24 @@ export class AuthService {
 
   async logout(device: UserDevice): Promise<void> {
     await this.prisma.userDevice.delete({ where: { id: device.id } });
+  }
+
+  async refreshToken(
+    user: User,
+    device: UserDevice,
+    userAgent: Details,
+    ipAddress: string,
+  ): Promise<TokenType> {
+    const tokens = this.generateToken({ email: user.email, id: user.id });
+
+    await this.userDevicePrisma.update({
+      deviceId: device.id,
+      userAgent,
+      tokens,
+      ipAddress,
+    });
+
+    return tokens;
   }
 
   private generateToken(payload: { email: string; id: number }): TokenType {

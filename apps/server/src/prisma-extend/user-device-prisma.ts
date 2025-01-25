@@ -36,4 +36,28 @@ export class UserDevicePrisma {
       },
     });
   }
+
+  async update(params: {
+    userAgent: Details;
+    tokens: TokenType;
+    deviceId: number;
+    ipAddress: string;
+  }): Promise<UserDevice> {
+    const { userAgent, deviceId, tokens, ipAddress } = params;
+    const details = {
+      platform: userAgent.platform,
+      os: userAgent.os,
+      browser: userAgent.browser,
+      version: userAgent.version,
+    } as Prisma.JsonObject;
+
+    return this.prisma.userDevice.update({
+      where: { id: deviceId },
+      data: {
+        ...tokens,
+        ipAddress,
+        details,
+      },
+    });
+  }
 }
