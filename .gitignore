@@ -4,6 +4,7 @@
 node_modules
 .pnp
 .pnp.js
+.pnpm-store
 
 # Local env files
 .env
@@ -29,6 +30,9 @@ dist
 
 #docker
 database
+
+#redis-io
+redis
 
 # Debug
 npm-debug.log*

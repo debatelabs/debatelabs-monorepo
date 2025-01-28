@@ -1,0 +1,19 @@
+model Friendship {
+  id          Int              @id @default(autoincrement())
+  requesterId Int              @map("requester_id")
+  requester   User             @relation(name: "user_sent_requests", fields: [requesterId], references: [id])
+  recipientId Int              @map("recipient_id")
+  recipient   User             @relation(name: "user_received_requests", fields: [recipientId], references: [id])
+  status      FriendshipStatus @default(PENDING)
+  updatedAt   DateTime         @updatedAt @db.Timestamptz(6)
+
+  @@unique([requesterId, recipientId])
+  @@unique([recipientId, requesterId])
+  @@map("friendship")
+}
+
+enum FriendshipStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+}

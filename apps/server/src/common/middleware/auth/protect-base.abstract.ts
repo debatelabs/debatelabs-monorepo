@@ -1,26 +1,30 @@
 import { JwtService } from '@nestjs/jwt';
 import { HttpStatus } from '@nestjs/common';
 
-import { CustomException } from '../../../utils/custom-exception';
+import { CustomExceptionUtil } from '../../../utils/custom-exception.util';
 import { ResponseErrorEnum } from '../../enum/response-message.enum';
 
 export abstract class ProtectBaseAbstract {
   protected constructor(protected readonly jwtService: JwtService) {}
 
-  async verifyToken(token?: string): Promise<{ id: number; email: string }> {
+  async verifyToken(
+    token?: string,
+  ): Promise<{ id: number; email: string; exp: number; deviceId?: number }> {
     if (!token)
-      throw new CustomException(
+      throw new CustomExceptionUtil(
         HttpStatus.UNAUTHORIZED,
         ResponseErrorEnum.TOKEN_UNAUTHORIZED,
       );
 
-    let decodedToken: { id: number; email: string } | undefined;
+    let decodedToken:
+      | { id: number; email: string; exp: number; deviceId?: number }
+      | undefined;
     try {
       decodedToken = await this.jwtService.verify(token);
       if (!decodedToken) new Error('decodedToken is empty');
     } catch (error) {
       console.error(error);
-      throw new CustomException(
+      throw new CustomExceptionUtil(
         HttpStatus.UNAUTHORIZED,
         ResponseErrorEnum.TOKEN_UNAUTHORIZED,
       );

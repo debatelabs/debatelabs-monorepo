@@ -7,11 +7,15 @@ import { User, UserDevice } from '@prisma/client';
 import { PrismaService } from '../../prisma.service';
 import { TokenType } from '../../common/type/token.type';
 import { RegisterDto } from './dto/register.dto';
-import { CustomException } from '../../utils/custom-exception';
+import { CustomExceptionUtil } from '../../utils/custom-exception.util';
 import { ResponseErrorEnum } from '../../common/enum/response-message.enum';
-import { checkPassword, hashPassword } from '../../utils/hash-password';
+import {
+  checkPassword,
+  hashPasswordUtil,
+} from '../../utils/hash-password.util';
 import { UserDevicePrisma } from '../../prisma-extend/user-device-prisma';
 import { LoginDto } from './dto/login.dto';
+import { RedisService } from '../../redis-io/redis.service';
 
 @Injectable()
 export class AuthService {
@@ -19,6 +23,7 @@ export class AuthService {
     private readonly prisma: PrismaService,
     private readonly userDevicePrisma: UserDevicePrisma,
     private readonly jwtService: JwtService,
+    private readonly redisService: RedisService,
   ) {}
 
   async singUpCredentials(
@@ -44,12 +49,12 @@ export class AuthService {
       },
     });
     if (existUser)
-      throw new CustomException(
+      throw new CustomExceptionUtil(
         HttpStatus.UNAUTHORIZED,
         ResponseErrorEnum.REGISTER_USER_EXIST,
       );
 
-    const hashPass = await hashPassword(password);
+    const hashPass = await hashPasswordUtil(password);
 
     const newUser = await this.prisma.user.create({
       data: {
@@ -62,12 +67,19 @@ export class AuthService {
 
     const tokens = this.generateToken({ email, id: newUser.id });
 
-    await this.userDevicePrisma.add({
+    const device = await this.userDevicePrisma.add({
       userAgent,
       ipAddress,
       tokens,
       userId: newUser.id,
     });
+
+    await this.saveAuth({
+      userId: newUser.id,
+      deviceId: device.id,
+      accessToken: tokens.accessToken,
+    });
+
     return { email, ...names, ...tokens };
   }
 
@@ -97,25 +109,31 @@ export class AuthService {
       },
     });
     if (!existUser)
-      throw new CustomException(
+      throw new CustomExceptionUtil(
         HttpStatus.UNAUTHORIZED,
         ResponseErrorEnum.LOGIN_UNAUTHORIZED,
       );
 
     const isValidPass = await checkPassword(password, existUser.password);
     if (!isValidPass)
-      throw new CustomException(
+      throw new CustomExceptionUtil(
         HttpStatus.UNAUTHORIZED,
         ResponseErrorEnum.LOGIN_UNAUTHORIZED,
       );
 
     const tokens = this.generateToken({ email, id: existUser.id });
 
-    await this.userDevicePrisma.add({
+    const device = await this.userDevicePrisma.add({
       userAgent,
       ipAddress,
       tokens,
       userId: existUser.id,
+    });
+
+    await this.saveAuth({
+      userId: existUser.id,
+      deviceId: device.id,
+      accessToken: tokens.accessToken,
     });
 
     return {
@@ -136,23 +154,48 @@ export class AuthService {
     userAgent: Details,
     ipAddress: string,
   ): Promise<TokenType> {
-    const tokens = this.generateToken({ email: user.email, id: user.id });
-
-    await this.userDevicePrisma.update({
+    const tokens = this.generateToken({
+      email: user.email,
+      id: user.id,
       deviceId: device.id,
-      userAgent,
-      tokens,
-      ipAddress,
     });
+
+    await Promise.all([
+      this.userDevicePrisma.update({
+        deviceId: device.id,
+        userAgent,
+        tokens,
+        ipAddress,
+      }),
+      this.saveAuth({
+        userId: user.id,
+        deviceId: device.id,
+        accessToken: tokens.accessToken,
+      }),
+    ]);
 
     return tokens;
   }
 
-  private generateToken(payload: { email: string; id: number }): TokenType {
+  private generateToken(payload: {
+    email: string;
+    id: number;
+    deviceId?: number;
+  }): TokenType {
     const accessToken = this.jwtService.sign(payload);
     const refreshToken = this.jwtService.sign(payload, {
       expiresIn: process.env.JWT_EXPIRE_REFRESH_TOKEN,
     });
     return { accessToken, refreshToken };
+  }
+
+  private async saveAuth(payload: {
+    userId: number;
+    deviceId: number;
+    accessToken: string;
+  }) {
+    const { accessToken } = payload;
+    const { exp } = this.jwtService.decode(accessToken);
+    return this.redisService.saveAuthUser({ ...payload, expiresIn: exp });
   }
 }

@@ -5,7 +5,7 @@ import { NextFunction, Response } from 'express';
 
 import { PrismaService } from '../../../prisma.service';
 import { ProtectReqType } from '../../type/request.type';
-import { CustomException } from '../../../utils/custom-exception';
+import { CustomExceptionUtil } from '../../../utils/custom-exception.util';
 import { ResponseErrorEnum } from '../../enum/response-message.enum';
 
 @Injectable()
@@ -19,6 +19,7 @@ export class ProtectAuthMiddleware
   ) {
     super(jwtService);
   }
+
   async use(req: ProtectReqType, _: Response, next: NextFunction) {
     const { id } = await this.verifyToken(
       req.headers.authorization?.startsWith('Bearer') &&
@@ -34,12 +35,12 @@ export class ProtectAuthMiddleware
       },
     });
     if (!user)
-      throw new CustomException(
+      throw new CustomExceptionUtil(
         HttpStatus.UNAUTHORIZED,
         ResponseErrorEnum.TOKEN_UNAUTHORIZED,
       );
     if (user.isBlocked)
-      throw new CustomException(
+      throw new CustomExceptionUtil(
         HttpStatus.FORBIDDEN,
         ResponseErrorEnum.USER_BLOCKED,
       );
