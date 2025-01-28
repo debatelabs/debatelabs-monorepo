@@ -5,7 +5,7 @@ import { NextFunction, Response, Request } from 'express';
 
 import { ProtectBaseAbstract } from './protect-base.abstract';
 import { PrismaService } from '../../../prisma.service';
-import { CustomException } from '../../../utils/custom-exception';
+import { CustomExceptionUtil } from '../../../utils/custom-exception.util';
 import { ResponseErrorEnum } from '../../enum/response-message.enum';
 
 @Injectable()
@@ -40,19 +40,19 @@ export class ProtectRefreshMiddleware
       },
     });
     if (!user)
-      throw new CustomException(
+      throw new CustomExceptionUtil(
         HttpStatus.UNAUTHORIZED,
         ResponseErrorEnum.TOKEN_UNAUTHORIZED,
       );
     if (user.isBlocked)
-      throw new CustomException(
+      throw new CustomExceptionUtil(
         HttpStatus.FORBIDDEN,
         ResponseErrorEnum.USER_BLOCKED,
       );
 
     const device = user.devices.find((i) => i.refreshToken === token);
     if (!device)
-      throw new CustomException(
+      throw new CustomExceptionUtil(
         HttpStatus.UNAUTHORIZED,
         ResponseErrorEnum.TOKEN_UNAUTHORIZED,
       );

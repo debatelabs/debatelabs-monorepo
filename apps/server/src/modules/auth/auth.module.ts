@@ -6,8 +6,10 @@ import { UserAgentMiddleware } from '../../common/middleware/user-agent.middlewa
 import { PrismaService } from '../../prisma.service';
 import { UserDevicePrisma } from '../../prisma-extend/user-device-prisma';
 import { ProtectRefreshMiddleware } from '../../common/middleware/auth/protect-refresh.middleware';
+import { RedisIOModule } from '../../redis-io/redis.module';
 
 @Module({
+  imports: [RedisIOModule],
   providers: [AuthService, PrismaService, UserDevicePrisma],
   controllers: [AuthController],
 })

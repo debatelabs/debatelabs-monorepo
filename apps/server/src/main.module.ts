@@ -5,6 +5,8 @@ import { JwtModule } from '@nestjs/jwt';
 import { jwtConfig } from './config/jwt.config';
 import { AppModule } from './modules/app.module';
 import { PrismaService } from './prisma.service';
+import { WebsocketModule } from './websocket/websocket.module';
+import { RedisIOModule } from './redis-io/redis.module';
 
 @Module({
   imports: [
@@ -13,6 +15,8 @@ import { PrismaService } from './prisma.service';
     }),
     JwtModule.register(jwtConfig),
     AppModule,
+    WebsocketModule,
+    RedisIOModule,
   ],
   controllers: [],
   providers: [PrismaService],

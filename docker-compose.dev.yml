@@ -1,10 +1,14 @@
 services:
   server:
     restart: no
-    command: bash -c "npm i && npx prisma migrate deploy && npx prisma generate && npm run dev"
+    #   command: bash -c "pnpm i && npx prisma migrate deploy && npx prisma generate && pnpm dev"
+    command: /app/shell/start-dev.sh
 
   postgres:
     restart: no
 
   redis:
+    restart: no
+
+  nginx:
     restart: no
