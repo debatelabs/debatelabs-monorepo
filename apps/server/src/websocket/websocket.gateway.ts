@@ -28,6 +28,7 @@ export class WebsocketGateway
 {
   @WebSocketServer()
   server: Server;
+
   constructor(
     @InjectRedis()
     private readonly redisClient: Redis,
@@ -35,13 +36,11 @@ export class WebsocketGateway
   ) {}
 
   async handleConnection(@ConnectedSocket() client: Socket) {
-    console.log('client connected');
-    console.log(client.id);
+    console.log('client connected', client.id);
   }
 
   async handleDisconnect(client: Socket) {
-    console.log('client disconnected');
-    console.log(client.id);
+    console.log('client disconnected', client.id);
   }
 
   @SubscribeMessage('auth')

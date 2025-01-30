@@ -5,7 +5,7 @@
     "build": "turbo build",
     "dev": "turbo dev",
     "dev:client": "turbo dev --filter=@repo/client",
-    "dev:server": "docker compose up -d",
+    "dev:server": "turbo dev --filter=@repo/server",
     "test": "turbo test",
     "test:related": "turbo test:related",
     "lint": "turbo lint",
