@@ -1,12 +1,27 @@
 services:
+  client:
+    container_name: debate_client
+    build:
+      context: ./apps/client
+      dockerfile: Dockerfile
+    working_dir: /app
+    volumes:
+      - ./apps/client/:/app
+      - /app/node_modules
+      - /app/shell
+    depends_on:
+      - server
+    env_file:
+      - .env
+
   server:
-    container_name: server
+    container_name: debate_server
     build:
       context: ./apps/server
       dockerfile: Dockerfile
-    ports:
-      - "${PORT_SERVER}:${PORT_SERVER}"
-      - "${PORT_WEBSOCKET}:${PORT_WEBSOCKET}"
+    expose:
+      - "${PORT_SERVER}"
+      - "${PORT_WEBSOCKET}"
     working_dir: /app
     volumes:
       - ./apps/server/:/app
@@ -21,8 +36,8 @@ services:
       - .env
 
   postgres:
-    image: postgres
-    container_name: postgres
+    image: postgres:17-alpine
+    container_name: debate_postgres
     environment:
       POSTGRES_DB: ${DB_NAME}
       POSTGRES_USER: ${DB_USER}
@@ -36,8 +51,8 @@ services:
       - .env
 
   redis:
-    image: redis:alpine
-    container_name: redis-io
+    image: redis:7-alpine
+    container_name: debate_redis
     #    command: redis-io-server --requirepass ${REDIS_PASSWORD}
     environment:
       #      - REDIS_PASSWORD=${REDIS_PASSWORD}
@@ -52,11 +67,7 @@ services:
 
   nginx:
     image: nginx:stable
-    container_name: nginx
-    command: >
-      bash -c "envsubst '$${PORT_SERVER}, $${PORT_WEBSOCKET}' < /etc/nginx/templates/nginx-dev.conf > /etc/nginx/nginx.conf && nginx -g 'daemon off;'"
-    ports:
-      - "${NGINX_PORT}:80"
+    container_name: debate_nginx
     env_file:
       - .env
     volumes:
