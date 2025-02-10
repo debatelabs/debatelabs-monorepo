@@ -1,7 +1,7 @@
 services:
   client:
     expose:
-      - "5173"
+      - "3000"
     command: /app/shell/start-dev.sh
     restart: no
 
