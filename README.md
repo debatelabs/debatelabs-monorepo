@@ -53,16 +53,9 @@ Setting .env file.
 
 ## Step 3
 
-To start react app in dev mode:
+To start in dev mode:
 
 ```bash
-pnpm dev:client
-```
-
-## Step 4
-
-To start nest.js server in dev mode:
-
-```bash
-pnpm dev:server
+docker build
+docker compose up -d
 ```
