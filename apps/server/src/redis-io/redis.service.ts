@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import Redis from 'ioredis';
 import { InjectRedis } from '@nestjs-modules/ioredis';
+
 import { RedisKey } from '../common/enum/redis-key.enum';
 
 @Injectable()
@@ -17,8 +18,6 @@ export class RedisService {
     expiresIn: number;
   }) {
     const { deviceId, userId, accessToken, expiresIn } = payload;
-    console.log('expiresIn', expiresIn);
-    console.log('now', new Date().getTime());
 
     const ex = expiresIn - Math.floor(Date.now() / 1000) - 120;
 
