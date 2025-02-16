@@ -9,6 +9,7 @@ model Friendship {
 
   @@unique([requesterId, recipientId])
   @@unique([recipientId, requesterId])
+  @@index([requesterId, recipientId])
   @@map("friendship")
 }
 
