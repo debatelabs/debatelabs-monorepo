@@ -8,7 +8,6 @@ import { PrismaService } from '../../prisma.service';
 import { TokenType } from '../../common/type/token.type';
 import { RegisterDto } from './dto/register.dto';
 import { CustomExceptionUtil } from '../../utils/custom-exception.util';
-import { ResponseErrorEnum } from '../../common/enum/response-message.enum';
 import {
   checkPassword,
   hashPasswordUtil,
@@ -16,6 +15,7 @@ import {
 import { UserDevicePrisma } from '../../prisma-extend/user-device-prisma';
 import { LoginDto } from './dto/login.dto';
 import { RedisService } from '../../redis-io/redis.service';
+import { AuthErrorMessage } from '../../common/messages/error/auth.message';
 
 @Injectable()
 export class AuthService {
@@ -30,14 +30,13 @@ export class AuthService {
     body: RegisterDto,
     userAgent: Details,
     ipAddress: string,
-  ): Promise<{
-    email: string;
-    firstName: string;
-    lastName?: string;
-    accessToken: string;
-    refreshToken: string;
-  }> {
-    const { email, password, ...names } = body;
+  ): Promise<
+    Omit<User, 'password'> & {
+      accessToken: string;
+      refreshToken: string;
+    }
+  > {
+    const { email, password, language, ...names } = body;
 
     const existUser = await this.prisma.user.findFirst({
       where: {
@@ -51,7 +50,7 @@ export class AuthService {
     if (existUser)
       throw new CustomExceptionUtil(
         HttpStatus.UNAUTHORIZED,
-        ResponseErrorEnum.REGISTER_USER_EXIST,
+        AuthErrorMessage[language].REGISTER_USER_EXIST,
       );
 
     const hashPass = await hashPasswordUtil(password);
@@ -62,8 +61,10 @@ export class AuthService {
         firstName: names.firstName,
         lastName: names.lastName,
         password: hashPass,
+        language,
       },
     });
+    delete newUser.password;
 
     const tokens = this.generateToken({ email, id: newUser.id });
 
@@ -80,21 +81,23 @@ export class AuthService {
       accessToken: tokens.accessToken,
     });
 
-    return { email, ...names, ...tokens };
+    return { ...newUser, ...tokens };
   }
 
   async singInCredentials(
     body: LoginDto,
     userAgent: Details,
     ipAddress: string,
-  ): Promise<{
-    email: string;
-    firstName: string;
-    lastName?: string;
-    accessToken: string;
-    refreshToken: string;
-  }> {
-    const { email, password } = body;
+  ): Promise<
+    Pick<
+      User,
+      'id' | 'firstName' | 'language' | 'lastName' | 'avatar' | 'email'
+    > & {
+      accessToken: string;
+      refreshToken: string;
+    }
+  > {
+    const { email, password, language } = body;
 
     const existUser = await this.prisma.user.findFirst({
       where: {
@@ -103,22 +106,24 @@ export class AuthService {
       select: {
         id: true,
         email: true,
+        avatar: true,
         password: true,
         firstName: true,
         lastName: true,
+        language: true,
       },
     });
     if (!existUser)
       throw new CustomExceptionUtil(
         HttpStatus.UNAUTHORIZED,
-        ResponseErrorEnum.LOGIN_UNAUTHORIZED,
+        AuthErrorMessage[language].LOGIN_UNAUTHORIZED,
       );
 
     const isValidPass = await checkPassword(password, existUser.password);
     if (!isValidPass)
       throw new CustomExceptionUtil(
         HttpStatus.UNAUTHORIZED,
-        ResponseErrorEnum.LOGIN_UNAUTHORIZED,
+        AuthErrorMessage[language].LOGIN_UNAUTHORIZED,
       );
 
     const tokens = this.generateToken({ email, id: existUser.id });
@@ -136,10 +141,10 @@ export class AuthService {
       accessToken: tokens.accessToken,
     });
 
+    delete existUser.password;
+
     return {
-      email,
-      firstName: existUser.firstName,
-      lastName: existUser.lastName,
+      ...existUser,
       ...tokens,
     };
   }

@@ -1,6 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import * as Joi from 'joi';
 import { JoiSchema, JoiSchemaOptions } from 'nestjs-joi';
+import { Language } from '@prisma/client';
 
 @JoiSchemaOptions({
   allowUnknown: false,
@@ -19,9 +20,9 @@ export class RegisterDto {
   email: string;
 
   @JoiSchema(
-    Joi.string().min(1).max(250).required().messages({
+    Joi.string().min(1).max(100).required().messages({
       'string.empty': 'The name is empty.',
-      'string.max': 'The name cannot be more than 250 characters',
+      'string.max': 'The name cannot be more than 100 characters',
       'string.min': 'The name cannot be less than 1 characters',
     }),
   )
@@ -29,14 +30,22 @@ export class RegisterDto {
   firstName: string;
 
   @JoiSchema(
-    Joi.string().min(1).max(250).messages({
+    Joi.string().min(1).max(100).messages({
       'string.empty': 'The name is empty.',
-      'string.max': 'The name cannot be more than 250 characters',
+      'string.max': 'The name cannot be more than 100 characters',
       'string.min': 'The name cannot be less than 1 characters',
     }),
   )
   @ApiProperty({ required: false, example: 'Smith' })
   lastName?: string;
+
+  @JoiSchema(
+    Joi.string()
+      .valid(...Object.values(Language))
+      .default(Language.EN),
+  )
+  @ApiProperty({ required: false, example: Language.UK })
+  language?: Language;
 
   @JoiSchema(
     Joi.string()

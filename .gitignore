@@ -27,6 +27,7 @@ coverage
 out/
 build
 dist
+apps/server/static
 
 #docker
 database

@@ -1,0 +1,10 @@
+model LogError {
+  id         Int      @id @default(autoincrement())
+  status     Float?
+  title      String?  @db.VarChar(256)
+  message    String   @db.Text
+  stackTrace String?  @map("stack_trace") @db.Text
+  createdAt  DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  @@map("log_error")
+}

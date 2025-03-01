@@ -1,8 +1,9 @@
 import { JwtService } from '@nestjs/jwt';
 import { HttpStatus } from '@nestjs/common';
+import { Language } from '@prisma/client';
 
 import { CustomExceptionUtil } from '../../../utils/custom-exception.util';
-import { ResponseErrorEnum } from '../../enum/response-message.enum';
+import { AuthErrorMessage } from '../../messages/error/auth.message';
 
 export abstract class ProtectBaseAbstract {
   protected constructor(protected readonly jwtService: JwtService) {}
@@ -13,7 +14,7 @@ export abstract class ProtectBaseAbstract {
     if (!token)
       throw new CustomExceptionUtil(
         HttpStatus.UNAUTHORIZED,
-        ResponseErrorEnum.TOKEN_UNAUTHORIZED,
+        AuthErrorMessage[Language.EN].TOKEN_UNAUTHORIZED,
       );
 
     let decodedToken:
@@ -22,11 +23,10 @@ export abstract class ProtectBaseAbstract {
     try {
       decodedToken = await this.jwtService.verify(token);
       if (!decodedToken) new Error('decodedToken is empty');
-    } catch (error) {
-      console.error(error);
+    } catch {
       throw new CustomExceptionUtil(
         HttpStatus.UNAUTHORIZED,
-        ResponseErrorEnum.TOKEN_UNAUTHORIZED,
+        AuthErrorMessage[Language.EN].TOKEN_UNAUTHORIZED,
       );
     }
     return decodedToken;

@@ -5,7 +5,7 @@ model Friendship {
   recipientId Int              @map("recipient_id")
   recipient   User             @relation(name: "user_received_requests", fields: [recipientId], references: [id])
   status      FriendshipStatus @default(PENDING)
-  updatedAt   DateTime         @updatedAt @db.Timestamptz(6)
+  updatedAt   DateTime         @updatedAt @map("updated_at") @db.Timestamptz(6)
 
   @@unique([requesterId, recipientId])
   @@unique([recipientId, requesterId])

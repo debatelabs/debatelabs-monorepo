@@ -3,14 +3,13 @@ import { MiddlewareConsumer, Module, RequestMethod } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { UserAgentMiddleware } from '../../common/middleware/user-agent.middleware';
-import { PrismaService } from '../../prisma.service';
 import { UserDevicePrisma } from '../../prisma-extend/user-device-prisma';
 import { ProtectRefreshMiddleware } from '../../common/middleware/auth/protect-refresh.middleware';
 import { RedisIOModule } from '../../redis-io/redis.module';
 
 @Module({
   imports: [RedisIOModule],
-  providers: [AuthService, PrismaService, UserDevicePrisma],
+  providers: [AuthService, UserDevicePrisma],
   controllers: [AuthController],
 })
 export class AuthModule {

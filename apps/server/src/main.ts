@@ -3,9 +3,11 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import * as cookieParser from 'cookie-parser';
 import * as process from 'process';
+import { join } from 'path';
 
 import { MainModule } from './main.module';
 import { HttpExceptionFilter } from './common/filters/http-exception.filter';
+import { PrismaService } from './prisma.service';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(MainModule, {
@@ -18,7 +20,10 @@ async function bootstrap() {
 
   app.use(cookieParser());
   app.setGlobalPrefix('/api');
-  app.useGlobalFilters(new HttpExceptionFilter());
+  app.useStaticAssets(join(process.cwd(), 'static'), {
+    prefix: '/api/static',
+  });
+  app.useGlobalFilters(new HttpExceptionFilter(new PrismaService()));
 
   if (Number(process.env.IS_SHOW_DOCS)) {
     const config = new DocumentBuilder()

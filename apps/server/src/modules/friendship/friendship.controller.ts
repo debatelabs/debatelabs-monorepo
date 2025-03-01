@@ -20,13 +20,13 @@ import {
 } from '@nestjs/swagger';
 import { JoiPipe } from 'nestjs-joi';
 import * as Joi from 'joi';
-import { User } from '@prisma/client';
+import { Language } from '@prisma/client';
 
 import { FriendshipService } from './friendship.service';
-import { ResponseErrorEnum } from '../../common/enum/response-message.enum';
 import { RequestResponse } from './swagger/request.response';
 import { ProtectReqType } from '../../common/type/request.type';
 import { FriendshipActionEnum } from '../../common/enum/friendship-action.enum';
+import { AuthErrorMessage } from '../../common/messages/error/auth.message';
 
 @ApiTags('Friendship')
 @Controller('friendship')
@@ -48,9 +48,11 @@ export class FriendshipController {
   })
   @ApiBearerAuth()
   @ApiUnauthorizedResponse({
-    description: ResponseErrorEnum.TOKEN_UNAUTHORIZED,
+    description: AuthErrorMessage[Language.EN].TOKEN_UNAUTHORIZED,
   })
-  @ApiForbiddenResponse({ description: ResponseErrorEnum.USER_BLOCKED })
+  @ApiForbiddenResponse({
+    description: AuthErrorMessage[Language.EN].USER_BLOCKED,
+  })
   @Post('/request/:recipient_id')
   @HttpCode(HttpStatus.OK)
   async requestAdd(
@@ -58,7 +60,7 @@ export class FriendshipController {
     @Param('recipient_id', new JoiPipe(Joi.number().integer().required()))
     recipientId: number,
   ): Promise<{ message: string }> {
-    return this.friendshipService.requestAdd(req.user as User, recipientId);
+    return this.friendshipService.requestAdd(req.user, recipientId);
   }
 
   @ApiOperation({
@@ -81,9 +83,11 @@ export class FriendshipController {
   })
   @ApiBearerAuth()
   @ApiUnauthorizedResponse({
-    description: ResponseErrorEnum.TOKEN_UNAUTHORIZED,
+    description: AuthErrorMessage[Language.EN].TOKEN_UNAUTHORIZED,
   })
-  @ApiForbiddenResponse({ description: ResponseErrorEnum.USER_BLOCKED })
+  @ApiForbiddenResponse({
+    description: AuthErrorMessage[Language.EN].USER_BLOCKED,
+  })
   @Patch('/action/:action_request/:requester_id')
   @HttpCode(HttpStatus.OK)
   async requestAction(
@@ -101,7 +105,7 @@ export class FriendshipController {
     requesterId: number,
   ): Promise<{ message: string }> {
     return this.friendshipService.requestAction(
-      req.user as User,
+      req.user,
       requesterId,
       actionReq,
     );
@@ -121,9 +125,11 @@ export class FriendshipController {
   })
   @ApiBearerAuth()
   @ApiUnauthorizedResponse({
-    description: ResponseErrorEnum.TOKEN_UNAUTHORIZED,
+    description: AuthErrorMessage[Language.EN].TOKEN_UNAUTHORIZED,
   })
-  @ApiForbiddenResponse({ description: ResponseErrorEnum.USER_BLOCKED })
+  @ApiForbiddenResponse({
+    description: AuthErrorMessage[Language.EN].USER_BLOCKED,
+  })
   @Delete('/:friend_id')
   @HttpCode(HttpStatus.NO_CONTENT)
   async delete(
@@ -131,6 +137,6 @@ export class FriendshipController {
     @Param('friend_id', new JoiPipe(Joi.number().integer().required()))
     friendId: number,
   ): Promise<void> {
-    return this.friendshipService.delete(req.user as User, friendId);
+    return this.friendshipService.delete(req.user, friendId);
   }
 }

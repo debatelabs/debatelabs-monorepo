@@ -2,11 +2,12 @@ import { HttpStatus, Injectable, NestMiddleware } from '@nestjs/common';
 import { ProtectBaseAbstract } from './protect-base.abstract';
 import { JwtService } from '@nestjs/jwt';
 import { NextFunction, Response } from 'express';
+import { Language } from '@prisma/client';
 
 import { PrismaService } from '../../../prisma.service';
 import { ProtectReqType } from '../../type/request.type';
 import { CustomExceptionUtil } from '../../../utils/custom-exception.util';
-import { ResponseErrorEnum } from '../../enum/response-message.enum';
+import { AuthErrorMessage } from '../../messages/error/auth.message';
 
 @Injectable()
 export class ProtectAuthMiddleware
@@ -32,17 +33,19 @@ export class ProtectAuthMiddleware
         id: true,
         email: true,
         isBlocked: true,
+        language: true,
+        role: true,
       },
     });
     if (!user)
       throw new CustomExceptionUtil(
         HttpStatus.UNAUTHORIZED,
-        ResponseErrorEnum.TOKEN_UNAUTHORIZED,
+        AuthErrorMessage[Language.EN].TOKEN_UNAUTHORIZED,
       );
     if (user.isBlocked)
       throw new CustomExceptionUtil(
         HttpStatus.FORBIDDEN,
-        ResponseErrorEnum.USER_BLOCKED,
+        AuthErrorMessage[user.language].USER_BLOCKED,
       );
 
     req.user = user;

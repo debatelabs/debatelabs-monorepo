@@ -17,7 +17,7 @@ import {
   ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
-import { User, UserDevice } from '@prisma/client';
+import { Language, User, UserDevice } from '@prisma/client';
 import { JoiPipe } from 'nestjs-joi';
 import { Request, Response } from 'express';
 import * as process from 'process';
@@ -27,8 +27,8 @@ import { AuthorizationResponseType } from './swagger/authorization.response';
 import { RegisterDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
 import { ProtectReqType } from '../../common/type/request.type';
-import { ResponseErrorEnum } from '../../common/enum/response-message.enum';
 import { RefreshTokenResponse } from './swagger/refresh-token.response';
+import { AuthErrorMessage } from '../../common/messages/error/auth.message';
 
 @ApiTags('Authorization')
 @Controller('auth')
@@ -44,7 +44,7 @@ export class AuthController {
     type: AuthorizationResponseType,
   })
   @ApiUnauthorizedResponse({
-    description: ResponseErrorEnum.REGISTER_USER_EXIST,
+    description: AuthErrorMessage[Language.EN].REGISTER_USER_EXIST,
   })
   @Post('/register')
   @HttpCode(201)
@@ -76,7 +76,7 @@ export class AuthController {
     type: AuthorizationResponseType,
   })
   @ApiUnauthorizedResponse({
-    description: ResponseErrorEnum.LOGIN_UNAUTHORIZED,
+    description: AuthErrorMessage[Language.EN].LOGIN_UNAUTHORIZED,
   })
   @Post('/login')
   @HttpCode(200)
@@ -106,9 +106,11 @@ export class AuthController {
   @ApiNoContentResponse({ description: 'Successfully logout' })
   @ApiBearerAuth()
   @ApiUnauthorizedResponse({
-    description: ResponseErrorEnum.TOKEN_UNAUTHORIZED,
+    description: AuthErrorMessage[Language.EN].TOKEN_UNAUTHORIZED,
   })
-  @ApiForbiddenResponse({ description: ResponseErrorEnum.USER_BLOCKED })
+  @ApiForbiddenResponse({
+    description: AuthErrorMessage[Language.EN].USER_BLOCKED,
+  })
   @Get('/logout')
   @HttpCode(204)
   async logout(
@@ -134,9 +136,11 @@ export class AuthController {
   })
   @ApiBearerAuth()
   @ApiUnauthorizedResponse({
-    description: ResponseErrorEnum.TOKEN_UNAUTHORIZED,
+    description: AuthErrorMessage[Language.EN].TOKEN_UNAUTHORIZED,
   })
-  @ApiForbiddenResponse({ description: ResponseErrorEnum.USER_BLOCKED })
+  @ApiForbiddenResponse({
+    description: AuthErrorMessage[Language.EN].USER_BLOCKED,
+  })
   @Get('/refresh')
   @HttpCode(200)
   async refresh(

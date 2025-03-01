@@ -1,6 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import * as Joi from 'joi';
 import { JoiSchema, JoiSchemaOptions } from 'nestjs-joi';
+import { Language } from '@prisma/client';
 
 @JoiSchemaOptions({
   allowUnknown: false,
@@ -17,6 +18,14 @@ export class LoginDto {
   )
   @ApiProperty({ required: true, example: 'mail@example.com' })
   email: string;
+
+  @JoiSchema(
+    Joi.string()
+      .valid(...Object.values(Language))
+      .default(Language.EN),
+  )
+  @ApiProperty({ required: false, example: Language.UK })
+  language?: Language;
 
   @JoiSchema(
     Joi.string().min(1).required().messages({

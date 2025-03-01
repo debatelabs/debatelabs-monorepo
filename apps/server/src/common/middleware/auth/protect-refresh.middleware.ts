@@ -1,12 +1,13 @@
 import { HttpStatus, Injectable, NestMiddleware } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { User, UserDevice } from '@prisma/client';
+import { Language, UserDevice } from '@prisma/client';
 import { NextFunction, Response, Request } from 'express';
 
 import { ProtectBaseAbstract } from './protect-base.abstract';
 import { PrismaService } from '../../../prisma.service';
 import { CustomExceptionUtil } from '../../../utils/custom-exception.util';
-import { ResponseErrorEnum } from '../../enum/response-message.enum';
+import { AuthErrorMessage } from '../../messages/error/auth.message';
+import { TUserAuth } from '../../type/user.type';
 
 @Injectable()
 export class ProtectRefreshMiddleware
@@ -21,7 +22,7 @@ export class ProtectRefreshMiddleware
   }
   async use(
     req: Request & {
-      user: Pick<User, 'id' | 'isBlocked' | 'email'>;
+      user: TUserAuth;
       device: UserDevice;
     },
     _: Response,
@@ -36,25 +37,27 @@ export class ProtectRefreshMiddleware
         id: true,
         email: true,
         isBlocked: true,
+        language: true,
+        role: true,
         devices: true,
       },
     });
     if (!user)
       throw new CustomExceptionUtil(
         HttpStatus.UNAUTHORIZED,
-        ResponseErrorEnum.TOKEN_UNAUTHORIZED,
+        AuthErrorMessage[Language.EN].TOKEN_UNAUTHORIZED,
       );
     if (user.isBlocked)
       throw new CustomExceptionUtil(
         HttpStatus.FORBIDDEN,
-        ResponseErrorEnum.USER_BLOCKED,
+        AuthErrorMessage[user.language].USER_BLOCKED,
       );
 
     const device = user.devices.find((i) => i.refreshToken === token);
     if (!device)
       throw new CustomExceptionUtil(
         HttpStatus.UNAUTHORIZED,
-        ResponseErrorEnum.TOKEN_UNAUTHORIZED,
+        AuthErrorMessage[user.language].TOKEN_UNAUTHORIZED,
       );
 
     req.user = user;
