@@ -25,10 +25,12 @@ const eslintConfig = [
   ...compat.extends("next/core-web-vitals", "next/typescript"),
   {
     ignores: [
-      "dist/*",
-      "node_modules/*",
-      ".turbo/*",
-      "coverage/*",
+      "dist/**/*",
+      "node_modules/**/*",
+      ".pnpm-store/**/*",
+      ".turbo/**/*",
+      "coverage/**/*",
+      ".next/**/*",
       "*.config.js",
       "*.config.mjs",
       "*.config.mts",

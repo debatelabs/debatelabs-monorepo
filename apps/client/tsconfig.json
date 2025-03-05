@@ -30,7 +30,7 @@
     "noImplicitAny": false,
     "strictNullChecks": true,
     "forceConsistentCasingInFileNames": true,
-    "allowSyntheticDefaultImports": false,
+    "allowSyntheticDefaultImports": true,
     "removeComments": true,
     "strictBindCallApply": true,
     "incremental": true
