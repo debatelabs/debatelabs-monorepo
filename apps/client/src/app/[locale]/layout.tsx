@@ -1,7 +1,9 @@
+import React from "react";
 import { Geist, Geist_Mono } from "next/font/google";
 import { mainMetadata } from "~/constants/metadata/main";
-import "./globals.css";
-import Providers from "~/app/providers";
+import "~/styles/globals.css";
+import AppProvider from "~/app/[locale]/provider";
+import { RootParams } from "~/types/common.types";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -15,15 +17,21 @@ const geistMono = Geist_Mono({
 
 export const metadata = mainMetadata;
 
-export default function RootLayout({
-  children
-}: Readonly<{
+interface RootLayoutProps {
   children: React.ReactNode;
-}>) {
+  params: RootParams;
+}
+
+export default async function RootLayout({
+  children,
+  params
+}: Readonly<RootLayoutProps>) {
+  const { locale } = await params;
+
   return (
-    <html lang="en">
+    <html lang={locale} data-lt-installed="true">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <Providers>{children}</Providers>
+        <AppProvider locale={locale}>{children}</AppProvider>
       </body>
     </html>
   );

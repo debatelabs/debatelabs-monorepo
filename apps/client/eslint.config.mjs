@@ -30,11 +30,7 @@ const eslintConfig = [
       ".pnpm-store/**/*",
       ".turbo/**/*",
       "coverage/**/*",
-      ".next/**/*",
-      "*.config.js",
-      "*.config.mjs",
-      "*.config.mts",
-      "*.config.ts"
+      ".next/**/*"
     ]
   },
   { files: ["**/*.{js,jsx,ts,tsx}"] },
