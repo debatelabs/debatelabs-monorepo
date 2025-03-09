@@ -1,5 +1,5 @@
 {
-  "name": "@repo/client",
+  "name": "@debatelabs/client",
   "version": "0.1.0",
   "private": true,
   "scripts": {
