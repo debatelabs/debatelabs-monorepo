@@ -23,7 +23,7 @@ services:
       - "${PATH_SSL_FOLDER}:/etc/ssl"
     command: >
       bash -c "
-      envsubst '$${PORT_SERVER}, $${PORT_WEBSOCKET}, $${FRONTEND_SERVER_HOST}' 
+      envsubst '$${PORT_SERVER}, $${PORT_WEBSOCKET}, $${NEXT_PUBLIC_SERVER_HOST}' 
       < /etc/nginx/templates/nginx-prod.conf > /etc/nginx/nginx.conf 
       && nginx -g 'daemon off;'
       "

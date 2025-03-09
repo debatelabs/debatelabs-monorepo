@@ -1,7 +1,7 @@
 import axios, { AxiosError, AxiosInstance, AxiosResponse } from "axios";
-import envConfig from "~/configs/env.config";
 import { ResponseDTO } from "~/types/response.types";
 import ResponseMapper from "~/mappers/response.mapper";
+import { BASE_URL } from "~/configs/api-url.config";
 
 type AsyncResponse<T extends object> = Promise<ResponseDTO<T>>;
 
@@ -10,7 +10,7 @@ class ApiClient {
 
   constructor(private readonly responseMapper = new ResponseMapper()) {
     this.axiosInstance = axios.create({
-      baseURL: envConfig.API_BASE_URL,
+      baseURL: BASE_URL,
       withCredentials: true
     });
     this.axiosInstance.interceptors.response.use(
