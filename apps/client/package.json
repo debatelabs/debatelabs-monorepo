@@ -16,6 +16,7 @@
     "@emotion/styled": "^11.14.0",
     "@mui/material": "^6.4.6",
     "@reduxjs/toolkit": "^2.6.0",
+    "axios": "^1.8.2",
     "i18next": "^24.2.2",
     "next": "15.1.6",
     "next-i18n-router": "^5.5.1",
