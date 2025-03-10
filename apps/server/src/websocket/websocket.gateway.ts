@@ -11,6 +11,7 @@ import { Server, Socket } from 'socket.io';
 import { InjectRedis } from '@nestjs-modules/ioredis';
 import Redis from 'ioredis';
 import * as process from 'process';
+import { Logger } from '@nestjs/common';
 
 import { AuthWsDto } from './dto/auth-ws.dto';
 import { WebsocketAuthService } from './websocket-auth.service';
@@ -29,6 +30,8 @@ export class WebsocketGateway
   @WebSocketServer()
   server: Server;
 
+  private readonly logger = new Logger(WebsocketGateway.name);
+
   constructor(
     @InjectRedis()
     private readonly redisClient: Redis,
@@ -36,11 +39,10 @@ export class WebsocketGateway
   ) {}
 
   async handleConnection(@ConnectedSocket() client: Socket) {
-    console.log('client connected', client.id);
+    this.logger.log(`Client connected: ${client.id}`);
   }
 
   async handleDisconnect(@ConnectedSocket() client: Socket) {
-    console.log('client disconnected', client.id);
     const socketId = client.id;
     const userId = await this.redisClient.get(
       `${RedisKey.CONNECTIONS_SOCKET}:${socketId}:user`,
@@ -55,6 +57,7 @@ export class WebsocketGateway
     await this.redisClient.del(
       `${RedisKey.CONNECTIONS_SOCKET}:${socketId}:user`,
     );
+    this.logger.log(`Client disconnected ${client.id}, user: ${userId}`);
   }
 
   @SubscribeMessage('auth')
@@ -74,8 +77,8 @@ export class WebsocketGateway
         userId,
       ),
     ]);
-    console.log('client authenticated:', client.id);
+    this.logger.log(`Client authenticated: ${client.id}, user: ${userId}`);
 
-    client.emit('auth', { status: 'connected' });
+    client.emit('auth', { status: 200, message: 'Connected' });
   }
 }
