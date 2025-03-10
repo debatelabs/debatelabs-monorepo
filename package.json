@@ -10,7 +10,8 @@
     "test:related": "turbo test:related",
     "lint": "turbo lint",
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,md}\"",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "prisma:generate": "pnpm --filter=@repo/server generate"
   },
   "devDependencies": {
     "eslint": "^9.15.0",
