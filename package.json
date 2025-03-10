@@ -1,17 +1,19 @@
 {
-  "name": "debate-hub",
+  "name": "debatelabs",
   "private": true,
   "scripts": {
     "build": "turbo build",
     "dev": "turbo dev",
-    "dev:client": "turbo dev --filter=@repo/client",
-    "dev:server": "turbo dev --filter=@repo/server",
+    "dev:client": "turbo dev --filter=@debatelabs/client",
+    "dev:server": "turbo dev --filter=@debatelabs/server",
     "test": "turbo test",
+    "test:client": "turbo test --filter=@debatelabs/client",
+    "test:server": "turbo test --filter=@debatelabs/server",
     "test:related": "turbo test:related",
     "lint": "turbo lint",
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,md}\"",
     "prepare": "husky install",
-    "prisma:generate": "pnpm --filter=@repo/server generate"
+    "prisma:generate": "pnpm --filter=@debatelabs/server generate"
   },
   "devDependencies": {
     "eslint": "^9.15.0",

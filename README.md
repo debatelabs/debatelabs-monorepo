@@ -33,6 +33,6 @@ Setting .env file.
 To start in dev mode:
 
 ```bash
-docker build
+docker compose build
 docker compose up -d
 ```
