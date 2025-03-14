@@ -17,10 +17,10 @@ export class UserDevicePrisma {
   }): Promise<UserDevice> {
     const { userAgent, userId, tokens, ipAddress } = params;
     const details = {
-      platform: userAgent.platform,
-      os: userAgent.os,
-      browser: userAgent.browser,
-      version: userAgent.version,
+      platform: userAgent?.platform,
+      os: userAgent?.os,
+      browser: userAgent?.browser,
+      version: userAgent?.version,
     } as Prisma.JsonObject;
 
     return this.prisma.userDevice.create({

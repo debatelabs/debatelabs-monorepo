@@ -30,10 +30,10 @@ dist
 apps/server/static
 
 #docker
-database
+packages/database
 
 #redis-io
-redis
+packages/redis
 
 # Debug
 npm-debug.log*

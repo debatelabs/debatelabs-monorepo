@@ -6,10 +6,11 @@ import { UserAgentMiddleware } from '../../common/middleware/user-agent.middlewa
 import { UserDevicePrisma } from '../../prisma-extend/user-device-prisma';
 import { ProtectRefreshMiddleware } from '../../common/middleware/auth/protect-refresh.middleware';
 import { RedisIOModule } from '../../redis-io/redis.module';
+import { GoogleStrategy } from './strategy/google.strategy';
 
 @Module({
   imports: [RedisIOModule],
-  providers: [AuthService, UserDevicePrisma],
+  providers: [AuthService, UserDevicePrisma, GoogleStrategy],
   controllers: [AuthController],
 })
 export class AuthModule {
