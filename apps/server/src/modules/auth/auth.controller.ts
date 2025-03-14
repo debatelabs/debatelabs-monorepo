@@ -3,9 +3,11 @@ import {
   Controller,
   Get,
   HttpCode,
+  HttpStatus,
   Post,
   Req,
   Res,
+  UseGuards,
 } from '@nestjs/common';
 import {
   ApiBearerAuth,
@@ -15,6 +17,7 @@ import {
   ApiOkResponse,
   ApiOperation,
   ApiTags,
+  ApiTemporaryRedirectResponse,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 import { Language, User, UserDevice } from '@prisma/client';
@@ -29,6 +32,7 @@ import { LoginDto } from './dto/login.dto';
 import { ProtectReqType } from '../../common/type/request.type';
 import { RefreshTokenResponse } from './swagger/refresh-token.response';
 import { AuthErrorMessage } from '../../common/messages/error/auth.message';
+import AuthGoogle from '../../common/guard/google.guard';
 
 @ApiTags('Authorization')
 @Controller('auth')
@@ -47,7 +51,7 @@ export class AuthController {
     description: AuthErrorMessage[Language.EN].REGISTER_USER_EXIST,
   })
   @Post('/register')
-  @HttpCode(201)
+  @HttpCode(HttpStatus.CREATED)
   async register(
     @Body(JoiPipe) body: RegisterDto,
     @Req() req: Request,
@@ -66,6 +70,10 @@ export class AuthController {
       httpOnly: true,
       maxAge: this.COOKIES_EXPIRE,
     });
+    res.cookie('accessToken', result.accessToken, {
+      httpOnly: true,
+      maxAge: this.COOKIES_EXPIRE,
+    });
     delete result.refreshToken;
     res.json(result);
   }
@@ -79,7 +87,7 @@ export class AuthController {
     description: AuthErrorMessage[Language.EN].LOGIN_UNAUTHORIZED,
   })
   @Post('/login')
-  @HttpCode(200)
+  @HttpCode(HttpStatus.OK)
   async login(
     @Body(JoiPipe) body: LoginDto,
     @Req() req: Request,
@@ -98,8 +106,66 @@ export class AuthController {
       httpOnly: true,
       maxAge: this.COOKIES_EXPIRE,
     });
+    res.cookie('accessToken', result.accessToken, {
+      httpOnly: true,
+      maxAge: this.COOKIES_EXPIRE,
+    });
     delete result.refreshToken;
     res.json(result);
+  }
+
+  @ApiOperation({
+    summary: 'Login user with Google',
+    description: 'Start user authorization',
+  })
+  @ApiOkResponse({
+    description: 'Successfully login with Google.',
+  })
+  @Get('google')
+  @HttpCode(HttpStatus.OK)
+  @UseGuards(AuthGoogle)
+  googleLogin() {
+    return;
+  }
+
+  @ApiOperation({
+    summary: 'Auth for Google. Automatically! Not use!',
+    description: 'Continue user authorized and Redirect',
+  })
+  @ApiTemporaryRedirectResponse({
+    description: `Redirect to ${process.env.NEXT_PUBLIC_SERVER_PROTOCOL}://${process.env.NEXT_PUBLIC_SERVER_HOST}`,
+  })
+  @Get('google/callback')
+  @HttpCode(HttpStatus.TEMPORARY_REDIRECT)
+  @UseGuards(AuthGoogle)
+  async googleLoginCallback(
+    @Req()
+    req: Request & {
+      user: Pick<User, 'firstName' | 'lastName' | 'avatar' | 'email'>;
+    },
+    @Res({ passthrough: true }) res: Response,
+  ) {
+    const ip: string = String(
+      req.headers['x-real-ip'] || req.headers['x-forwarded-for'] || 'unknown',
+    );
+    const userAgent = req['useragent'];
+    const foundUser = await this.authService.authGoogle(
+      req.user,
+      userAgent,
+      ip,
+    );
+
+    res.cookie('refreshToken', foundUser.refreshToken, {
+      httpOnly: true,
+      maxAge: this.COOKIES_EXPIRE,
+    });
+    res.cookie('accessToken', foundUser.accessToken, {
+      httpOnly: true,
+      maxAge: this.COOKIES_EXPIRE,
+    });
+    res.redirect(
+      `${process.env.NEXT_PUBLIC_SERVER_PROTOCOL}://${process.env.NEXT_PUBLIC_SERVER_HOST}`,
+    );
   }
 
   @ApiOperation({ summary: 'Logout user', description: 'Logout user from app' })
@@ -112,7 +178,7 @@ export class AuthController {
     description: AuthErrorMessage[Language.EN].USER_BLOCKED,
   })
   @Get('/logout')
-  @HttpCode(204)
+  @HttpCode(HttpStatus.NO_CONTENT)
   async logout(
     @Req() req: ProtectReqType & { device: UserDevice },
     @Res({ passthrough: true }) res: Response,
@@ -142,7 +208,7 @@ export class AuthController {
     description: AuthErrorMessage[Language.EN].USER_BLOCKED,
   })
   @Get('/refresh')
-  @HttpCode(200)
+  @HttpCode(HttpStatus.OK)
   async refresh(
     @Req() req: ProtectReqType & { device: UserDevice },
     @Res({ passthrough: true }) res: Response,
@@ -158,6 +224,10 @@ export class AuthController {
       ip,
     );
     res.cookie('refreshToken', tokens.refreshToken, {
+      httpOnly: true,
+      maxAge: this.COOKIES_EXPIRE,
+    });
+    res.cookie('accessToken', tokens.accessToken, {
       httpOnly: true,
       maxAge: this.COOKIES_EXPIRE,
     });

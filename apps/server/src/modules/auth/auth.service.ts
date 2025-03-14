@@ -2,7 +2,8 @@ import { HttpStatus, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as process from 'process';
 import { Details } from 'express-useragent';
-import { User, UserDevice } from '@prisma/client';
+import { Language, User, UserDevice } from '@prisma/client';
+import { v4 as uuidv4 } from 'uuid';
 
 import { PrismaService } from '../../prisma.service';
 import { TokenType } from '../../common/type/token.type';
@@ -16,6 +17,7 @@ import { UserDevicePrisma } from '../../prisma-extend/user-device-prisma';
 import { LoginDto } from './dto/login.dto';
 import { RedisService } from '../../redis-io/redis.service';
 import { AuthErrorMessage } from '../../common/messages/error/auth.message';
+import { TUserInfo } from '../../common/type/user.type';
 
 @Injectable()
 export class AuthService {
@@ -89,10 +91,7 @@ export class AuthService {
     userAgent: Details,
     ipAddress: string,
   ): Promise<
-    Pick<
-      User,
-      'id' | 'firstName' | 'language' | 'lastName' | 'avatar' | 'email'
-    > & {
+    TUserInfo & {
       accessToken: string;
       refreshToken: string;
     }
@@ -145,6 +144,72 @@ export class AuthService {
 
     return {
       ...existUser,
+      ...tokens,
+    };
+  }
+
+  async authGoogle(
+    googleProfile: Pick<User, 'firstName' | 'lastName' | 'avatar' | 'email'>,
+    userAgent: Details,
+    ipAddress: string,
+  ): Promise<
+    TUserInfo & {
+      accessToken: string;
+      refreshToken: string;
+    }
+  > {
+    const existUser = await this.prisma.user.findFirst({
+      where: {
+        email: googleProfile.email,
+      },
+      select: {
+        id: true,
+        email: true,
+        avatar: true,
+        password: true,
+        firstName: true,
+        lastName: true,
+        language: true,
+      },
+    });
+
+    const user: TUserInfo = existUser || {
+      ...googleProfile,
+      language: Language.EN,
+      id: 0,
+    };
+
+    if (!existUser) {
+      const hashPass = await hashPasswordUtil(uuidv4());
+
+      const newUser = await this.prisma.user.create({
+        data: {
+          ...googleProfile,
+          password: hashPass,
+        },
+      });
+      user.id = newUser.id;
+    }
+
+    const tokens = this.generateToken({ email: user.email, id: user.id });
+
+    const device = await this.userDevicePrisma.add({
+      userAgent,
+      ipAddress,
+      tokens,
+      userId: user.id,
+    });
+
+    await this.saveAuth({
+      userId: existUser.id,
+      deviceId: device.id,
+      accessToken: tokens.accessToken,
+    });
+
+    delete existUser.password;
+
+    return {
+      ...user,
       ...tokens,
     };
   }

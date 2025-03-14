@@ -44,7 +44,7 @@ services:
       POSTGRES_PASSWORD: ${DB_PASSWORD}
       TZ: ${DB_TIMEZONE}
     volumes:
-      - ./database:/var/lib/postgresql/data
+      - ./packages/database:/var/lib/postgresql/data
     ports:
       - "${DB_PORT}:5432"
     env_file:
@@ -60,8 +60,8 @@ services:
     ports:
       - "${REDIS_PORT}:${REDIS_PORT}"
     volumes:
-      - ./redis-io/data:/root/redis-io
-      - ./redis-io/redis-io.conf:/usr/local/etc/redis-io/redis-io.conf
+      - ./packages/redis-io/data:/root/redis-io
+      - ./packages/redis-io/redis-io.conf:/usr/local/etc/redis-io/redis-io.conf
     env_file:
       - .env
 
