@@ -1,5 +1,5 @@
 import React from 'react';
-import GoogleButton from './google-button';
+import GoogleButton from './GoogleButton';
 
 export default function ExternalAuthSection() {
   return (

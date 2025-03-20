@@ -1,7 +1,7 @@
 import React from 'react';
-import AuthFormContainer from '../containers/auth-form-container';
-import ExternalAuthSection from './external-auth-section';
-import SubmitButton from '~/shared/components/submit-button/submit-button';
+import AuthFormContainer from '../containers/AuthFormContainer';
+import ExternalAuthSection from './ExternalAuthSection';
+import ContainedButton from '~/shared/components/buttons/ContainedButton';
 
 interface AuthContentProps {
   children: React.ReactNode;
@@ -12,7 +12,7 @@ export function AuthContent({ children, type }: AuthContentProps) {
   return (
     <div className='flex-center flex-col gap-14'>
       <div className='flex-center flex-col relative'>
-        <h2 className='bg-dark text-3xl absolute z-10 px-7 -top-4'>
+        <h2 className='bg-dark text-3xl absolute z-10 px-7 -top-5'>
           {type === 'login' && 'Вхід до аккаунту'}
           {type === 'signup' && 'Реєстрація'}
         </h2>
@@ -20,14 +20,14 @@ export function AuthContent({ children, type }: AuthContentProps) {
           <div className='w-full flex-center flex-col gap-6'>
             <ExternalAuthSection />
             <div className='flex-center relative w-1/2'>
-              <div className='w-full h-[1px] absolute bg-secondary'></div>
+              <div className='w-full h-[1px] absolute bg-primary'></div>
               <span className='bg-dark z-10 relative px-4'>або</span>
             </div>
             <AuthFormContainer>{children}</AuthFormContainer>
           </div>
         </div>
         <div className='absolute -bottom-[18px] bg-dark px-7'>
-          <SubmitButton>Submit</SubmitButton>
+          <ContainedButton>Submit</ContainedButton>
         </div>
       </div>
       <p>

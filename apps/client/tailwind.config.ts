@@ -1,4 +1,5 @@
 import type { Config } from 'tailwindcss';
+import themeConfig from './src/core/configs/theme.config';
 
 export default {
   content: [
@@ -10,19 +11,18 @@ export default {
   theme: {
     extend: {
       colors: {
-        background: 'var(--background)',
-        foreground: 'var(--foreground)',
-        primary: 'var(--primary)',
-        primaryGradient: 'var(--primary-gradient)',
-        secondary: 'var(--secondary)',
-        dark: 'var(--dark)',
-        light: 'var(--light)',
-        alert: 'var(--alert)',
-        dimmedScreen: 'var(--dimmed-screen)'
+        primary: themeConfig.colors.primary,
+        primaryGradient: themeConfig.colors.primaryGradient,
+        secondary: themeConfig.colors.secondary,
+        dark: themeConfig.colors.dark,
+        darkLight: themeConfig.colors.darkLight,
+        light: themeConfig.colors.light,
+        alert: themeConfig.colors.alert,
+        dimmedScreen: themeConfig.colors.dimmedScreen
       },
       fontFamily: {
-        namu: ['var(--font-namu)'],
-        ruso: ['var(--font-ruso)']
+        namu: [themeConfig.fonts.namu],
+        ruso: [themeConfig.fonts.ruso]
       }
     }
   },
