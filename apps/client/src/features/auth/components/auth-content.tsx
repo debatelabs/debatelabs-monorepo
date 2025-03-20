@@ -16,7 +16,7 @@ export function AuthContent({ children, type }: AuthContentProps) {
           {type === 'login' && 'Вхід до аккаунту'}
           {type === 'signup' && 'Реєстрація'}
         </h2>
-        <div className='w-[450px] h-fit border-4 border-primary flex-center flex-col rounded-[4px] px-16 py-14'>
+        <div className='w-[500px] h-fit border-4 border-primary flex-center flex-col rounded-[4px] px-16 py-14'>
           <div className='w-full flex-center flex-col gap-6'>
             <ExternalAuthSection />
             <div className='flex-center relative w-1/2'>
@@ -26,7 +26,7 @@ export function AuthContent({ children, type }: AuthContentProps) {
             <AuthFormContainer>{children}</AuthFormContainer>
           </div>
         </div>
-        <div className='absolute -bottom-4 bg-dark px-7'>
+        <div className='absolute -bottom-[18px] bg-dark px-7'>
           <SubmitButton>Submit</SubmitButton>
         </div>
       </div>

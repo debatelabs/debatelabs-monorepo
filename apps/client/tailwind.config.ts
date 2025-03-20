@@ -19,6 +19,10 @@ export default {
         light: 'var(--light)',
         alert: 'var(--alert)',
         dimmedScreen: 'var(--dimmed-screen)'
+      },
+      fontFamily: {
+        namu: ['var(--font-namu)'],
+        ruso: ['var(--font-ruso)']
       }
     }
   },

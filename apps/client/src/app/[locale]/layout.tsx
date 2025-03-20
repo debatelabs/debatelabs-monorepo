@@ -1,18 +1,20 @@
 import React from 'react';
-import { Geist, Geist_Mono } from 'next/font/google';
+import localFont from 'next/font/local';
 import { mainMetadata } from '~/core/constants/metadata/main';
 import '~/shared/styles/globals.scss';
 import AppProvider from '~/app/[locale]/provider';
 import { RootParams } from '~/shared/types/common.types';
 
-const geistSans = Geist({
-  variable: '--font-geist-sans',
-  subsets: ['latin']
+const namu = localFont({
+  src: '../../assets/fonts/NAMU-1850.ttf',
+  variable: '--font-namu',
+  display: 'swap'
 });
 
-const geistMono = Geist_Mono({
-  variable: '--font-geist-mono',
-  subsets: ['latin']
+const ruso = localFont({
+  src: '../../assets/fonts/RussoOne-Regular.ttf',
+  variable: '--font-ruso',
+  display: 'swap'
 });
 
 export const metadata = mainMetadata;
@@ -30,7 +32,7 @@ export default async function RootLayout({
 
   return (
     <html lang={locale} suppressHydrationWarning>
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+      <body className={`${namu.variable} ${ruso.variable} antialiased`}>
         <AppProvider locale={locale}>{children}</AppProvider>
       </body>
     </html>

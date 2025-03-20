@@ -9,7 +9,7 @@ export default function SubmitButton({ children, ...props }: SubmitButtonProps) 
     <button
       type='submit'
       {...props}
-      className={`rounded-full bg-primary text-secondary px-6 py-1 ${props?.className || ''}`}
+      className={`rounded-full bg-primary text-secondary px-6 h-10 ${props?.className || ''}`}
     >
       {children}
     </button>
