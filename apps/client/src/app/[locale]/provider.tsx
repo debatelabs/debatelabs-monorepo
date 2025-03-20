@@ -1,8 +1,8 @@
-import React, { Suspense } from "react";
-import ReduxProvider from "~/components/providers/redux-provider";
-import I18nProvider from "~/components/providers/i18n-provider";
-import { Locale } from "~/types/common.types";
-import Loader from "~/components/ui/loader/loader";
+import React, { Suspense } from 'react';
+import ReduxProvider from '~/core/providers/redux-provider';
+import I18nProvider from '~/core/providers/i18n-provider';
+import { Locale } from '~/shared/types/common.types';
+import Loader from '~/shared/components/loader/loader';
 
 interface ProvidersProps {
   children: React.ReactNode;
