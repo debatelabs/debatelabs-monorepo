@@ -23,9 +23,13 @@ export class I18n {
       lng: locale,
       fallbackLng: i18nConfig.defaultLocale,
       ns: Object.values(namespaces),
+      defaultNS: namespaces.common,
       supportedLngs: i18nConfig.locales,
       interpolation: {
         escapeValue: false
+      },
+      react: {
+        useSuspense: true
       }
     });
     return this.i18nextInstance;

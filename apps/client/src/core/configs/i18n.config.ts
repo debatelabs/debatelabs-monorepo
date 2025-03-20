@@ -3,6 +3,12 @@ export const i18nConfig = {
   defaultLocale: 'uk'
 } as const;
 
+export interface LocaleNamespaces {
+  common: string | object;
+  auth: string | object;
+}
+
 export const namespaces = {
-  translations: 'translations'
-} as const;
+  common: 'common',
+  auth: 'auth'
+} as const satisfies LocaleNamespaces;

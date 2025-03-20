@@ -5,6 +5,7 @@ import Image from 'next/image';
 import googleIcon from '~/assets/icons/google.svg';
 import { Button, ButtonProps, styled } from '@mui/material';
 import themeConfig from '~/core/configs/theme.config';
+import { useTranslation } from 'react-i18next';
 
 const googleIconSize = 32;
 
@@ -19,6 +20,8 @@ const StyledButton = styled(Button)({
 });
 
 export default function GoogleButton({ ...props }: ButtonProps) {
+  const { t } = useTranslation('auth');
+
   return (
     <StyledButton
       {...props}
@@ -33,7 +36,7 @@ export default function GoogleButton({ ...props }: ButtonProps) {
         />
       }
     >
-      Продовжити через Google
+      {t('continueWithGoogle')}
     </StyledButton>
   );
 }

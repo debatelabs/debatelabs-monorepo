@@ -1,10 +1,10 @@
 import common from './common.json';
-import { namespaces } from '~/core/configs/i18n.config';
+import auth from './auth.json';
+import { LocaleNamespaces } from '~/core/configs/i18n.config';
 
 const en = {
-  [namespaces.translations]: {
-    common
-  }
-};
+  common,
+  auth
+} satisfies LocaleNamespaces;
 
 export default en;
