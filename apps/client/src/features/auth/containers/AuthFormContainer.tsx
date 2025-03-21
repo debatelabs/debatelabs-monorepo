@@ -1,5 +1,18 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 
-export default function AuthFormContainer({ children }: { children: React.ReactNode }) {
-  return <form>{children}</form>;
-}
+const AuthFormContainer = forwardRef<HTMLFormElement, { children: React.ReactNode }>(
+  function AuthFormContainer({ children }, ref) {
+    async function onSubmit(e) {
+      e.preventDefault();
+      console.log(true);
+    }
+
+    return (
+      <form ref={ref} onSubmit={onSubmit}>
+        {children}
+      </form>
+    );
+  }
+);
+
+export default AuthFormContainer;

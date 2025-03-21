@@ -1,12 +1,11 @@
 import React from 'react';
 import leftArrowIcon from '~/assets/icons/left-arrow.svg';
-import { ButtonProps } from '@mui/material/Button';
 import Image from 'next/image';
-import TextButton from '~/shared/components/buttons/TextButton';
+import TextButton, { TextButtonProps } from '~/shared/components/buttons/TextButton';
 
 const leftArrowIconSize = 28;
 
-export default function BackButton({ ...props }: ButtonProps) {
+export default function BackButton({ ...props }: TextButtonProps) {
   return (
     <TextButton
       startIcon={
