@@ -1,16 +1,28 @@
-import type { Config } from "tailwindcss";
+import type { Config } from 'tailwindcss';
+import themeConfig from './src/core/configs/theme.config';
 
 export default {
   content: [
-    "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/app/**/*.{js,ts,jsx,tsx,mdx}"
+    './src/app/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/shared/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/widgets/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/features/**/*.{js,ts,jsx,tsx,mdx}'
   ],
   theme: {
     extend: {
       colors: {
-        background: "var(--background)",
-        foreground: "var(--foreground)"
+        primary: themeConfig.colors.primary,
+        primaryGradient: themeConfig.colors.primaryGradient,
+        secondary: themeConfig.colors.secondary,
+        dark: themeConfig.colors.dark,
+        darkLight: themeConfig.colors.darkLight,
+        light: themeConfig.colors.light,
+        alert: themeConfig.colors.alert,
+        dimmedScreen: themeConfig.colors.dimmedScreen
+      },
+      fontFamily: {
+        namu: [themeConfig.fonts.namu],
+        ruso: [themeConfig.fonts.ruso]
       }
     }
   },
