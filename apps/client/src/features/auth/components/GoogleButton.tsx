@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Image from 'next/image';
-import googleIcon from '~/assets/icons/google.svg';
+import googleIcon from '~/core/assets/icons/google.svg';
 import { Button, ButtonProps, styled } from '@mui/material';
 import themeConfig from '~/core/configs/theme.config';
 import { useTranslation } from 'react-i18next';

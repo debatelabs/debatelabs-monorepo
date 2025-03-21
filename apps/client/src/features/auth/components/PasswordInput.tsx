@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import Input from '~/shared/components/Input';
 import { IconButton, InputAdornment } from '@mui/material';
-import eyeIcon from '~/assets/icons/eye.svg';
-import closedEyeIcon from '~/assets/icons/closed-eye.svg';
+import eyeIcon from '~/core/assets/icons/eye.svg';
+import closedEyeIcon from '~/core/assets/icons/closed-eye.svg';
 import Image from 'next/image';
 import { useTranslation } from 'react-i18next';
 
