@@ -6,13 +6,13 @@ import AppProvider from '~/app/[locale]/provider';
 import { RootParams } from '~/shared/types/common.types';
 
 const namu = localFont({
-  src: '../../assets/fonts/NAMU-1850.ttf',
+  src: '../../core/assets/fonts/NAMU-1850.ttf',
   variable: '--font-namu',
   display: 'swap'
 });
 
 const ruso = localFont({
-  src: '../../assets/fonts/RussoOne-Regular.ttf',
+  src: '../../core/assets/fonts/RussoOne-Regular.ttf',
   variable: '--font-ruso',
   display: 'swap'
 });
