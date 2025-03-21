@@ -10,7 +10,6 @@ function LoginForm(_props, ref: ForwardedRef<HTMLFormElement>) {
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
-    console.log(true);
   }
 
   return (
