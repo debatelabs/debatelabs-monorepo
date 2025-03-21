@@ -5,7 +5,7 @@ import { I18nextProvider } from 'react-i18next';
 import { i18nInstance } from '~/core/lib/i18n';
 import { Locale } from '~/shared/types/common.types';
 import { i18n as I18nType } from 'i18next';
-import Loader from '~/shared/components/loader/LoaderTest';
+import Loader from '~/shared/components/loader/Loader';
 
 interface I18nProviderProps {
   children: React.ReactNode;

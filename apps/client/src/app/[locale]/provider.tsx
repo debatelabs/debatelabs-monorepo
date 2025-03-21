@@ -2,7 +2,7 @@ import React, { Suspense } from 'react';
 import ReduxProvider from '~/core/providers/redux-provider';
 import I18nProvider from '~/core/providers/i18n-provider';
 import { Locale } from '~/shared/types/common.types';
-import Loader from '~/shared/components/loader/LoaderTest';
+import Loader from '~/shared/components/loader/Loader';
 import MuiProvider from '~/core/providers/mui-theme-provider';
 
 interface ProvidersProps {
