@@ -1,4 +1,4 @@
-import envConfig from '~/configs/env.config';
+import envConfig from '~/core/configs/env.config';
 
 const API_BASE_ROUTE = '/api';
 const API_PORT = envConfig.SERVER_PORT ? `:${envConfig.SERVER_PORT}` : '';
