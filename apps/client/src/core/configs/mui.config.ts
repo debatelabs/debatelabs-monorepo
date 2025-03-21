@@ -30,15 +30,42 @@ const theme = createTheme({
     fontSize: 18,
     button: {
       textTransform: 'none',
-      fontSize: 18
+      fontSize: 18,
+      lineHeight: 1.5
     }
   },
   components: {
     MuiButton: {
       styleOverrides: {
         root: {
-          borderRadius: '13px',
+          borderRadius: 10,
           color: themeConfig.colors.secondary
+        }
+      }
+    },
+    MuiInputLabel: {
+      styleOverrides: {
+        root: {
+          color: themeConfig.colors.dimmedText
+        }
+      }
+    },
+    MuiInput: {
+      styleOverrides: {
+        underline: {
+          '&:before': {
+            borderColor: themeConfig.colors.dimmedText
+          }
+        }
+      }
+    },
+    MuiIconButton: {
+      styleOverrides: {
+        root: {
+          '&:hover': {
+            backgroundColor: themeConfig.colors.darkLight,
+            borderRadius: 8
+          }
         }
       }
     }

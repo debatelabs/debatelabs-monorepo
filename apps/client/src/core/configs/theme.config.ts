@@ -10,10 +10,11 @@ const themeConfig = {
       'linear-gradient(95deg, #2e46df 7.98%, #586be3 52.47%, #8d99e3 80.33%)',
     secondary: '#ffffff',
     dark: '#121212',
-    darkLight: '#232424',
+    darkLight: 'rgba(199, 199, 199, 0.08)',
     light: '#d9d9d9',
     alert: '#d45058',
-    dimmedScreen: 'rgba(0, 0, 0, 0.2)'
+    dimmedScreen: 'rgba(0, 0, 0, 0.2)',
+    dimmedText: 'rgba(179, 179, 179, 0.5)'
   },
   fonts: {
     namu: 'var(--font-namu)',

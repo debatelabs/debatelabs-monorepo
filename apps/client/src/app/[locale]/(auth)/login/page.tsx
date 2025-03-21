@@ -1,6 +1,10 @@
 import React from 'react';
-import { AuthContent } from '~/features/auth';
+import { AuthContent, LoginForm } from '~/features/auth';
 
 export default function Login() {
-  return <AuthContent type='login'>Login Form</AuthContent>;
+  return (
+    <AuthContent type='login'>
+      <LoginForm />
+    </AuthContent>
+  );
 }

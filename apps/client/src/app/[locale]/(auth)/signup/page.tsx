@@ -1,6 +1,10 @@
 import React from 'react';
-import { AuthContent } from '~/features/auth';
+import { AuthContent, SignupForm } from '~/features/auth';
 
 export default function Signup() {
-  return <AuthContent type='signup'>Signup Form</AuthContent>;
+  return (
+    <AuthContent type='signup'>
+      <SignupForm />
+    </AuthContent>
+  );
 }

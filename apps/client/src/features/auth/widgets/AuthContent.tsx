@@ -1,19 +1,18 @@
 'use client';
 
 import React, { useRef } from 'react';
-import AuthFormContainer from '../containers/AuthFormContainer';
-import ExternalAuthSection from './ExternalAuthSection';
+import ExternalAuthSection from '../components/ExternalAuthSection';
 import ContainedButton from '~/shared/components/buttons/ContainedButton';
 import { useTranslation } from 'react-i18next';
 import Link from 'next/link';
 import ROUTES from '~/core/constants/routes';
 
 interface AuthContentProps {
-  children: React.ReactNode;
+  children: React.ReactElement<HTMLFormElement>;
   type: 'login' | 'signup';
 }
 
-export function AuthContent({ children, type }: AuthContentProps) {
+export default function AuthContent({ children, type }: AuthContentProps) {
   const { t } = useTranslation('auth');
   const formRef = useRef<HTMLFormElement>(null);
 
@@ -29,20 +28,20 @@ export function AuthContent({ children, type }: AuthContentProps) {
     <div className='flex-center flex-col gap-14'>
       <div className='flex-center flex-col relative'>
         <h2 className='bg-dark text-3xl absolute z-10 px-7 -top-5'>
-          {t(`${type}Title`)}
+          {type && t(`${type}Title`)}
         </h2>
         <div className='w-[500px] h-fit border-4 border-primary flex-center flex-col rounded-[4px] px-16 py-14'>
           <div className='w-full flex-center flex-col gap-6'>
             <ExternalAuthSection />
             <div className='flex-center relative w-1/2'>
-              <div className='w-full h-[1px] absolute bg-primary'></div>
+              <div className='w-full h-[1px] absolute bg-secondary'></div>
               <span className='bg-dark z-10 relative px-4'>{t('or')}</span>
             </div>
-            <AuthFormContainer ref={formRef}>{children}</AuthFormContainer>
+            {React.cloneElement(children, { ref: formRef })}
           </div>
         </div>
         <div className='absolute -bottom-[18px] bg-dark px-7'>
-          <ContainedButton onClick={handleSubmitForm}>{t(type)}</ContainedButton>
+          <ContainedButton onClick={handleSubmitForm}>{type && t(type)}</ContainedButton>
         </div>
       </div>
       <p>
@@ -51,7 +50,8 @@ export function AuthContent({ children, type }: AuthContentProps) {
         </span>
         <Link href={ROUTES[type === 'login' ? 'signup' : 'login']}>
           <span className='text-primary cursor-pointer'>
-            {t(type === 'login' ? 'signup' : 'login')}
+            {type === 'login' && t('signup')}
+            {type === 'signup' && t('login')}
           </span>
         </Link>
       </p>
