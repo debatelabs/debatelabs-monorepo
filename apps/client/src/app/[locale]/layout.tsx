@@ -3,7 +3,7 @@ import localFont from 'next/font/local';
 import { mainMetadata } from '~/core/constants/metadata/main';
 import '~/shared/styles/globals.scss';
 import AppProvider from '~/app/[locale]/provider';
-import { RootParams } from '~/shared/types/common.types';
+import { Locale } from '~/shared/types/common.types';
 
 const namu = localFont({
   src: '../../core/assets/fonts/NAMU-1850.ttf',
@@ -18,10 +18,11 @@ const ruso = localFont({
 });
 
 export const metadata = mainMetadata;
-
 interface RootLayoutProps {
   children: React.ReactNode;
-  params: RootParams;
+  params: Promise<{
+    locale: Locale;
+  }>;
 }
 
 export default async function RootLayout({

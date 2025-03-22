@@ -1,0 +1,27 @@
+import ApiClient from '~/core/lib/api-client';
+import API_ROUTES from '~/core/constants/api-routes';
+import { AccessToken } from '~/shared/types/auth.types';
+import { UserLoginDTO, UserSignupDTO } from '~/shared/types/user.types';
+
+class AuthApi {
+  constructor(
+    private readonly apiClient = new ApiClient(),
+    private readonly routes = API_ROUTES.auth
+  ) {}
+
+  public login(data: UserLoginDTO) {
+    return this.apiClient.post<AccessToken>(this.routes.login, data);
+  }
+
+  public signup(data: UserSignupDTO) {
+    return this.apiClient.post<AccessToken>(this.routes.signup, data);
+  }
+
+  public logout() {}
+
+  public refresh() {}
+
+  public google() {}
+}
+
+export default AuthApi;

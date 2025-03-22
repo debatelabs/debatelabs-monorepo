@@ -1,4 +1,9 @@
-import axios, { AxiosError, AxiosInstance, AxiosResponse } from 'axios';
+import axios, {
+  AxiosError,
+  AxiosInstance,
+  AxiosRequestConfig,
+  AxiosResponse
+} from 'axios';
 import { ResponseDTO } from '~/shared/types/response.types';
 import ResponseMapper from '~/infrastructure/mappers/response.mapper';
 import { BASE_URL } from '~/core/configs/api-url.config';
@@ -29,23 +34,38 @@ class ApiClient {
       : this.responseMapper.toErrorDTO(error);
   }
 
-  get<T extends object>(url: string, config = {}): AsyncResponse<T> {
+  get<T extends object>(url: string, config?: AxiosRequestConfig): AsyncResponse<T> {
     return this.axiosInstance.get(url, config);
   }
 
-  post<T extends object>(url: string, data?: unknown, config = {}): AsyncResponse<T> {
+  post<T extends object>(
+    url: string,
+    data?: unknown,
+    config?: AxiosRequestConfig
+  ): AsyncResponse<T> {
     return this.axiosInstance.post(url, data, config);
   }
 
-  put<T extends object>(url: string, data?: unknown, config = {}): AsyncResponse<T> {
+  put<T extends object>(
+    url: string,
+    data?: unknown,
+    config?: AxiosRequestConfig
+  ): AsyncResponse<T> {
     return this.axiosInstance.put(url, data, config);
   }
 
-  patch<T extends object>(url: string, data?: unknown, config = {}): AsyncResponse<T> {
+  patch<T extends object>(
+    url: string,
+    data?: unknown,
+    config?: AxiosRequestConfig
+  ): AsyncResponse<T> {
     return this.axiosInstance.patch(url, data, config);
   }
 
-  delete(url: string, config = {}): AsyncResponse<Record<string, unknown>> {
+  delete(
+    url: string,
+    config?: AxiosRequestConfig
+  ): AsyncResponse<Record<string, unknown>> {
     return this.axiosInstance.delete(url, config);
   }
 }
