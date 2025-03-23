@@ -1,4 +1,3 @@
-import errorMapper from '~/infrastructure/mappers/error.mapper';
 import ResponseMapper from '../mappers/response.mapper';
 
 export interface ServiceMethodProps<T> {
@@ -13,7 +12,7 @@ export function tryCatch<T extends object, P>(
     try {
       return await method(props);
     } catch (err) {
-      // TODO: check lang
+      // TODO: check lang and set error with proper language
 
       const defaultError = 'errors.badRequest';
       const error = err instanceof Error ? err.message : defaultError;
