@@ -1,13 +1,15 @@
-export interface LoginForm {
-  email: string;
+export interface PasswordFormValues {
   password: string;
+  confirmPassword?: string;
 }
 
-export interface SignupForm {
+export interface LoginForm extends Omit<PasswordFormValues, 'confirmPassword'> {
+  email: string;
+}
+
+export interface SignupForm extends Required<PasswordFormValues> {
   name: string;
   email: string;
-  password: string;
-  confirmPassword: string;
 }
 
 export interface AccessToken {

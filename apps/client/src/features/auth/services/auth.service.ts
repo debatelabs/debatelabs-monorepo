@@ -1,6 +1,7 @@
 import { LoginForm, SignupForm } from '~/shared/types/auth.types';
 import AuthApi from '../api/auth.api';
 import UserMapper from '~/infrastructure/mappers/user.mapper';
+import { ServiceMethodProps, tryCatch } from '~/infrastructure/utils/try-catch-decorator';
 
 export class AuthService {
   constructor(
@@ -8,15 +9,15 @@ export class AuthService {
     private readonly userMapper = new UserMapper()
   ) {}
 
-  public async login(data: LoginForm) {
-    const userLoginDTO = this.userMapper.toLoginDTO(data);
+  public login = tryCatch(async (props: ServiceMethodProps<LoginForm>) => {
+    const userLoginDTO = this.userMapper.toLoginDTO(props.data);
     return await this.api.login(userLoginDTO);
-  }
+  });
 
-  public async signup(data: SignupForm) {
-    const userSignupDTO = this.userMapper.toSignupDTO(data);
+  public signup = tryCatch(async (props: ServiceMethodProps<SignupForm>) => {
+    const userSignupDTO = this.userMapper.toSignupDTO(props.data);
     return await this.api.signup(userSignupDTO);
-  }
+  });
 }
 
 const authService = new AuthService();

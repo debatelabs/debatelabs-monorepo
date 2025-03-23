@@ -1,11 +1,11 @@
 const API_ROUTES = {
   example: '/example',
   auth: {
-    login: '/login',
-    signup: '/register',
-    logout: '/logout',
-    refresh: '/refresh',
-    google: '/google'
+    login: '/auth/login',
+    signup: '/auth/register',
+    logout: '/auth/logout',
+    refresh: '/auth/refresh',
+    google: '/auth/google'
   }
 };
 

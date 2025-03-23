@@ -24,15 +24,15 @@ class ApiClient {
     );
   }
 
-  private responseInterceptor(response: AxiosResponse) {
+  private responseInterceptor = (response: AxiosResponse) => {
     return this.responseMapper.toDTO(response);
-  }
+  };
 
-  private responseErrorInterceptor(error: AxiosError) {
+  private responseErrorInterceptor = (error: AxiosError) => {
     return error?.response
       ? this.responseMapper.toDTO(error.response)
       : this.responseMapper.toErrorDTO(error);
-  }
+  };
 
   get<T extends object>(url: string, config?: AxiosRequestConfig): AsyncResponse<T> {
     return this.axiosInstance.get(url, config);

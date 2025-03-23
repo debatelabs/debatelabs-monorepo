@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useState } from 'react';
 import Input from '~/shared/components/Input';
 import { IconButton, InputAdornment } from '@mui/material';
@@ -5,17 +7,23 @@ import eyeIcon from '~/core/assets/icons/eye.svg';
 import closedEyeIcon from '~/core/assets/icons/closed-eye.svg';
 import Image from 'next/image';
 import { useTranslation } from 'react-i18next';
+import { Path, UseFormRegister } from 'react-hook-form';
+import { PasswordFormValues } from '~/shared/types/auth.types';
 
 const showPaswIconConfig = {
   alt: 'change visibility',
   size: 25
 };
 
-interface PasswordInputProps {
+interface PasswordInputProps<T extends PasswordFormValues> {
+  register: UseFormRegister<T>;
   confirm?: boolean;
 }
 
-export default function PasswordInput({ confirm = false }: PasswordInputProps) {
+export default function PasswordInput<T extends PasswordFormValues>({
+  register,
+  confirm = false
+}: PasswordInputProps<T>) {
   const { t } = useTranslation('auth');
 
   const [isPaswShown, setIsPaswShown] = useState(false);
@@ -26,6 +34,7 @@ export default function PasswordInput({ confirm = false }: PasswordInputProps) {
   return (
     <>
       <Input
+        {...register('password' as Path<T>)}
         fullWidth
         type={isPaswShown ? 'text' : 'password'}
         label={t('inputs.password')}
@@ -57,6 +66,7 @@ export default function PasswordInput({ confirm = false }: PasswordInputProps) {
       />
       {confirm && (
         <Input
+          {...register('confirmPassword' as Path<T>)}
           fullWidth
           type={isPaswShown ? 'text' : 'password'}
           label={t('inputs.confirmPassword')}

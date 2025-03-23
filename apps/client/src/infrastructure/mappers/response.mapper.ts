@@ -1,7 +1,17 @@
 import { AxiosError, AxiosResponse } from 'axios';
-import { ErrorResponseDTO, ResponseDTO } from '~/shared/types/response.types';
+import {
+  BaseResponseDTO,
+  ErrorResponseDTO,
+  ResponseDTO
+} from '~/shared/types/response.types';
 
 class ResponseMapper {
+  static toBaseDTO(success: boolean = false): BaseResponseDTO {
+    return {
+      success
+    };
+  }
+
   toDTO<T extends object>(response: AxiosResponse): ResponseDTO<T> {
     const { data, status, statusText, headers, config, request } = response;
     return {
