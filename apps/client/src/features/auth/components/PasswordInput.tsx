@@ -7,7 +7,7 @@ import eyeIcon from '~/core/assets/icons/eye.svg';
 import closedEyeIcon from '~/core/assets/icons/closed-eye.svg';
 import Image from 'next/image';
 import { useTranslation } from 'react-i18next';
-import { Path, UseFormRegister } from 'react-hook-form';
+import { Path, UseFormReturn } from 'react-hook-form';
 import { PasswordFormValues } from '~/shared/types/auth.types';
 
 const showPaswIconConfig = {
@@ -16,15 +16,19 @@ const showPaswIconConfig = {
 };
 
 interface PasswordInputProps<T extends PasswordFormValues> {
-  register: UseFormRegister<T>;
+  formHook: UseFormReturn<T>;
   confirm?: boolean;
 }
 
 export default function PasswordInput<T extends PasswordFormValues>({
-  register,
+  formHook,
   confirm = false
 }: PasswordInputProps<T>) {
-  const { t } = useTranslation('auth');
+  const { t } = useTranslation();
+  const {
+    register,
+    formState: { errors }
+  } = formHook;
 
   const [isPaswShown, setIsPaswShown] = useState(false);
   function handleClickShowPassword() {
@@ -35,9 +39,13 @@ export default function PasswordInput<T extends PasswordFormValues>({
     <>
       <Input
         {...register('password' as Path<T>)}
+        error={!!errors.password?.message}
+        helperText={
+          typeof errors.password?.message === 'string' ? errors.password.message : ''
+        }
         fullWidth
         type={isPaswShown ? 'text' : 'password'}
-        label={t('inputs.password')}
+        label={t('auth.inputs.password')}
         slotProps={{
           input: {
             endAdornment: (
@@ -69,7 +77,13 @@ export default function PasswordInput<T extends PasswordFormValues>({
           {...register('confirmPassword' as Path<T>)}
           fullWidth
           type={isPaswShown ? 'text' : 'password'}
-          label={t('inputs.confirmPassword')}
+          label={t('auth.inputs.confirmPassword')}
+          error={!!errors.confirmPassword?.message}
+          helperText={
+            typeof errors.confirmPassword?.message === 'string'
+              ? errors.confirmPassword.message
+              : ''
+          }
         />
       )}
     </>

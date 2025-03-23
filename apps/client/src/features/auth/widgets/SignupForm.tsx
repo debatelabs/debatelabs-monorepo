@@ -7,11 +7,21 @@ import { useTranslation } from 'react-i18next';
 import { useForm } from 'react-hook-form';
 import { SignupForm as SignupFormType } from '~/shared/types/auth.types';
 import authService from '../services/auth.service';
+import createSignupFormSchema from '../validations/signup-form.schema';
+import { zodResolver } from '@hookform/resolvers/zod';
 
-function SignupForm(_props, ref: ForwardedRef<HTMLFormElement>) {
-  const { t } = useTranslation('auth');
+function SignupForm(_, ref: ForwardedRef<HTMLFormElement>) {
+  const { t } = useTranslation();
 
-  const { register, handleSubmit } = useForm<SignupFormType>();
+  const formHook = useForm<SignupFormType>({
+    resolver: zodResolver(createSignupFormSchema(t))
+  });
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors }
+  } = formHook;
 
   async function onSubmit(data: SignupFormType) {
     const response = await authService.signup({ data });
@@ -25,9 +35,21 @@ function SignupForm(_props, ref: ForwardedRef<HTMLFormElement>) {
       onSubmit={handleSubmit(onSubmit)}
       className='w-full flex flex-col gap-4'
     >
-      <Input label={t('inputs.name')} fullWidth {...register('name')} />
-      <Input label={t('inputs.email')} fullWidth {...register('email')} />
-      <PasswordInput register={register} confirm />
+      <Input
+        label={t('auth.inputs.name')}
+        fullWidth
+        {...register('name')}
+        error={!!errors.name?.message}
+        helperText={errors.name?.message}
+      />
+      <Input
+        label={t('auth.inputs.email')}
+        fullWidth
+        {...register('email')}
+        error={!!errors.email?.message}
+        helperText={errors.email?.message}
+      />
+      <PasswordInput formHook={formHook} confirm />
     </form>
   );
 }

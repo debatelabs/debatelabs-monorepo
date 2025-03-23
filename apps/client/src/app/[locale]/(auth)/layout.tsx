@@ -13,7 +13,7 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
     <div>
       <div className='p-9'>
         <Link href={ROUTES.home}>
-          <BackButton>{t('backToHomePage')}</BackButton>
+          <BackButton>{t('common.backToHomePage')}</BackButton>
         </Link>
       </div>
       <div className='w-screen min-h-[80vh] flex-center'>{children}</div>

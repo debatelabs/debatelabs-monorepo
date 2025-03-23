@@ -7,11 +7,21 @@ import { useTranslation } from 'react-i18next';
 import { useForm } from 'react-hook-form';
 import { LoginForm as LoginFormType } from '~/shared/types/auth.types';
 import authService from '../services/auth.service';
+import { zodResolver } from '@hookform/resolvers/zod';
+import createLoginFormSchema from '../validations/login-form.schema';
 
-function LoginForm(_props, ref: ForwardedRef<HTMLFormElement>) {
-  const { t } = useTranslation('auth');
+function LoginForm(_, ref: ForwardedRef<HTMLFormElement>) {
+  const { t } = useTranslation();
 
-  const { register, handleSubmit } = useForm<LoginFormType>();
+  const formHook = useForm<LoginFormType>({
+    resolver: zodResolver(createLoginFormSchema(t))
+  });
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors }
+  } = formHook;
 
   async function onSubmit(data: LoginFormType) {
     const response = await authService.login({ data });
@@ -25,8 +35,14 @@ function LoginForm(_props, ref: ForwardedRef<HTMLFormElement>) {
       onSubmit={handleSubmit(onSubmit)}
       className='w-full flex flex-col gap-4'
     >
-      <Input label={t('inputs.email')} fullWidth {...register('email')} />
-      <PasswordInput register={register} />
+      <Input
+        label={t('auth.inputs.email')}
+        fullWidth
+        {...register('email')}
+        error={!!errors.email?.message}
+        helperText={errors.email?.message}
+      />
+      <PasswordInput formHook={formHook} />
     </form>
   );
 }

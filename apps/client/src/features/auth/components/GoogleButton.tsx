@@ -20,7 +20,7 @@ const StyledButton = styled(Button)({
 });
 
 export default function GoogleButton({ ...props }: ButtonProps) {
-  const { t } = useTranslation('auth');
+  const { t } = useTranslation();
 
   return (
     <StyledButton
@@ -36,7 +36,7 @@ export default function GoogleButton({ ...props }: ButtonProps) {
         />
       }
     >
-      {t('continueWithGoogle')}
+      {t('auth.continueWithGoogle')}
     </StyledButton>
   );
 }

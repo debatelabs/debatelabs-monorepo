@@ -1,0 +1,9 @@
+{
+  "email": "Email is not valid",
+  "upperCaseLetter": "Must contain at least one uppercase letter",
+  "numberSymbol": "Must contain at least one digit",
+  "specialSymbol": "Must contain at least one special symbol",
+  "min": "Must contain at least {{length}} characters",
+  "max": "Cannot contain more than {{length}} characters",
+  "passwordsDontMatch": "Passwords do not match"
+}

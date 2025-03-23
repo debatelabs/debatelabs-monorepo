@@ -23,7 +23,7 @@ export class I18n {
       lng: locale,
       fallbackLng: i18nConfig.defaultLocale,
       ns: Object.values(namespaces),
-      defaultNS: namespaces.common,
+      defaultNS: namespaces.translations,
       supportedLngs: i18nConfig.locales,
       interpolation: {
         escapeValue: false
