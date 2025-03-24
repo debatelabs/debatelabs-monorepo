@@ -12,6 +12,6 @@ export interface SignupForm extends Required<PasswordFormValues> {
   email: string;
 }
 
-export interface AccessToken {
+export interface IAccessToken {
   accessToken: string;
 }

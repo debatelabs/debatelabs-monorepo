@@ -1,6 +1,6 @@
 import ApiClient from '~/core/lib/api-client';
 import API_ROUTES from '~/core/constants/api-routes';
-import { AccessToken } from '~/shared/types/auth.types';
+import { IAccessToken } from '~/shared/types/auth.types';
 import { UserLoginDTO, UserSignupDTO } from '~/shared/types/user.types';
 
 class AuthApi {
@@ -10,11 +10,11 @@ class AuthApi {
   ) {}
 
   public login(data: UserLoginDTO) {
-    return this.apiClient.post<AccessToken>(this.routes.login, data);
+    return this.apiClient.post<IAccessToken>(this.routes.login, data);
   }
 
   public signup(data: UserSignupDTO) {
-    return this.apiClient.post<AccessToken>(this.routes.signup, data);
+    return this.apiClient.post<IAccessToken>(this.routes.signup, data);
   }
 
   public logout() {}

@@ -9,9 +9,12 @@ import { SignupForm as SignupFormType } from '~/shared/types/auth.types';
 import authService from '../services/auth.service';
 import createSignupFormSchema from '../validations/signup-form.schema';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useRouter } from 'next/navigation';
+import ROUTES from '~/core/constants/routes';
 
 function SignupForm(_, ref: ForwardedRef<HTMLFormElement>) {
   const { t } = useTranslation();
+  const router = useRouter();
 
   const formHook = useForm<SignupFormType>({
     resolver: zodResolver(createSignupFormSchema(t))
@@ -27,6 +30,8 @@ function SignupForm(_, ref: ForwardedRef<HTMLFormElement>) {
     const response = await authService.signup({ data });
     if (!response.success) return;
     console.log(response.data);
+    // TODO: set decoded access token to redux
+    router.replace(ROUTES.home);
   }
 
   return (

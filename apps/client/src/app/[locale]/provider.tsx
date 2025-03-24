@@ -4,6 +4,7 @@ import I18nProvider from '~/core/providers/i18n-provider';
 import { Locale } from '~/shared/types/common.types';
 import Loader from '~/shared/components/loader/Loader';
 import MuiProvider from '~/core/providers/mui-theme-provider';
+import AuthProvider from '~/core/providers/auth-provider';
 
 interface ProvidersProps {
   children: React.ReactNode;
@@ -15,7 +16,9 @@ async function AppProvider({ children, locale }: ProvidersProps) {
     <Suspense fallback={<Loader />}>
       <I18nProvider locale={locale}>
         <ReduxProvider>
-          <MuiProvider>{children}</MuiProvider>
+          <AuthProvider>
+            <MuiProvider>{children}</MuiProvider>
+          </AuthProvider>
         </ReduxProvider>
       </I18nProvider>
     </Suspense>
