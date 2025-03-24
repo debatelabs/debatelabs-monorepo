@@ -20,13 +20,14 @@ import {
 } from '@nestjs/swagger';
 import { JoiPipe } from 'nestjs-joi';
 import * as Joi from 'joi';
-import { Language } from '@prisma/client';
 
 import { FriendshipService } from './friendship.service';
 import { RequestResponse } from './swagger/request.response';
 import { ProtectReqType } from '../../common/type/request.type';
 import { FriendshipActionEnum } from '../../common/enum/friendship-action.enum';
 import { AuthErrorMessage } from '../../common/messages/error/auth.message';
+import { Language } from '../../common/enum/language.enum';
+import { Lang } from '../../common/decorator/lang.decorator';
 
 @ApiTags('Friendship')
 @Controller('friendship')
@@ -59,8 +60,9 @@ export class FriendshipController {
     @Req() req: ProtectReqType,
     @Param('recipient_id', new JoiPipe(Joi.number().integer().required()))
     recipientId: number,
+    @Lang() lang: Language,
   ): Promise<{ message: string }> {
-    return this.friendshipService.requestAdd(req.user, recipientId);
+    return this.friendshipService.requestAdd(req.user, recipientId, lang);
   }
 
   @ApiOperation({
@@ -103,11 +105,13 @@ export class FriendshipController {
     actionReq: FriendshipActionEnum,
     @Param('requester_id', new JoiPipe(Joi.number().integer().required()))
     requesterId: number,
+    @Lang() lang: Language,
   ): Promise<{ message: string }> {
     return this.friendshipService.requestAction(
       req.user,
       requesterId,
       actionReq,
+      lang,
     );
   }
 
@@ -136,7 +140,8 @@ export class FriendshipController {
     @Req() req: ProtectReqType,
     @Param('friend_id', new JoiPipe(Joi.number().integer().required()))
     friendId: number,
+    @Lang() lang: Language,
   ): Promise<void> {
-    return this.friendshipService.delete(req.user, friendId);
+    return this.friendshipService.delete(req.user, friendId, lang);
   }
 }

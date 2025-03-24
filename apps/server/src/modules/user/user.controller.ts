@@ -24,7 +24,6 @@ import {
 } from '@nestjs/swagger';
 import { JoiPipe } from 'nestjs-joi';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
-import { Language } from '@prisma/client';
 
 import { UserService } from './user.service';
 import { AuthErrorMessage } from '../../common/messages/error/auth.message';
@@ -33,6 +32,8 @@ import { ProtectReqType } from '../../common/type/request.type';
 import { UserUpdateDto } from './dto/user.update.dto';
 import { AvatarResponse } from './swagger/avatar.response';
 import { ImageValidatorPipe } from '../../common/pipe/validator-image.pipe';
+import { Lang } from '../../common/decorator/lang.decorator';
+import { Language } from '../../common/enum/language.enum';
 
 @ApiTags('User')
 @Controller('user')
@@ -56,8 +57,8 @@ export class UserController {
   })
   @Get('/profile')
   @HttpCode(HttpStatus.OK)
-  async getProfile(@Req() req: ProtectReqType) {
-    return this.userService.getProfile(req.user);
+  async getProfile(@Req() req: ProtectReqType, @Lang() lang: Language) {
+    return this.userService.getProfile(req.user, lang);
   }
 
   @ApiOperation({
@@ -126,8 +127,9 @@ export class UserController {
     files: {
       avatar?: Array<Express.Multer.File>;
     },
+    @Lang() lang: Language,
   ) {
-    return this.userService.setAvatar(req.user, files?.avatar[0]);
+    return this.userService.setAvatar(req.user, files?.avatar[0], lang);
   }
 
   @ApiOperation({
@@ -146,7 +148,7 @@ export class UserController {
   })
   @Delete('/avatar')
   @HttpCode(HttpStatus.NO_CONTENT)
-  async deleteAvatar(@Req() req: ProtectReqType) {
-    return this.userService.deleteAvatar(req.user);
+  async deleteAvatar(@Req() req: ProtectReqType, @Lang() lang: Language) {
+    return this.userService.deleteAvatar(req.user, lang);
   }
 }

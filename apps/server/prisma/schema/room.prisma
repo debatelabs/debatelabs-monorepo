@@ -1,0 +1,30 @@
+model Room {
+  id           String     @id @default(uuid())
+  topic        String     @db.VarChar(500)
+  status       RoomStatus @default(SETTING)
+  type         RoomType   @default(PUBLIC)
+  teamCount    Int        @default(4) @map("team_count") //Count team, must be a multiple of 2
+  membersCount Int        @default(2) @map("members_count") // Count members of one team
+  startAt      DateTime   @map("start_at") @db.Timestamp()
+  createdAt    DateTime   @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  creatorId Int  @map("creator_id")
+  creator   User @relation(fields: [creatorId], references: [id], onDelete: Cascade)
+
+  members RoomUser[]
+
+  @@map("room")
+}
+
+enum RoomStatus {
+  SETTING
+  RECRUITING
+  READY
+  PLAYING
+  DONE
+}
+
+enum RoomType {
+  PUBLIC
+  PRIVATE
+}

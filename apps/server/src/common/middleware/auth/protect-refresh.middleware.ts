@@ -1,6 +1,6 @@
 import { HttpStatus, Injectable, NestMiddleware } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { Language, UserDevice } from '@prisma/client';
+import { UserDevice } from '@prisma/client';
 import { NextFunction, Response, Request } from 'express';
 
 import { ProtectBaseAbstract } from './protect-base.abstract';
@@ -8,6 +8,7 @@ import { PrismaService } from '../../../prisma.service';
 import { CustomExceptionUtil } from '../../../utils/custom-exception.util';
 import { AuthErrorMessage } from '../../messages/error/auth.message';
 import { TUserAuth } from '../../type/user.type';
+import { getLang } from '../../../utils/header-lang-get.util';
 
 @Injectable()
 export class ProtectRefreshMiddleware
@@ -28,39 +29,47 @@ export class ProtectRefreshMiddleware
     _: Response,
     next: NextFunction,
   ) {
+    const lang = getLang(
+      Array.isArray(req.headers['Accept-Language'])
+        ? ''
+        : req.headers['Accept-Language'],
+    );
+
     const token = req.cookies.refreshToken;
-    const { id } = await this.verifyToken(token);
+    const { id } = await this.verifyToken(token, lang);
 
     const user = await this.prisma.user.findUnique({
       where: { id },
       select: {
         id: true,
-        email: true,
+        avatar: true,
         isBlocked: true,
-        language: true,
         role: true,
         devices: true,
+        name: true,
       },
     });
+
     if (!user)
       throw new CustomExceptionUtil(
         HttpStatus.UNAUTHORIZED,
-        AuthErrorMessage[Language.EN].TOKEN_UNAUTHORIZED,
+        AuthErrorMessage[lang].TOKEN_UNAUTHORIZED,
       );
-    if (user.isBlocked)
+    const { isBlocked, devices, ...userr } = user;
+    if (isBlocked)
       throw new CustomExceptionUtil(
         HttpStatus.FORBIDDEN,
-        AuthErrorMessage[user.language].USER_BLOCKED,
+        AuthErrorMessage[lang].USER_BLOCKED,
       );
 
-    const device = user.devices.find((i) => i.refreshToken === token);
+    const device = devices.find((i) => i.refreshToken === token);
     if (!device)
       throw new CustomExceptionUtil(
         HttpStatus.UNAUTHORIZED,
-        AuthErrorMessage[user.language].TOKEN_UNAUTHORIZED,
+        AuthErrorMessage[lang].TOKEN_UNAUTHORIZED,
       );
 
-    req.user = user;
+    req.user = { ...userr, deviceId: device.id };
     req.device = device;
     next();
   }

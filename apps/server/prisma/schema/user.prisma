@@ -1,18 +1,19 @@
 model User {
-  id                   Int          @id @default(autoincrement())
-  email                String       @unique @db.VarChar(256)
-  firstName            String       @map("first_name") @db.VarChar(256)
-  lastName             String?      @map("last_name") @db.VarChar(256)
-  password             String       @db.VarChar(500)
-  avatar               String?      @db.VarChar(500)
-  role                 Role         @default(USER)
-  birthday             DateTime?    @db.Date
-  gender               Boolean?
-  isBlocked            Boolean      @default(false) @map("is_blocked")
-  createdAt            DateTime     @default(now()) @map("created_at") @db.Timestamptz(6)
-  updatedAt            DateTime     @updatedAt @map("updated_at") @db.Timestamptz(6)
-  language             Language     @default(EN)
+  id        Int       @id @default(autoincrement())
+  email     String    @unique @db.VarChar(256)
+  name      String    @default("Unknown") @db.VarChar(256)
+  password  String    @db.VarChar(500)
+  avatar    String?   @db.VarChar(500)
+  role      Role      @default(USER)
+  birthday  DateTime? @db.Date
+  gender    Boolean?
+  isBlocked Boolean   @default(false) @map("is_blocked")
+  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt DateTime  @updatedAt @map("updated_at") @db.Timestamptz(6)
+
   devices              UserDevice[]
+  rooms                Room[]
+  roomUser             RoomUser[]
   friendshipsRequester Friendship[] @relation("user_sent_requests")
   friendshipsRecipient Friendship[] @relation("user_received_requests")
 
@@ -24,9 +25,4 @@ enum Role {
   MODER
   ANALYST
   USER
-}
-
-enum Language {
-  EN
-  UK
 }

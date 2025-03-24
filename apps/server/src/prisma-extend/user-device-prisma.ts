@@ -11,11 +11,11 @@ export class UserDevicePrisma {
 
   async add(params: {
     userAgent: Details;
-    tokens: TokenType;
+    tokens?: TokenType;
     userId: number;
     ipAddress: string;
   }): Promise<UserDevice> {
-    const { userAgent, userId, tokens, ipAddress } = params;
+    const { userAgent, userId, tokens = {}, ipAddress } = params;
     const details = {
       platform: userAgent?.platform,
       os: userAgent?.os,

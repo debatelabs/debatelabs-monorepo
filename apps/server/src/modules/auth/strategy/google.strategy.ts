@@ -5,7 +5,11 @@ import * as process from 'process';
 
 const clientID = process.env.GOOGLE_CLIENT_ID;
 const clientSecret = process.env.GOOGLE_CLIENT_SECRET;
-const callbackURL = `${process.env.NEXT_PUBLIC_SERVER_PROTOCOL}://${process.env.NEXT_PUBLIC_SERVER_HOST}${process.env.GOOGLE_CALLBACK_PATH}`;
+const serverAddress = `${process.env.NEXT_PUBLIC_SERVER_PROTOCOL}://${process.env.NEXT_PUBLIC_SERVER_HOST}`;
+const serverPort = process.env.NEXT_PUBLIC_SERVER_PORT
+  ? `:${process.env.NEXT_PUBLIC_SERVER_PORT}`
+  : '';
+const callbackURL = `${serverAddress}${serverPort}/api/auth/google/callback`;
 
 @Injectable()
 export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
@@ -37,8 +41,7 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
     if (!email) return done('Not found email', false);
 
     const user = {
-      firstName: profile?.name?.givenName,
-      lastName: profile?.name?.familyName,
+      name: profile?.name?.givenName,
       avatar: fixImage,
       email,
     };
