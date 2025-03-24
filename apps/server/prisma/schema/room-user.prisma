@@ -1,0 +1,15 @@
+model RoomUser {
+  roomId String
+  room   Room   @relation(fields: [roomId], references: [id], onDelete: Cascade)
+
+  userId Int
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  isJudge Boolean @default(false) @map("is_judge")
+
+  teamId String?
+  team   Team?   @relation(fields: [teamId], references: [id], onDelete: SetNull)
+
+  @@id([roomId, userId])
+  @@map("room_user")
+}

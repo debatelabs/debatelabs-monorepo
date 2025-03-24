@@ -7,7 +7,7 @@ import {
 } from '@nestjs/common';
 import { PrismaService } from '../../prisma.service';
 
-@Catch(HttpException)
+@Catch()
 export class HttpExceptionFilter implements ExceptionFilter {
   constructor(private readonly prisma: PrismaService) {}
 
@@ -25,14 +25,16 @@ export class HttpExceptionFilter implements ExceptionFilter {
     const stackTrace = exception.stack || null;
 
     if (status === HttpStatus.INTERNAL_SERVER_ERROR) {
-      this.prisma.logError.create({
-        data: {
-          title: 'ExceptionFilter',
-          message,
-          stackTrace,
-          status,
-        },
-      });
+      this.prisma.logError
+        .create({
+          data: {
+            title: 'ExceptionFilter',
+            message,
+            stackTrace,
+            status,
+          },
+        })
+        .finally(() => console.error('INTERNAL_SERVER_ERROR'));
     }
 
     response.status(status).json({

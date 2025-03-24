@@ -1,13 +1,11 @@
-import { HttpStatus, Injectable, NestMiddleware } from '@nestjs/common';
+import { Injectable, NestMiddleware } from '@nestjs/common';
 import { ProtectBaseAbstract } from './protect-base.abstract';
 import { JwtService } from '@nestjs/jwt';
 import { NextFunction, Response } from 'express';
-import { Language } from '@prisma/client';
 
 import { PrismaService } from '../../../prisma.service';
 import { ProtectReqType } from '../../type/request.type';
-import { CustomExceptionUtil } from '../../../utils/custom-exception.util';
-import { AuthErrorMessage } from '../../messages/error/auth.message';
+import { getLang } from '../../../utils/header-lang-get.util';
 
 @Injectable()
 export class ProtectAuthMiddleware
@@ -22,31 +20,17 @@ export class ProtectAuthMiddleware
   }
 
   async use(req: ProtectReqType, _: Response, next: NextFunction) {
-    const { id } = await this.verifyToken(
+    const lang = getLang(
+      Array.isArray(req.headers['Accept-Language'])
+        ? ''
+        : req.headers['Accept-Language'],
+    );
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { exp, ...user } = await this.verifyToken(
       req.headers.authorization?.startsWith('Bearer') &&
         req.headers.authorization?.split(' ')[1],
+      lang,
     );
-
-    const user = await this.prisma.user.findUnique({
-      where: { id },
-      select: {
-        id: true,
-        email: true,
-        isBlocked: true,
-        language: true,
-        role: true,
-      },
-    });
-    if (!user)
-      throw new CustomExceptionUtil(
-        HttpStatus.UNAUTHORIZED,
-        AuthErrorMessage[Language.EN].TOKEN_UNAUTHORIZED,
-      );
-    if (user.isBlocked)
-      throw new CustomExceptionUtil(
-        HttpStatus.FORBIDDEN,
-        AuthErrorMessage[user.language].USER_BLOCKED,
-      );
 
     req.user = user;
     next();

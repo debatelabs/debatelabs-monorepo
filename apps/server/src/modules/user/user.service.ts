@@ -6,6 +6,7 @@ import { CustomExceptionUtil } from '../../utils/custom-exception.util';
 import { UserErrorMessage } from '../../common/messages/error/user.message';
 import { UserUpdateDto } from './dto/user.update.dto';
 import { FileService } from '../../utils/file/file.service';
+import { Language } from '../../common/enum/language.enum';
 
 @Injectable()
 export class UserService {
@@ -14,25 +15,23 @@ export class UserService {
     private readonly fileService: FileService,
   ) {}
 
-  async getProfile(user: TUserAuth) {
+  async getProfile(user: TUserAuth, lang: Language) {
     const profile = this.prisma.user.findFirst({
       where: {
         id: user.id,
       },
       select: {
         email: true,
-        firstName: true,
-        lastName: true,
+        name: true,
         avatar: true,
         birthday: true,
         gender: true,
-        language: true,
       },
     });
     if (!profile)
       throw new CustomExceptionUtil(
         HttpStatus.NOT_FOUND,
-        UserErrorMessage[user.language].USER_NOT_FOUND,
+        UserErrorMessage[lang].USER_NOT_FOUND,
       );
     return profile;
   }
@@ -45,11 +44,9 @@ export class UserService {
       data: body,
       select: {
         email: true,
-        firstName: true,
-        lastName: true,
+        name: true,
         birthday: true,
         gender: true,
-        language: true,
       },
     });
   }
@@ -57,6 +54,7 @@ export class UserService {
   async setAvatar(
     user: TUserAuth,
     avatar: Express.Multer.File,
+    lang: Language,
   ): Promise<{ url: string }> {
     const profile = await this.prisma.user.findFirst({
       where: { id: user.id },
@@ -65,7 +63,7 @@ export class UserService {
     if (!profile)
       throw new CustomExceptionUtil(
         HttpStatus.NOT_FOUND,
-        UserErrorMessage[user.language].USER_NOT_FOUND,
+        UserErrorMessage[lang].USER_NOT_FOUND,
       );
     const savedAvatar = await this.fileService.saveImage({
       file: avatar,
@@ -80,7 +78,7 @@ export class UserService {
     if (!savedAvatar)
       throw new CustomExceptionUtil(
         HttpStatus.NOT_FOUND,
-        UserErrorMessage[user.language].AVATAR_SET,
+        UserErrorMessage[lang].AVATAR_SET,
       );
 
     await this.prisma.user.update({
@@ -96,7 +94,7 @@ export class UserService {
     return { url: savedAvatar.path };
   }
 
-  async deleteAvatar(user: TUserAuth): Promise<void> {
+  async deleteAvatar(user: TUserAuth, lang: Language): Promise<void> {
     const profile = await this.prisma.user.findFirst({
       where: { id: user.id },
       select: { avatar: true },
@@ -104,7 +102,7 @@ export class UserService {
     if (!profile)
       throw new CustomExceptionUtil(
         HttpStatus.NOT_FOUND,
-        UserErrorMessage[user.language].USER_NOT_FOUND,
+        UserErrorMessage[lang].USER_NOT_FOUND,
       );
 
     if (profile.avatar) {

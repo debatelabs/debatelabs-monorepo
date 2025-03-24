@@ -7,6 +7,7 @@ import Redis from 'ioredis';
 import { ProtectBaseAbstract } from '../common/middleware/auth/protect-base.abstract';
 import { RedisService } from '../redis-io/redis.service';
 import { RedisKey } from '../common/enum/redis-key.enum';
+import { Language } from '../common/enum/language.enum';
 
 @Injectable()
 export class WebsocketAuthService extends ProtectBaseAbstract {
@@ -19,9 +20,9 @@ export class WebsocketAuthService extends ProtectBaseAbstract {
     super(jwtService);
   }
 
-  async authConnect(token: string): Promise<number> {
+  async authConnect(token: string, lang: Language): Promise<number> {
     try {
-      const { deviceId, id: userId } = await this.verifyToken(token);
+      const { deviceId, id: userId } = await this.verifyToken(token, lang);
       const isAuth = await this.redisService.checkTokenExists({
         deviceId,
         userId,

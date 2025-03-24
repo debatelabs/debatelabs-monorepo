@@ -1,5 +1,4 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Language } from '@prisma/client';
 
 export class ProfileResponse {
   @ApiProperty({
@@ -10,13 +9,7 @@ export class ProfileResponse {
   @ApiProperty({
     example: 'Tom',
   })
-  firstName: string;
-
-  @ApiProperty({
-    example: 'Stark',
-    required: false,
-  })
-  lastName?: string;
+  name: string;
 
   @ApiProperty({
     example: '2000-05-06T00:00:00.000Z',
@@ -29,9 +22,4 @@ export class ProfileResponse {
     required: false,
   })
   gender?: boolean;
-
-  @ApiProperty({
-    example: Language.UK,
-  })
-  language: Language;
 }
