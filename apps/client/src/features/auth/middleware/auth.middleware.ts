@@ -1,7 +1,9 @@
+'use server';
+
 import { NextRequest, NextResponse } from 'next/server';
 import { PUBLIC_ROUTES } from '~/core/constants/routes';
-import tokenService from '~/features/auth/services/token.service';
-import sessionService from '~/features/auth/services/session.service';
+import * as tokenService from '~/features/auth/services/token.service';
+import { setJwtPayloadToCookie } from '~/infrastructure/services/session.service';
 
 export default async function authMiddleware(req: NextRequest, res: NextResponse) {
   const pathname = req.nextUrl.pathname;
@@ -11,7 +13,7 @@ export default async function authMiddleware(req: NextRequest, res: NextResponse
 
   const accessTokenPayload = await tokenService.verifyAccessTokenFromCookie(req);
   if (accessTokenPayload !== null)
-    return sessionService.setJwtPayloadToCookie(accessTokenPayload, res);
+    return await setJwtPayloadToCookie(accessTokenPayload, res);
 
   req.cookies.delete('accessToken');
 

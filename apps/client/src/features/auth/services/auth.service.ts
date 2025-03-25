@@ -1,8 +1,8 @@
 import { LoginForm, SignupForm } from '~/shared/types/auth.types';
 import AuthApi from '../api/auth.api';
 import UserMapper from '~/infrastructure/mappers/user.mapper';
-import { ServiceMethodProps } from '~/infrastructure/utils/try-catch-decorator';
 import ServiceBase from '~/infrastructure/utils/service-base';
+import { ServiceMethodProps } from '~/shared/types/common.types';
 
 export class AuthService extends ServiceBase {
   constructor(
@@ -21,6 +21,12 @@ export class AuthService extends ServiceBase {
     const userSignupDTO = this.userMapper.toSignupDTO(props.data);
     return await this.api.signup(userSignupDTO);
   }
+
+  public async refresh() {}
+
+  public async logout() {}
+
+  public async google() {}
 }
 
 const authService = new AuthService();

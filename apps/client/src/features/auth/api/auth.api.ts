@@ -17,9 +17,13 @@ class AuthApi {
     return this.apiClient.post<IAccessToken>(this.routes.signup, data);
   }
 
-  public logout() {}
+  public refresh() {
+    return this.apiClient.get(this.routes.refresh);
+  }
 
-  public refresh() {}
+  public logout() {
+    return this.apiClient.delete(this.routes.logout);
+  }
 
   public google() {}
 }

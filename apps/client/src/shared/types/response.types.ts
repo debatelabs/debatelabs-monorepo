@@ -1,13 +1,10 @@
 import { AxiosError, AxiosResponse } from 'axios';
+import { BaseDTO, FailDTO } from '~/shared/types/application.types';
 
-export interface BaseResponseDTO {
-  success: boolean;
-}
-
-export type ResponseDTO<T extends object> = AxiosResponse<T> & BaseResponseDTO;
+export type ResponseDTO<T extends object> = AxiosResponse<T> & BaseDTO<T>;
 
 export type ErrorResponseDTO = Pick<
   AxiosError,
-  'config' | 'isAxiosError' | 'status' | 'name' | 'message'
+  'config' | 'status' | 'name' | 'isAxiosError'
 > &
-  BaseResponseDTO;
+  FailDTO;

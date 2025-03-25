@@ -1,29 +1,33 @@
-import ResponseMapper from '../mappers/response.mapper';
+import applicationMapper from '~/infrastructure/mappers/application.mapper';
+import { BaseDTO } from '~/shared/types/application.types';
 
-export interface ServiceMethodProps<T> {
-  data: T;
-  params?: Record<string, unknown>;
+interface TryCatchOptions {
+  log?: boolean;
 }
 
 export function tryCatch<T extends object, P>(
-  method: (props: ServiceMethodProps<P>) => Promise<T>
+  method: (props?: P) => Promise<BaseDTO<T>>,
+  options: TryCatchOptions = {
+    log: true
+  }
 ) {
-  return async (props: ServiceMethodProps<P>): Promise<T> => {
+  return async (props?: P): Promise<BaseDTO<T>> => {
     try {
       return await method(props);
     } catch (err) {
       // TODO: check lang and set error with proper language
-
       const defaultError = 'errors.badRequest';
       const error = err instanceof Error ? err.message : defaultError;
-      console.error(error);
 
-      // TODO: set global error
-      // const appErrorDTO = errorMapper.toAppErrorDTO(error);
-      // store.dispatch(setTimedAppError(appErrorDTO));
+      if (options.log) {
+        console.error(error);
 
-      const baseResponseDTO = ResponseMapper.toBaseDTO(false);
-      return baseResponseDTO as T;
+        // TODO: set global error
+        // const appErrorDTO = errorMapper.toAppErrorDTO(error);
+        // store.dispatch(setTimedAppError(appErrorDTO));
+      }
+
+      return applicationMapper.toFailDTO(error);
     }
   };
 }

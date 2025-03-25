@@ -1,11 +1,9 @@
-import { JWTPayload } from 'jose';
-
-export interface TokenPayload extends JWTPayload {
+export interface SessionPayloadDTO {
   id: number;
   name: string;
 }
 
-export interface JwtPayloadDTO {
-  id: number;
-  name: string;
+export interface ISessionStore {
+  isAuthorized: boolean;
+  payload: SessionPayloadDTO | null;
 }
