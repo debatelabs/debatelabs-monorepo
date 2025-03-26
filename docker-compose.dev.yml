@@ -1,12 +1,29 @@
 services:
   client:
+    container_name: debate_client
+    build:
+      context: ./apps/client
+      dockerfile: Dockerfile
+    working_dir: /app
     expose:
       - "3000"
     command: /app/shell/start-dev.sh
+    volumes:
+      - ./apps/client/:/app
+      - /app/node_modules
+      - /app/shell
+    depends_on:
+      - server
+    env_file:
+      - .env
     restart: no
 
   server:
     command: /app/shell/start-dev.sh
+    volumes:
+      - ./apps/server/:/app
+      - /app/node_modules
+      - /app/shell
     restart: no
 
   postgres:

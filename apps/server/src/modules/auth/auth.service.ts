@@ -2,7 +2,7 @@ import { HttpStatus, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as process from 'process';
 import { Details } from 'express-useragent';
-import { Language, User, UserDevice } from '@prisma/client';
+import { User, UserDevice } from '@prisma/client';
 import { v4 as uuidv4 } from 'uuid';
 
 import { PrismaService } from '../../prisma.service';
@@ -17,7 +17,8 @@ import { UserDevicePrisma } from '../../prisma-extend/user-device-prisma';
 import { LoginDto } from './dto/login.dto';
 import { RedisService } from '../../redis-io/redis.service';
 import { AuthErrorMessage } from '../../common/messages/error/auth.message';
-import { TUserInfo } from '../../common/type/user.type';
+import { TUserAuth } from '../../common/type/user.type';
+import { Language } from '../../common/enum/language.enum';
 
 @Injectable()
 export class AuthService {
@@ -32,13 +33,9 @@ export class AuthService {
     body: RegisterDto,
     userAgent: Details,
     ipAddress: string,
-  ): Promise<
-    Omit<User, 'password'> & {
-      accessToken: string;
-      refreshToken: string;
-    }
-  > {
-    const { email, password, language, ...names } = body;
+    lang: Language,
+  ): Promise<TokenType> {
+    const { email, password, name } = body;
 
     const existUser = await this.prisma.user.findFirst({
       where: {
@@ -52,7 +49,7 @@ export class AuthService {
     if (existUser)
       throw new CustomExceptionUtil(
         HttpStatus.UNAUTHORIZED,
-        AuthErrorMessage[language].REGISTER_USER_EXIST,
+        AuthErrorMessage[lang].REGISTER_USER_EXIST,
       );
 
     const hashPass = await hashPasswordUtil(password);
@@ -60,43 +57,30 @@ export class AuthService {
     const newUser = await this.prisma.user.create({
       data: {
         email,
-        firstName: names.firstName,
-        lastName: names.lastName,
+        name,
         password: hashPass,
-        language,
       },
     });
-    delete newUser.password;
 
-    const tokens = this.generateToken({ email, id: newUser.id });
-
-    const device = await this.userDevicePrisma.add({
+    return this.generateToken(
+      {
+        id: newUser.id,
+        role: newUser.role,
+        name,
+        avatar: null,
+      },
       userAgent,
       ipAddress,
-      tokens,
-      userId: newUser.id,
-    });
-
-    await this.saveAuth({
-      userId: newUser.id,
-      deviceId: device.id,
-      accessToken: tokens.accessToken,
-    });
-
-    return { ...newUser, ...tokens };
+    );
   }
 
   async singInCredentials(
     body: LoginDto,
     userAgent: Details,
     ipAddress: string,
-  ): Promise<
-    TUserInfo & {
-      accessToken: string;
-      refreshToken: string;
-    }
-  > {
-    const { email, password, language } = body;
+    lang: Language,
+  ): Promise<TokenType> {
+    const { email, password } = body;
 
     const existUser = await this.prisma.user.findFirst({
       where: {
@@ -104,114 +88,74 @@ export class AuthService {
       },
       select: {
         id: true,
-        email: true,
         avatar: true,
         password: true,
-        firstName: true,
-        lastName: true,
-        language: true,
+        name: true,
+        role: true,
+        isBlocked: true,
       },
     });
     if (!existUser)
       throw new CustomExceptionUtil(
         HttpStatus.UNAUTHORIZED,
-        AuthErrorMessage[language].LOGIN_UNAUTHORIZED,
+        AuthErrorMessage[lang].LOGIN_UNAUTHORIZED,
       );
 
-    const isValidPass = await checkPassword(password, existUser.password);
-    if (!isValidPass)
+    const { isBlocked, password: hash, ...user } = existUser;
+
+    if (isBlocked)
       throw new CustomExceptionUtil(
         HttpStatus.UNAUTHORIZED,
-        AuthErrorMessage[language].LOGIN_UNAUTHORIZED,
+        AuthErrorMessage[lang].USER_BLOCKED,
       );
 
-    const tokens = this.generateToken({ email, id: existUser.id });
+    const isValidPass = await checkPassword(password, hash);
+    if (!isValidPass)
+      throw new CustomExceptionUtil(
+        HttpStatus.FORBIDDEN,
+        AuthErrorMessage[lang].LOGIN_UNAUTHORIZED,
+      );
 
-    const device = await this.userDevicePrisma.add({
-      userAgent,
-      ipAddress,
-      tokens,
-      userId: existUser.id,
-    });
-
-    await this.saveAuth({
-      userId: existUser.id,
-      deviceId: device.id,
-      accessToken: tokens.accessToken,
-    });
-
-    delete existUser.password;
-
-    return {
-      ...existUser,
-      ...tokens,
-    };
+    return this.generateToken(user, userAgent, ipAddress);
   }
 
   async authGoogle(
-    googleProfile: Pick<User, 'firstName' | 'lastName' | 'avatar' | 'email'>,
+    googleProfile: Pick<User, 'name' | 'avatar' | 'email'>,
     userAgent: Details,
     ipAddress: string,
-  ): Promise<
-    TUserInfo & {
-      accessToken: string;
-      refreshToken: string;
-    }
-  > {
+  ): Promise<TokenType> {
     const existUser = await this.prisma.user.findFirst({
       where: {
         email: googleProfile.email,
       },
       select: {
         id: true,
-        email: true,
         avatar: true,
-        password: true,
-        firstName: true,
-        lastName: true,
-        language: true,
+        name: true,
+        role: true,
       },
     });
 
-    const user: TUserInfo = existUser || {
-      ...googleProfile,
-      language: Language.EN,
-      id: 0,
-    };
+    let newUser: Omit<TUserAuth, 'deviceId'>;
 
     if (!existUser) {
       const hashPass = await hashPasswordUtil(uuidv4());
 
-      const newUser = await this.prisma.user.create({
+      newUser = await this.prisma.user.create({
         data: {
           ...googleProfile,
           password: hashPass,
         },
+        select: {
+          id: true,
+          role: true,
+          avatar: true,
+          name: true,
+        },
       });
-      user.id = newUser.id;
     }
 
-    const tokens = this.generateToken({ email: user.email, id: user.id });
-
-    const device = await this.userDevicePrisma.add({
-      userAgent,
-      ipAddress,
-      tokens,
-      userId: user.id,
-    });
-
-    await this.saveAuth({
-      userId: existUser.id,
-      deviceId: device.id,
-      accessToken: tokens.accessToken,
-    });
-
-    delete existUser.password;
-
-    return {
-      ...user,
-      ...tokens,
-    };
+    return this.generateToken(existUser || newUser, userAgent, ipAddress);
   }
 
   async logout(device: UserDevice): Promise<void> {
@@ -219,43 +163,58 @@ export class AuthService {
   }
 
   async refreshToken(
-    user: User,
+    user: TUserAuth,
     device: UserDevice,
     userAgent: Details,
     ipAddress: string,
   ): Promise<TokenType> {
-    const tokens = this.generateToken({
-      email: user.email,
-      id: user.id,
-      deviceId: device.id,
+    return this.generateToken(user, userAgent, ipAddress, device.id);
+  }
+
+  private async generateToken(
+    payload: Omit<TUserAuth, 'deviceId'>,
+    userAgent: Details,
+    ipAddress: string,
+    deviceId?: number,
+  ): Promise<TokenType> {
+    let idDevice = deviceId;
+    if (!deviceId) {
+      const device = await this.userDevicePrisma.add({
+        userAgent,
+        ipAddress,
+        userId: payload.id,
+      });
+      idDevice = device.id;
+    }
+
+    const accessToken = this.jwtService.sign({
+      ...payload,
+      deviceId: idDevice,
     });
+    const refreshToken = this.jwtService.sign(
+      {
+        ...payload,
+        deviceId: idDevice,
+      },
+      {
+        expiresIn: process.env.JWT_EXPIRE_REFRESH_TOKEN,
+      },
+    );
 
     await Promise.all([
-      this.userDevicePrisma.update({
-        deviceId: device.id,
-        userAgent,
-        tokens,
-        ipAddress,
+      this.prisma.userDevice.update({
+        where: {
+          id: idDevice,
+        },
+        data: { accessToken, refreshToken },
       }),
       this.saveAuth({
-        userId: user.id,
-        deviceId: device.id,
-        accessToken: tokens.accessToken,
+        userId: payload.id,
+        deviceId: idDevice,
+        accessToken,
       }),
     ]);
 
-    return tokens;
-  }
-
-  private generateToken(payload: {
-    email: string;
-    id: number;
-    deviceId?: number;
-  }): TokenType {
-    const accessToken = this.jwtService.sign(payload);
-    const refreshToken = this.jwtService.sign(payload, {
-      expiresIn: process.env.JWT_EXPIRE_REFRESH_TOKEN,
-    });
     return { accessToken, refreshToken };
   }
 

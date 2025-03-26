@@ -20,7 +20,7 @@ import {
   ApiTemporaryRedirectResponse,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
-import { Language, User, UserDevice } from '@prisma/client';
+import { User, UserDevice } from '@prisma/client';
 import { JoiPipe } from 'nestjs-joi';
 import { Request, Response } from 'express';
 import * as process from 'process';
@@ -30,9 +30,10 @@ import { AuthorizationResponseType } from './swagger/authorization.response';
 import { RegisterDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
 import { ProtectReqType } from '../../common/type/request.type';
-import { RefreshTokenResponse } from './swagger/refresh-token.response';
 import { AuthErrorMessage } from '../../common/messages/error/auth.message';
 import AuthGoogle from '../../common/guard/google.guard';
+import { Language } from '../../common/enum/language.enum';
+import { Lang } from '../../common/decorator/lang.decorator';
 
 @ApiTags('Authorization')
 @Controller('auth')
@@ -56,6 +57,7 @@ export class AuthController {
     @Body(JoiPipe) body: RegisterDto,
     @Req() req: Request,
     @Res({ passthrough: true }) res: Response,
+    @Lang() lang: Language,
   ) {
     const ip: string = String(
       req.headers['x-real-ip'] || req.headers['x-forwarded-for'] || 'unknown',
@@ -65,6 +67,7 @@ export class AuthController {
       body,
       userAgent,
       ip,
+      lang,
     );
     res.cookie('refreshToken', result.refreshToken, {
       httpOnly: true,
@@ -92,6 +95,7 @@ export class AuthController {
     @Body(JoiPipe) body: LoginDto,
     @Req() req: Request,
     @Res({ passthrough: true }) res: Response,
+    @Lang() lang: Language,
   ) {
     const ip: string = String(
       req.headers['x-real-ip'] || req.headers['x-forwarded-for'] || 'unknown',
@@ -101,6 +105,7 @@ export class AuthController {
       body,
       userAgent,
       ip,
+      lang,
     );
     res.cookie('refreshToken', result.refreshToken, {
       httpOnly: true,
@@ -141,7 +146,7 @@ export class AuthController {
   async googleLoginCallback(
     @Req()
     req: Request & {
-      user: Pick<User, 'firstName' | 'lastName' | 'avatar' | 'email'>;
+      user: Pick<User, 'name' | 'avatar' | 'email'>;
     },
     @Res({ passthrough: true }) res: Response,
   ) {
@@ -198,7 +203,7 @@ export class AuthController {
   })
   @ApiOkResponse({
     description: 'Successfully refreshing',
-    type: RefreshTokenResponse,
+    type: AuthorizationResponseType,
   })
   @ApiBearerAuth()
   @ApiUnauthorizedResponse({
@@ -218,7 +223,7 @@ export class AuthController {
     );
     const userAgent = req['useragent'];
     const tokens = await this.authService.refreshToken(
-      req.user as User,
+      req.user,
       req.device,
       userAgent,
       ip,

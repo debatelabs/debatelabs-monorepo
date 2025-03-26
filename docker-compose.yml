@@ -1,19 +1,4 @@
 services:
-  client:
-    container_name: debate_client
-    build:
-      context: ./apps/client
-      dockerfile: Dockerfile
-    working_dir: /app
-    volumes:
-      - ./apps/client/:/app
-      - /app/node_modules
-      - /app/shell
-    depends_on:
-      - server
-    env_file:
-      - .env
-
   server:
     container_name: debate_server
     build:
@@ -23,10 +8,6 @@ services:
       - "${PORT_SERVER}"
       - "${PORT_WEBSOCKET}"
     working_dir: /app
-    volumes:
-      - ./apps/server/:/app
-      - /app/node_modules
-      - /app/shell
     depends_on:
       - postgres
       - redis

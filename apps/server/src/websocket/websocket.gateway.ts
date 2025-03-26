@@ -16,6 +16,7 @@ import { Logger } from '@nestjs/common';
 import { AuthWsDto } from './dto/auth-ws.dto';
 import { WebsocketAuthService } from './websocket-auth.service';
 import { RedisKey } from '../common/enum/redis-key.enum';
+import { Language } from '../common/enum/language.enum';
 
 const PORT_WS = Number(process.env.PORT_WEBSOCKET);
 
@@ -65,7 +66,10 @@ export class WebsocketGateway
     @MessageBody() { token }: AuthWsDto,
     @ConnectedSocket() client: Socket,
   ) {
-    const userId = await this.websocketAuthService.authConnect(token);
+    const userId = await this.websocketAuthService.authConnect(
+      token,
+      Language.EN,
+    );
     await Promise.all([
       this.redisClient.sadd(
         `${RedisKey.CONNECTIONS_USER}:${userId}:sockets`,

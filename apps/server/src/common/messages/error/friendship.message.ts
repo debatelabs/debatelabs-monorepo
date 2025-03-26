@@ -1,4 +1,4 @@
-import { Language } from '@prisma/client';
+import { Language } from '../../enum/language.enum';
 
 type TFriendshipErrorMessage = {
   RECIPIENT_REJECTED: string;

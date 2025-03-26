@@ -1,0 +1,25 @@
+services:
+  server:
+    command: /app/shell/start-dev.sh
+    volumes:
+      - ./apps/server/:/app
+      - /app/node_modules
+      - /app/shell
+    restart: no
+
+  postgres:
+    restart: no
+
+  redis:
+    restart: no
+
+  nginx:
+    ports:
+      - "${NGINX_PORT}:80"
+    command: >
+      bash -c "
+      envsubst '$${PORT_SERVER}, $${PORT_WEBSOCKET}' 
+      < /etc/nginx/templates/nginx-dev-without-client.conf > /etc/nginx/nginx.conf 
+      && nginx -g 'daemon off;'
+      "
+    restart: no
