@@ -5,7 +5,7 @@ import ExternalAuthSection from '../components/ExternalAuthSection';
 import ContainedButton from '~/shared/components/buttons/ContainedButton';
 import { useTranslation } from 'react-i18next';
 import Link from 'next/link';
-import ROUTES from '~/core/constants/routes';
+import ROUTES from '~/shared/constants/routes';
 
 interface AuthContentProps {
   children: React.ReactElement<HTMLFormElement>;

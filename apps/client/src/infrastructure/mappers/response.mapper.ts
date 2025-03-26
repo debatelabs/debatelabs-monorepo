@@ -1,7 +1,7 @@
 import { AxiosError, AxiosResponse } from 'axios';
 import { ErrorResponseDTO, ResponseDTO } from '~/shared/types/response.types';
 
-class ResponseMapper {
+const responseMapper = {
   toDTO<T extends object>(response: AxiosResponse): ResponseDTO<T> {
     const { data, status, statusText, headers, config, request } = response;
     return {
@@ -29,7 +29,7 @@ class ResponseMapper {
       // and an XMLHttpRequest instance in the browser
       request
     };
-  }
+  },
 
   toErrorDTO<T>(error: AxiosError<T>): ErrorResponseDTO {
     const { isAxiosError, message, name } = error;
@@ -44,6 +44,6 @@ class ResponseMapper {
     if (error?.status) dto.status = error.status;
     return dto;
   }
-}
+};
 
-export default ResponseMapper;
+export default responseMapper;

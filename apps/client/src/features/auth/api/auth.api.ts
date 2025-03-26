@@ -1,31 +1,27 @@
-import ApiClient from '~/core/lib/api-client';
-import API_ROUTES from '~/core/constants/api-routes';
+'use server';
+
+import apiClientInstance from '~/app/lib/api-client';
+import API_ROUTES from '~/shared/constants/api-routes';
 import { IAccessToken } from '~/shared/types/auth.types';
 import { UserLoginDTO, UserSignupDTO } from '~/shared/types/user.types';
 
-class AuthApi {
-  constructor(
-    private readonly apiClient = new ApiClient(),
-    private readonly routes = API_ROUTES.auth
-  ) {}
+const apiClient = apiClientInstance;
+const routes = API_ROUTES.auth;
 
-  public login(data: UserLoginDTO) {
-    return this.apiClient.post<IAccessToken>(this.routes.login, data);
-  }
-
-  public signup(data: UserSignupDTO) {
-    return this.apiClient.post<IAccessToken>(this.routes.signup, data);
-  }
-
-  public refresh() {
-    return this.apiClient.get(this.routes.refresh);
-  }
-
-  public logout() {
-    return this.apiClient.delete(this.routes.logout);
-  }
-
-  public google() {}
+export async function login(data: UserLoginDTO) {
+  return apiClient.post<IAccessToken>(routes.login, data);
 }
 
-export default AuthApi;
+export async function signup(data: UserSignupDTO) {
+  return apiClient.post<IAccessToken>(routes.signup, data);
+}
+
+export async function refresh() {
+  return apiClient.get(routes.refresh);
+}
+
+export async function logout() {
+  return apiClient.delete(routes.logout);
+}
+
+export async function google() {}

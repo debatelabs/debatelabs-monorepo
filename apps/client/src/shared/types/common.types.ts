@@ -1,8 +1,8 @@
-import { i18nConfig } from '~/core/configs/i18n.config';
+import { i18nConfig } from '~/shared/configs/i18n.config';
 
 export type Locale = (typeof i18nConfig.locales)[number];
 
-export interface ServiceMethodProps<T> {
+export interface ServiceActionProps<T> {
   data: T;
   params?: Record<string, unknown>;
 }

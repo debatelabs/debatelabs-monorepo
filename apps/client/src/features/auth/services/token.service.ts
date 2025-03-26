@@ -1,6 +1,6 @@
 'use server';
 
-import envConfig from '~/core/configs/env.config';
+import envConfig from '~/shared/configs/env.config';
 import * as jose from 'jose';
 import { SessionPayloadSchemaType } from '~/infrastructure/validations/session-payload.schema';
 import { NextRequest } from 'next/server';

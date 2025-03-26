@@ -1,7 +1,7 @@
 'use server';
 
 import { NextRequest, NextResponse } from 'next/server';
-import { PUBLIC_ROUTES } from '~/core/constants/routes';
+import { PUBLIC_ROUTES } from '~/shared/constants/routes';
 import * as tokenService from '~/features/auth/services/token.service';
 import { setJwtPayloadToCookie } from '~/infrastructure/services/session.service';
 

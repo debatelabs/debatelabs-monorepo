@@ -6,15 +6,12 @@ import PasswordInput from '../components/PasswordInput';
 import { useTranslation } from 'react-i18next';
 import { useForm } from 'react-hook-form';
 import { LoginForm as LoginFormType } from '~/shared/types/auth.types';
-import authService from '../services/auth.service';
+import * as authService from '../services/auth.service';
 import { zodResolver } from '@hookform/resolvers/zod';
 import createLoginFormSchema from '../validations/login-form.schema';
-import { useRouter } from 'next/navigation';
-import ROUTES from '~/core/constants/routes';
 
 function LoginForm(_, ref: ForwardedRef<HTMLFormElement>) {
   const { t } = useTranslation();
-  const router = useRouter();
 
   const formHook = useForm<LoginFormType>({
     resolver: zodResolver(createLoginFormSchema(t))
@@ -26,13 +23,7 @@ function LoginForm(_, ref: ForwardedRef<HTMLFormElement>) {
     formState: { errors }
   } = formHook;
 
-  async function onSubmit(data: LoginFormType) {
-    const response = await authService.login({ data });
-    if (!response.success) return;
-    console.log(response.data);
-    // TODO: set decoded access token to redux
-    router.replace(ROUTES.home);
-  }
+  const onSubmit = (data: LoginFormType) => authService.login({ data });
 
   return (
     <form

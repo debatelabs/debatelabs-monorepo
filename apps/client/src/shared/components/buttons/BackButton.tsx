@@ -1,5 +1,5 @@
 import React from 'react';
-import leftArrowIcon from '~/core/assets/icons/left-arrow.svg';
+import leftArrowIcon from '~/app/assets/icons/left-arrow.svg';
 import Image from 'next/image';
 import TextButton, { TextButtonProps } from '~/shared/components/buttons/TextButton';
 

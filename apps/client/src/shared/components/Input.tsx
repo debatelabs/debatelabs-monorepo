@@ -3,7 +3,7 @@
 import React from 'react';
 import { styled } from '@mui/material/styles';
 import { TextField, TextFieldProps } from '@mui/material';
-import themeConfig from '~/core/configs/theme.config';
+import themeConfig from '~/shared/configs/theme.config';
 
 const StyledTextField = styled(TextField)({
   '& input': {

@@ -16,4 +16,4 @@ export interface FailDTO<T extends object = AppErrorDTO> {
   data: T;
 }
 
-export type BaseDTO<T extends object> = SuccessDTO<T> | FailDTO<AppErrorDTO>;
+export type BaseDTO<T extends object> = SuccessDTO<T> | FailDTO;

@@ -3,7 +3,7 @@
 import React from 'react';
 import Button, { ButtonProps } from '@mui/material/Button';
 import { styled } from '@mui/material/styles';
-import themeConfig from '~/core/configs/theme.config';
+import themeConfig from '~/shared/configs/theme.config';
 
 export type TextButtonProps = Omit<ButtonProps, 'href'>;
 
