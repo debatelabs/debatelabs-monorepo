@@ -34,6 +34,9 @@ importers:
       i18next:
         specifier: ^24.2.2
         version: 24.2.2(typescript@5.7.3)
+      jose:
+        specifier: ^6.0.10
+        version: 6.0.10
       next:
         specifier: 15.1.6
         version: 15.1.6(@babel/core@7.26.9)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(sass@1.86.0)
@@ -3886,6 +3889,12 @@ packages:
         integrity: sha512-/imKNG4EbWNrVjoNC/1H5/9GFy+tqjGBHCaSsN+P2RnPqjsLmv6UD3Ej+Kj8nBWaRAwyk7kK5ZUc+OEatnTR3A==
       }
     hasBin: true
+
+  jose@6.0.10:
+    resolution:
+      {
+        integrity: sha512-skIAxZqcMkOrSwjJvplIPYrlXGpxTPnro2/QWTDCxAdWQrSTV5/KqspMWmi5WAx5+ULswASJiZ0a+1B/Lxt9cw==
+      }
 
   js-tokens@4.0.0:
     resolution:
@@ -8520,6 +8529,8 @@ snapshots:
       - ts-node
 
   jiti@1.21.7: {}
+
+  jose@6.0.10: {}
 
   js-tokens@4.0.0: {}
 

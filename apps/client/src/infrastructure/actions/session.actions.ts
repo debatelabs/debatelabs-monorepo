@@ -4,7 +4,7 @@ import sessionMapper from '~/infrastructure/mappers/session.mapper';
 import { NextResponse } from 'next/server';
 import { sessionCookie } from '~/shared/constants/cookies';
 import { cookies } from 'next/headers';
-import { createAction } from '~/shared/utils/create-action';
+import { createService } from '~/shared/utils/create-service';
 import SessionPayloadSchema, {
   SessionPayloadSchemaType
 } from '~/infrastructure/validations/session-payload.schema';
@@ -21,7 +21,7 @@ export async function setJwtPayloadToCookie(
   );
 }
 
-export const getJwtPayloadFromCookie = createAction({
+export const getJwtPayloadFromCookie = createService({
   fn: async () => {
     const cookieStore = await cookies();
     const sessionCookieValue = cookieStore.get(sessionCookie.name);

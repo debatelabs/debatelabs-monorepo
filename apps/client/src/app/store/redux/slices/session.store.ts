@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { ISessionStore } from '~/shared/types/session.types';
-import { getJwtPayloadFromCookie } from '~/infrastructure/services/session.service';
+import { getJwtPayloadFromCookie } from '~/infrastructure/actions/session.actions';
 
 async function getInitialState(): Promise<ISessionStore> {
   const sessionPayloadDTO = await getJwtPayloadFromCookie();

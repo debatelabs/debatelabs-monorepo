@@ -1,23 +1,69 @@
-import { AppErrorDTO, FailDTO, SuccessDTO } from '~/shared/types/application.types';
+import { AppErrorDTO, BaseDTO } from '~/shared/types/application.types';
+import { AxiosError } from 'axios';
+import ERRORS from '~/shared/constants/errors';
 
 const applicationMapper = {
-  toSuccessDTO<T extends object>(data: T): SuccessDTO<T> {
-    return {
-      success: true,
-      data
+  toBaseDTO<T>(data: Partial<BaseDTO<T>>): BaseDTO<T> {
+    const baseDTO: BaseDTO<T> = {
+      success: data?.success ?? false,
+      data: data?.data as T
     };
+    if (data?.status) baseDTO.status = data.status;
+    if (data?.statusText) baseDTO.statusText = data.statusText;
+    if (data?.message) baseDTO.message = data.message;
+    if (data?.code) baseDTO.code = data.code;
+    return baseDTO;
   },
 
-  toFailDTO(message: string): FailDTO {
-    return {
-      success: false,
-      data: this.toErrorDTO(message)
-    };
+  toSuccessDTO<T>(data: Omit<BaseDTO<T>, 'success'>): BaseDTO<T> {
+    return this.toBaseDTO({
+      data: data.data,
+      status: data?.status,
+      statusText: data?.statusText,
+      success: true
+    });
   },
 
-  toErrorDTO(errorMsg: string): AppErrorDTO {
+  /**
+   * For axios errors with response
+   */
+  fromAxiosErrorToFailDTO<T>(error: AxiosError): BaseDTO<T | null> {
+    if ('response' in error && error.response) {
+      return this.toBaseDTO({
+        data: (error.response.data as T) || null,
+        status: error.response.status,
+        statusText: error.response.statusText,
+        message: error.message || ERRORS.requestFailed,
+        code: error.code,
+        success: false
+      });
+    }
+    return this.toBaseDTO({
+      data: null,
+      status: error?.status || 500,
+      message: error?.message || ERRORS.requestFailed,
+      code: error?.code,
+      success: false
+    });
+  },
+
+  /**
+   * For network errors or other issues
+   */
+  toFailDTO<T>(data: Partial<Omit<BaseDTO<T>, 'success'>>): BaseDTO<T | null> {
+    return this.toBaseDTO({
+      data: null,
+      status: data?.status || 500,
+      statusText: data?.statusText || 'Error',
+      message: data?.message || ERRORS.network,
+      code: data?.code,
+      success: false
+    });
+  },
+
+  toErrorDTO(error: AppErrorDTO): AppErrorDTO {
     return {
-      message: errorMsg
+      message: error.message
     };
   }
 };

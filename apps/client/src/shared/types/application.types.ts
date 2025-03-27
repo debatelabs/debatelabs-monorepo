@@ -1,19 +1,18 @@
+import { AxiosResponse } from 'axios';
+
 export interface AppErrorDTO {
   message: string;
 }
 
-export interface AppErrorStore extends AppErrorDTO {
-  id: string;
-}
-
-export interface SuccessDTO<T extends object> {
-  success: true;
+export type BaseDTO<T = Record<string, unknown>> = {
+  success: boolean;
   data: T;
-}
+  status?: number;
+  statusText?: string;
+  message?: string;
+  code?: string;
+};
 
-export interface FailDTO<T extends object = AppErrorDTO> {
-  success: false;
-  data: T;
+export interface ResponseDTO<T> extends AxiosResponse<T> {
+  success: boolean;
 }
-
-export type BaseDTO<T extends object> = SuccessDTO<T> | FailDTO;

@@ -6,12 +6,15 @@ import PasswordInput from '../components/PasswordInput';
 import { useTranslation } from 'react-i18next';
 import { useForm } from 'react-hook-form';
 import { SignupForm as SignupFormType } from '~/shared/types/auth.types';
-import * as authService from '../services/auth.service';
+import * as authService from '../services/auth.services';
 import createSignupFormSchema from '../validations/signup-form.schema';
 import { zodResolver } from '@hookform/resolvers/zod';
+import ROUTES from '~/shared/constants/routes';
+import { useRouter } from 'next/navigation';
 
 function SignupForm(_, ref: ForwardedRef<HTMLFormElement>) {
   const { t } = useTranslation();
+  const router = useRouter();
 
   const formHook = useForm<SignupFormType>({
     resolver: zodResolver(createSignupFormSchema(t))
@@ -20,10 +23,13 @@ function SignupForm(_, ref: ForwardedRef<HTMLFormElement>) {
   const {
     register,
     handleSubmit,
-    formState: { errors }
+    formState: { errors, isSubmitting }
   } = formHook;
 
-  const onSubmit = (data: SignupFormType) => authService.signup({ data });
+  const onSubmit = async (data: SignupFormType) => {
+    const response = await authService.signup({ data });
+    if (response.success) router.replace(ROUTES.home);
+  };
 
   return (
     <form
