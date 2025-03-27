@@ -5,6 +5,8 @@ const ROUTES = {
   landing: '/landing'
 };
 
-export const PUBLIC_ROUTES = [ROUTES.login, ROUTES.signup, ROUTES.landing];
+export const AUTH_ROUTES = [ROUTES.login, ROUTES.signup];
+
+export const PUBLIC_ROUTES = [ROUTES.landing];
 
 export default ROUTES;

@@ -3,7 +3,9 @@
 import envConfig from '~/shared/configs/env.config';
 import * as jose from 'jose';
 import { SessionPayloadSchemaType } from '~/infrastructure/validations/session-payload.schema';
-import { NextRequest } from 'next/server';
+import ROUTES from '~/shared/constants/routes';
+import { RedirectThrowable } from '~/shared/types/common.types';
+import { NextRequest, NextResponse } from 'next/server';
 
 export async function validateToken(token: string | undefined) {
   try {
@@ -11,20 +13,33 @@ export async function validateToken(token: string | undefined) {
     const jwtSecretEncoded = new TextEncoder().encode(envConfig.JWT_SECRET);
     const { payload } = await jose.jwtVerify<SessionPayloadSchemaType>(
       token,
-      jwtSecretEncoded
+      jwtSecretEncoded,
+      { algorithms: ['HS256'] }
     );
     return payload as SessionPayloadSchemaType;
   } catch (err) {
+    console.error(err);
     return null;
   }
 }
 
-export async function verifyAccessTokenFromCookie(req: NextRequest) {
-  const accessToken = req.cookies.get('accessToken')?.value;
-  return validateToken(accessToken);
-}
-
-export async function verifyRefreshTokenFromCookie(req: NextRequest) {
-  const refreshToken = req.cookies.get('refreshToken')?.value;
-  return validateToken(refreshToken);
-}
+export const checkToken = async ({
+  tokenName,
+  req,
+  res,
+  isAuthRoute
+}: {
+  tokenName: string;
+  req: NextRequest;
+  res: NextResponse;
+  isAuthRoute: boolean;
+}) => {
+  const token = req.cookies.get(tokenName)?.value;
+  const tokenPayload = await validateToken(token);
+  if (tokenPayload === null) {
+    res.cookies.delete(tokenName);
+    return false;
+  }
+  if (isAuthRoute) throw { redirect: ROUTES.home } as RedirectThrowable;
+  return true;
+};

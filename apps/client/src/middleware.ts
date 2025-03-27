@@ -3,19 +3,23 @@ import { i18nConfig } from '~/shared/configs/i18n.config';
 import { NextRequest, NextResponse } from 'next/server';
 import authMiddleware from '~/features/auth/middleware/auth.middleware';
 import ROUTES from '~/shared/constants/routes';
+import { RedirectThrowable } from '~/shared/types/common.types';
 
 export async function middleware(req: NextRequest) {
   try {
-    let res = NextResponse.next();
+    let res = i18nRouter(req, i18nConfig);
 
     await authMiddleware(req, res);
-
-    res = i18nRouter(req, i18nConfig);
 
     return res;
   } catch (err) {
     console.error(err);
-    return NextResponse.redirect(new URL(ROUTES.login, req.url));
+    const checkRedirectThrowable = err && typeof err === 'object' && 'redirect' in err;
+    const route = checkRedirectThrowable
+      ? (err as RedirectThrowable).redirect
+      : ROUTES.login;
+    const redirectTo = new URL(route, req.url);
+    return NextResponse.redirect(redirectTo);
   }
 }
 

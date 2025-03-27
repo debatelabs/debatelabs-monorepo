@@ -6,3 +6,7 @@ export interface ServiceActionProps<T> {
   data: T;
   params?: Record<string, unknown>;
 }
+
+export interface RedirectThrowable {
+  redirect: string;
+}
