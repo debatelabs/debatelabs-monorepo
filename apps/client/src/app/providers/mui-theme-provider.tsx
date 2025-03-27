@@ -3,7 +3,7 @@
 import React from 'react';
 import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
-import theme from '~/shared/configs/mui.config';
+import theme from '~/core/configs/mui.config';
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter';
 
 export default function MuiProvider({ children }: { children: React.ReactNode }) {

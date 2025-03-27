@@ -1,16 +1,16 @@
 'use client';
 
 import React, { forwardRef, ForwardedRef } from 'react';
-import Input from '~/shared/components/Input';
+import Input from '~/core/components/Input';
 import PasswordInput from '../components/PasswordInput';
 import { useTranslation } from 'react-i18next';
 import { useForm } from 'react-hook-form';
-import { LoginForm as LoginFormType } from '~/shared/types/auth.types';
+import { LoginForm as LoginFormType } from '~/core/types/auth.types';
 import * as authService from '../services/auth.services';
 import { zodResolver } from '@hookform/resolvers/zod';
 import createLoginFormSchema from '../validations/login-form.schema';
 import { useRouter } from 'next/navigation';
-import ROUTES from '~/shared/constants/routes';
+import ROUTES from '~/core/constants/routes';
 
 function LoginForm(_, ref: ForwardedRef<HTMLFormElement>) {
   const { t } = useTranslation();

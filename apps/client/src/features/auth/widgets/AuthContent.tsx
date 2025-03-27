@@ -2,10 +2,10 @@
 
 import React, { useRef } from 'react';
 import ExternalAuthSection from '../components/ExternalAuthSection';
-import ContainedButton from '~/shared/components/buttons/ContainedButton';
+import ContainedButton from '~/core/components/buttons/ContainedButton';
 import { useTranslation } from 'react-i18next';
 import Link from 'next/link';
-import ROUTES from '~/shared/constants/routes';
+import ROUTES from '~/core/constants/routes';
 
 interface AuthContentProps {
   children: React.ReactElement<HTMLFormElement>;

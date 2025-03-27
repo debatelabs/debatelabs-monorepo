@@ -1,5 +1,5 @@
-import { LoginForm, SignupForm } from '~/shared/types/auth.types';
-import { UserLoginDTO, UserSignupDTO } from '~/shared/types/user.types';
+import { LoginForm, SignupForm } from '~/core/types/auth.types';
+import { UserLoginDTO, UserSignupDTO } from '~/core/types/user.types';
 
 const userMapper = {
   toLoginDTO(data: LoginForm): UserLoginDTO {

@@ -1,8 +1,8 @@
-import { LoginForm, SignupForm } from '~/shared/types/auth.types';
+import { LoginForm, SignupForm } from '~/core/types/auth.types';
 import authApi from '../api/auth.api';
 import userMapper from '~/infrastructure/mappers/user.mapper';
-import { ServiceActionProps } from '~/shared/types/common.types';
-import { createService } from '~/shared/utils/create-service';
+import { ServiceActionProps } from '~/core/types/common.types';
+import { createService } from '~/core/utils/create-service';
 
 export const login = createService({
   fn: async ({ data }: ServiceActionProps<LoginForm>) => {

@@ -1,22 +1,19 @@
 'use server';
 
-import envConfig from '~/shared/configs/env.config';
+import envConfig from '~/core/configs/env.config';
 import * as jose from 'jose';
-import { SessionPayloadSchemaType } from '~/infrastructure/validations/session-payload.schema';
-import ROUTES from '~/shared/constants/routes';
-import { RedirectThrowable } from '~/shared/types/common.types';
+import ROUTES from '~/core/constants/routes';
+import { RedirectThrowable } from '~/core/types/common.types';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function validateToken(token: string | undefined) {
   try {
     if (!token) throw new Error('Token is undefined');
     const jwtSecretEncoded = new TextEncoder().encode(envConfig.JWT_SECRET);
-    const { payload } = await jose.jwtVerify<SessionPayloadSchemaType>(
-      token,
-      jwtSecretEncoded,
-      { algorithms: ['HS256'] }
-    );
-    return payload as SessionPayloadSchemaType;
+    const { payload } = await jose.jwtVerify(token, jwtSecretEncoded, {
+      algorithms: ['HS256']
+    });
+    return payload;
   } catch (err) {
     console.error(err);
     return null;

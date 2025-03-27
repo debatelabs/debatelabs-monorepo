@@ -1,9 +1,9 @@
 'use server';
 
 import { NextRequest, NextResponse } from 'next/server';
-import ROUTES, { AUTH_ROUTES, PUBLIC_ROUTES } from '~/shared/constants/routes';
-import { checkToken } from '~/features/auth/actions/token.actions';
-import { RedirectThrowable } from '~/shared/types/common.types';
+import ROUTES, { AUTH_ROUTES, PUBLIC_ROUTES } from '~/core/constants/routes';
+import { checkToken } from '../actions/token.actions';
+import { RedirectThrowable } from '~/core/types/common.types';
 
 export default async function authMiddleware(req: NextRequest, res: NextResponse) {
   const pathname = req.nextUrl.pathname;

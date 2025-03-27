@@ -1,15 +1,15 @@
 'use client';
 
 import React, { forwardRef, ForwardedRef } from 'react';
-import Input from '~/shared/components/Input';
+import Input from '~/core/components/Input';
 import PasswordInput from '../components/PasswordInput';
 import { useTranslation } from 'react-i18next';
 import { useForm } from 'react-hook-form';
-import { SignupForm as SignupFormType } from '~/shared/types/auth.types';
+import { SignupForm as SignupFormType } from '~/core/types/auth.types';
 import * as authService from '../services/auth.services';
 import createSignupFormSchema from '../validations/signup-form.schema';
 import { zodResolver } from '@hookform/resolvers/zod';
-import ROUTES from '~/shared/constants/routes';
+import ROUTES from '~/core/constants/routes';
 import { useRouter } from 'next/navigation';
 
 function SignupForm(_, ref: ForwardedRef<HTMLFormElement>) {

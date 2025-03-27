@@ -1,5 +1,5 @@
 import { AxiosResponse } from 'axios';
-import { ResponseDTO } from '~/shared/types/application.types';
+import { ResponseDTO } from '~/core/types/application.types';
 
 const responseMapper = {
   toDTO<T>(response: AxiosResponse<T>): ResponseDTO<T> {

@@ -1,6 +1,6 @@
-import { AppErrorDTO, BaseDTO } from '~/shared/types/application.types';
+import { AppErrorDTO, BaseDTO } from '~/core/types/application.types';
 import { AxiosError } from 'axios';
-import ERRORS from '~/shared/constants/errors';
+import ERRORS from '~/core/constants/errors';
 
 const applicationMapper = {
   toBaseDTO<T>(data: Partial<BaseDTO<T>>): BaseDTO<T> {
