@@ -15,14 +15,6 @@ const authApi = {
     return apiClient.post<IAccessToken>(routes.signup, data);
   },
 
-  async refresh() {
-    return apiClient.get(routes.refresh);
-  },
-
-  async logout() {
-    return apiClient.delete(routes.logout);
-  },
-
   async google() {}
 };
 

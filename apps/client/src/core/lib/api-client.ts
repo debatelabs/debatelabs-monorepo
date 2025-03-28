@@ -2,12 +2,21 @@ import axios, {
   AxiosError,
   AxiosInstance,
   AxiosRequestConfig,
-  AxiosResponse
+  AxiosResponse,
+  InternalAxiosRequestConfig
 } from 'axios';
 import { BASE_URL } from '~/core/configs/api-url.config';
 import applicationMapper from '~/infrastructure/mappers/application.mapper';
 import { ResponseDTO } from '~/core/types/application.types';
 import responseMapper from '~/infrastructure/mappers/response.mapper';
+import { store } from '~/core/store/redux/store';
+import { refreshSession } from '~/features/session';
+import logger from '~/core/utils/logger';
+import ERRORS from '../constants/errors';
+
+interface InternalAxiosRequestConfigExtended extends InternalAxiosRequestConfig {
+  _retry?: boolean;
+}
 
 type ApiClientMethodsReturnType<T> = Promise<ResponseDTO<T>>;
 
@@ -31,11 +40,39 @@ export class ApiClient {
   private responseInterceptor = (response: AxiosResponse) =>
     this.resMapper.toDTO(response);
 
-  private responseErrorInterceptor = (error: AxiosError) => {
-    return error?.response
-      ? this.resMapper.toDTO(error.response)
-      : this.appMapper.toFailDTO(error);
+  private responseErrorInterceptor = async (error: AxiosError) => {
+    if (!error?.response) return Promise.reject(this.appMapper.toFailDTO(error));
+    const response = this.resMapper.toDTO(error.response);
+
+    const authResChecked = await this.checkAuthAndRefresh(error, response);
+    const checkSuccess =
+      authResChecked && 'success' in authResChecked && authResChecked.success === true;
+    if (checkSuccess) return authResChecked;
+
+    return Promise.reject(authResChecked);
   };
+
+  private async checkAuthAndRefresh(error: AxiosError, response: ResponseDTO<unknown>) {
+    try {
+      const originalRequest = error.config as InternalAxiosRequestConfigExtended;
+
+      if (response.status !== 401 || originalRequest._retry) return response;
+      originalRequest._retry = true;
+
+      const { isAuthorized } = store.getState().session;
+      if (!isAuthorized) return response;
+
+      const refreshSessionResponse = await refreshSession();
+      if (!refreshSessionResponse.success || !originalRequest) return response;
+
+      return await this.axiosInstance(originalRequest);
+    } catch (err) {
+      logger.error(err);
+      return this.appMapper.toFailDTO({
+        message: err instanceof Error ? err.message : ERRORS.unknown
+      });
+    }
+  }
 
   get<T extends object>(
     url: string,

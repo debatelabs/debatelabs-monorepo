@@ -2,8 +2,9 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import ROUTES, { AUTH_ROUTES, PUBLIC_ROUTES } from '~/core/constants/routes';
-import { checkToken } from '../actions/token.actions';
+import { checkToken } from '~/infrastructure/services/token.actions';
 import { RedirectThrowable } from '~/core/types/common.types';
+import COOKIES from '~/core/constants/cookies';
 
 export default async function authMiddleware(req: NextRequest, res: NextResponse) {
   const pathname = req.nextUrl.pathname;
@@ -13,20 +14,21 @@ export default async function authMiddleware(req: NextRequest, res: NextResponse
   if (isPublicRoute) return;
 
   const isValidAccessToken = await checkToken({
-    tokenName: 'accessToken',
+    tokenName: COOKIES.accessToken,
     req,
-    res,
     isAuthRoute
   });
   if (isValidAccessToken) return;
 
   const isValidRefreshToken = await checkToken({
-    tokenName: 'refreshToken',
+    tokenName: COOKIES.refreshToken,
     req,
-    res,
     isAuthRoute
   });
   if (isValidRefreshToken) return;
+
+  res.cookies.delete(COOKIES.accessToken);
+  res.cookies.delete(COOKIES.refreshToken);
 
   if (isAuthRoute) return;
   throw { redirect: ROUTES.login } as RedirectThrowable;

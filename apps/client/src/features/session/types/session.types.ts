@@ -1,4 +1,4 @@
-import { SessionPayloadDTO } from '../validations/session-payload.schema';
+import { SessionPayloadDTO } from '~/infrastructure/validations/session-payload.schema';
 
 export interface ISessionStore {
   isAuthorized: boolean;

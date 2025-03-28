@@ -19,18 +19,6 @@ export const signup = createService({
   }
 });
 
-export const refresh = createService({
-  fn: async () => {
-    return {};
-  }
-});
-
-export const logout = createService({
-  fn: async () => {
-    return {};
-  }
-});
-
 export const google = createService({
   fn: async () => {
     return {};

@@ -1,10 +1,10 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { getJwtPayloadFromCookie } from '~/features/session/actions/session.actions';
+import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
+import { getSessionPayloadFromCookie } from '../services/session.actions';
 import { ISessionStore } from '~/features/session/types/session.types';
+import { SessionPayloadDTO } from '~/infrastructure/validations/session-payload.schema';
 
-export const fetchSession = createAsyncThunk('session/fetchSession', async () => {
-  const sessionPayloadDTO = await getJwtPayloadFromCookie();
-  return sessionPayloadDTO;
+export const getSession = createAsyncThunk('session/getSession', () => {
+  return getSessionPayloadFromCookie();
 });
 
 const initialState: ISessionStore = {
@@ -15,18 +15,28 @@ const initialState: ISessionStore = {
 const sessionSlice = createSlice({
   name: 'session',
   initialState,
-  reducers: {},
+  reducers: {
+    setSession: (
+      state: ISessionStore,
+      { payload }: PayloadAction<SessionPayloadDTO | null>
+    ) => {
+      state.isAuthorized = payload !== null;
+      state.payload = payload;
+    }
+  },
   extraReducers: (builder) => {
-    builder.addCase(fetchSession.fulfilled, (state, action) => {
+    builder.addCase(getSession.fulfilled, (state, action) => {
       state.isAuthorized = action.payload.success;
       state.payload = action.payload.success ? action.payload.data : null;
     });
-    builder.addCase(fetchSession.rejected, (state, action) => {
+    builder.addCase(getSession.rejected, (state, action) => {
       console.error(action.error);
       state.isAuthorized = false;
       state.payload = null;
     });
   }
 });
+
+export const { setSession } = sessionSlice.actions;
 
 export default sessionSlice.reducer;

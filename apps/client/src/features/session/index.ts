@@ -1,1 +1,2 @@
-export { fetchSession } from './store/session.store';
+export { getSession, setSession } from './store/session.store';
+export * from './services/session.services';

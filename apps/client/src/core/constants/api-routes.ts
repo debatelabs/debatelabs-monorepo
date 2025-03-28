@@ -3,7 +3,6 @@ const API_ROUTES = {
   auth: {
     login: '/auth/login',
     signup: '/auth/register',
-    logout: '/auth/logout',
     refresh: '/auth/refresh',
     google: '/auth/google'
   }

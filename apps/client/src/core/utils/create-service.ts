@@ -8,6 +8,8 @@ interface CreateServiceProps<T extends object, P> {
   fn: (props: P) => Promise<ResponseDTO<T> | T>;
   /** Whether to log errors to console */
   log?: boolean;
+  /** Callback function that runs when an error occurs */
+  errorFn?: (err: unknown) => Promise<void> | void;
 }
 
 /**
@@ -21,7 +23,7 @@ interface CreateServiceProps<T extends object, P> {
  *
  * @example
  * // Basic usage
- * const login = createAction({
+ * const login = createService({
  *   fn: async (props: LoginProps) => {
  *     // Your async operation here
  *     return await authApi.login(props);
@@ -29,7 +31,7 @@ interface CreateServiceProps<T extends object, P> {
  * });
  *
  * // Usage with error logging disabled
- * const logout = createAction({
+ * const logout = createService({
  *   fn: async () => {
  *     // Your async operation here
  *   },
@@ -38,7 +40,8 @@ interface CreateServiceProps<T extends object, P> {
  */
 export function createService<T extends object, P = void>({
   fn,
-  log = true
+  log = true,
+  errorFn
 }: CreateServiceProps<T, P>) {
   return async (props: P): Promise<BaseDTO<T | null>> => {
     try {
@@ -52,6 +55,8 @@ export function createService<T extends object, P = void>({
       return applicationMapper.toSuccessDTO({ data: result });
     } catch (err) {
       if (log) logger.error(err);
+
+      errorFn && (await errorFn(err));
 
       if (err && typeof err === 'object' && 'success' in err)
         return applicationMapper.toFailDTO(err as BaseDTO<T | null>);
