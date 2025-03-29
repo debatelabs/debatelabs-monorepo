@@ -1,15 +1,15 @@
 import { HttpStatus, Injectable } from '@nestjs/common';
 import { Room, RoomStatus, RoomType } from '@prisma/client';
 
-import { PrismaService } from '../../prisma.service';
-import { TUserAuth } from '../../common/type/user.type';
-import { RoomCreateDto } from './dto/room.create.dto';
-import { CustomExceptionUtil } from '../../utils/custom-exception.util';
-import { RoomErrorMessage } from '../../common/messages/error/room.message';
-import { RoomUpdateDto } from './dto/room.update.dto';
-import { QuerySearchDto } from '../../common/dto/query-search.dto';
-import { Language } from '../../common/enum/language.enum';
-import { RoomsResponse } from './swagger/rooms.response';
+import { PrismaService } from '../../../prisma.service';
+import { TUserAuth } from '../../../common/type/user.type';
+import { RoomCreateDto } from '../dto/room.create.dto';
+import { CustomExceptionUtil } from '../../../utils/custom-exception.util';
+import { RoomErrorMessage } from '../../../common/messages/error/room.message';
+import { RoomUpdateDto } from '../dto/room.update.dto';
+import { QuerySearchDto } from '../../../common/dto/query-search.dto';
+import { Language } from '../../../common/enum/language.enum';
+import { RoomsResponse } from '../swagger/rooms.response';
 
 @Injectable()
 export class RoomService {
@@ -17,7 +17,23 @@ export class RoomService {
 
   async create(user: TUserAuth, body: RoomCreateDto): Promise<Room> {
     return this.prisma.$transaction(async (tx) => {
-      const newRoom = await tx.room.create({
+      // await tx.roomUser.create({
+      //   data: {
+      //     user: {
+      //       connect: {
+      //         id: user.id,
+      //       },
+      //     },
+      //     room: {
+      //       connect: {
+      //         id: newRoom.id,
+      //       },
+      //     },
+      //     isJudge: false,
+      //   },
+      // });
+
+      return await tx.room.create({
         data: {
           ...body,
           status: RoomStatus.SETTING,
@@ -26,33 +42,51 @@ export class RoomService {
               id: user.id,
             },
           },
-        },
-      });
-
-      await tx.roomUser.create({
-        data: {
-          user: {
-            connect: {
-              id: user.id,
+          members: {
+            create: {
+              user: {
+                connect: {
+                  id: user.id,
+                },
+              },
+              isJudge: false,
             },
           },
-          room: {
-            connect: {
-              id: newRoom.id,
-            },
-          },
-          isJudge: false,
         },
       });
-
-      return newRoom;
     });
   }
 
-  async getById(user: TUserAuth, id: string, lang: Language): Promise<Room> {
+  async getById(user: TUserAuth, id: string, lang: Language) {
     const room = await this.prisma.room.findFirst({
       where: {
         id,
+      },
+      include: {
+        members: {
+          select: {
+            isJudge: true,
+            teamId: true,
+            user: {
+              select: {
+                id: true,
+                name: true,
+                avatar: true,
+              },
+            },
+          },
+        },
+        teams: {
+          select: {
+            id: true,
+            name: true,
+            roomUsers: {
+              select: {
+                userId: true,
+              },
+            },
+          },
+        },
       },
     });
     if (!room)
@@ -60,20 +94,14 @@ export class RoomService {
         HttpStatus.NOT_FOUND,
         RoomErrorMessage[lang].ROOM_NOT_FOUND,
       );
-    if (room.type === RoomType.PUBLIC || room.creatorId === user.id)
-      return room;
+    if (room.type === RoomType.PRIVATE) {
+      if (!room.members.find((m) => m.user.id === user.id))
+        throw new CustomExceptionUtil(
+          HttpStatus.BAD_REQUEST,
+          RoomErrorMessage[lang].ACCESS_DENIED,
+        );
+    }
 
-    const roomUser = await this.prisma.roomUser.findFirst({
-      where: {
-        roomId: room.id,
-        userId: user.id,
-      },
-    });
-    if (!roomUser)
-      throw new CustomExceptionUtil(
-        HttpStatus.BAD_REQUEST,
-        RoomErrorMessage[lang].ACCESS_DENIED,
-      );
     return room;
   }
 

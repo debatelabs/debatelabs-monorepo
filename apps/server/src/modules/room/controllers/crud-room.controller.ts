@@ -24,20 +24,20 @@ import { JoiPipe } from 'nestjs-joi';
 import { Room } from '@prisma/client';
 import * as Joi from 'joi';
 
-import { RoomService } from './room.service';
-import { AuthErrorMessage } from '../../common/messages/error/auth.message';
-import { ProtectReqType } from '../../common/type/request.type';
-import { RoomCreateDto } from './dto/room.create.dto';
-import { RoomResponse } from './swagger/room.response';
-import { RoomUpdateDto } from './dto/room.update.dto';
-import { Lang } from '../../common/decorator/lang.decorator';
-import { Language } from '../../common/enum/language.enum';
-import { RoomsResponse } from './swagger/rooms.response';
-import { QuerySearchDto } from '../../common/dto/query-search.dto';
+import { RoomService } from '../services/room.service';
+import { AuthErrorMessage } from '../../../common/messages/error/auth.message';
+import { ProtectReqType } from '../../../common/type/request.type';
+import { RoomCreateDto } from '../dto/room.create.dto';
+import { RoomResponse } from '../swagger/room.response';
+import { RoomUpdateDto } from '../dto/room.update.dto';
+import { Lang } from '../../../common/decorator/lang.decorator';
+import { Language } from '../../../common/enum/language.enum';
+import { RoomsResponse } from '../swagger/rooms.response';
+import { QuerySearchDto } from '../../../common/dto/query-search.dto';
 
 @ApiTags('Room')
 @Controller('room')
-export class RoomController {
+export class CrudRoomController {
   constructor(private readonly roomService: RoomService) {}
 
   @ApiOperation({

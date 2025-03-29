@@ -1,15 +1,20 @@
 import { MiddlewareConsumer, Module } from '@nestjs/common';
 
-import { RoomService } from './room.service';
-import { RoomController } from './room.controller';
+import { RoomService } from './services/room.service';
 import { ProtectAuthMiddleware } from '../../common/middleware/auth/protect-auth.middleware';
+import { CrudRoomController } from './controllers/crud-room.controller';
+import { MembersRoomController } from './controllers/members-room.controller';
+import { MembersRoomService } from './services/member-room.service';
 
 @Module({
-  providers: [RoomService],
-  controllers: [RoomController],
+  imports: [],
+  providers: [RoomService, MembersRoomService],
+  controllers: [CrudRoomController, MembersRoomController],
 })
 export class RoomModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(ProtectAuthMiddleware).forRoutes(RoomController);
+    consumer
+      .apply(ProtectAuthMiddleware)
+      .forRoutes(CrudRoomController, MembersRoomController);
   }
 }

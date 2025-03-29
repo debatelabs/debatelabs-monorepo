@@ -30,9 +30,9 @@ export class ProtectRefreshMiddleware
     next: NextFunction,
   ) {
     const lang = getLang(
-      Array.isArray(req.headers['Accept-Language'])
+      Array.isArray(req.headers['accept-language'])
         ? ''
-        : req.headers['Accept-Language'],
+        : req.headers['accept-language'],
     );
 
     const token = req.cookies.refreshToken;
