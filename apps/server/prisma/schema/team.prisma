@@ -2,7 +2,9 @@ model Team {
   id   String @id @default(uuid())
   name String @db.VarChar(256)
 
-  roomUser RoomUser[]
+  roomId    String
+  room      Room       @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  roomUsers RoomUser[]
 
   @@map("team")
 }

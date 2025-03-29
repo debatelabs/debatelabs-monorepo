@@ -3,7 +3,6 @@ import { ProtectBaseAbstract } from './protect-base.abstract';
 import { JwtService } from '@nestjs/jwt';
 import { NextFunction, Response } from 'express';
 
-import { PrismaService } from '../../../prisma.service';
 import { ProtectReqType } from '../../type/request.type';
 import { getLang } from '../../../utils/header-lang-get.util';
 
@@ -12,23 +11,19 @@ export class ProtectAuthMiddleware
   extends ProtectBaseAbstract
   implements NestMiddleware
 {
-  constructor(
-    private readonly prisma: PrismaService,
-    jwtService: JwtService,
-  ) {
+  constructor(jwtService: JwtService) {
     super(jwtService);
   }
 
   async use(req: ProtectReqType, _: Response, next: NextFunction) {
     const lang = getLang(
-      Array.isArray(req.headers['Accept-Language'])
+      Array.isArray(req.headers['accept-language'])
         ? ''
-        : req.headers['Accept-Language'],
+        : req.headers['accept-language'],
     );
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { exp, ...user } = await this.verifyToken(
-      req.headers.authorization?.startsWith('Bearer') &&
-        req.headers.authorization?.split(' ')[1],
+      req.cookies.accessToken,
       lang,
     );
 
