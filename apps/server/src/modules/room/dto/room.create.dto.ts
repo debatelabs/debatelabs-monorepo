@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { RoomType } from '@prisma/client';
 import * as Joi from 'joi';
 import { JoiSchema, JoiSchemaOptions } from 'nestjs-joi';
+import { RoomType } from '@prisma/client';
 
 @JoiSchemaOptions({
   allowUnknown: false,
@@ -11,23 +11,19 @@ export class RoomCreateDto {
   @ApiProperty({ required: true, example: 'Why is it ... ?' })
   topic: string;
 
-  @JoiSchema(
-    Joi.string()
-      .valid(...Object.values(RoomType))
-      .required(),
-  )
-  @ApiProperty({ required: true, example: Object.values(RoomType).join(', ') })
+  @JoiSchema(Joi.string().valid(...Object.values(RoomType)))
+  @ApiProperty({ example: Object.values(RoomType).join(', ') })
   type: RoomType;
 
-  @JoiSchema(Joi.number().min(2).max(8).multiple(2).required())
-  @ApiProperty({ required: true, example: 4 })
+  @JoiSchema(Joi.number().min(2).max(8).multiple(2))
+  @ApiProperty({ example: 4 })
   teamCount: number;
 
-  @JoiSchema(Joi.number().min(1).max(4).required())
-  @ApiProperty({ required: true, example: 2 })
+  @JoiSchema(Joi.number().min(1).max(4))
+  @ApiProperty({ example: 2 })
   membersCount: number;
 
-  @JoiSchema(Joi.date().timestamp().required())
-  @ApiProperty({ required: true, example: 1742477528 })
+  @JoiSchema(Joi.date().timestamp())
+  @ApiProperty({ example: 1742477528 })
   startAt: Date;
 }
