@@ -25,7 +25,7 @@ const theme = createTheme({
     },
     action: {
       disabled: themeConfig.colors.dimmedText,
-      disabledBackground: themeConfig.colors.darkLight
+      disabledBackground: themeConfig.colors.darkHighlight
     }
   },
   typography: {
@@ -67,7 +67,7 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           '&:hover': {
-            backgroundColor: themeConfig.colors.darkLight,
+            backgroundColor: themeConfig.colors.darkHighlight,
             borderRadius: 8
           }
         }

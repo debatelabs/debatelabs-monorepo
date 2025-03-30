@@ -4,6 +4,7 @@ import { mainMetadata } from '~/core/constants/metadata/main';
 import '~/core/styles/globals.scss';
 import AppProvider from '~/app/[locale]/provider';
 import { Locale } from '~/core/types/common.types';
+import Footer from '~/app/widgets/footer/Footer';
 
 const namu = localFont({
   src: '../assets/fonts/NAMU-1850.ttf',
@@ -34,7 +35,10 @@ export default async function RootLayout({
   return (
     <html lang={locale} suppressHydrationWarning>
       <body className={`${namu.variable} ${ruso.variable} antialiased`}>
-        <AppProvider locale={locale}>{children}</AppProvider>
+        <AppProvider locale={locale}>
+          <div className='min-h-screen'>{children}</div>
+          <Footer />
+        </AppProvider>
       </body>
     </html>
   );

@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import Input from '~/core/components/Input';
+import Input from '~/core/components/input/Input';
 import PasswordInput from '../components/PasswordInput';
 import { useTranslation } from 'react-i18next';
 import { UseFormReturn } from 'react-hook-form';

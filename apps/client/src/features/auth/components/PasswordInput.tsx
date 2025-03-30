@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import Input from '~/core/components/Input';
+import Input from '~/core/components/input/Input';
 import { IconButton, InputAdornment } from '@mui/material';
 import eyeIcon from '~/app/assets/icons/eye.svg';
 import closedEyeIcon from '~/app/assets/icons/closed-eye.svg';

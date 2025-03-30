@@ -3,8 +3,8 @@
 import React from 'react';
 import ExternalAuthSection from '../components/ExternalAuthSection';
 import { useTranslation } from 'react-i18next';
-import Link from 'next/link';
 import ROUTES from '~/core/constants/routes';
+import TextLink from '~/core/components/text-link/TextLink';
 
 interface AuthContentProps {
   children: React.ReactElement<HTMLFormElement>;
@@ -35,12 +35,12 @@ export default function AuthContent({ children, type }: AuthContentProps) {
         <span className='mr-2'>
           {t(`auth.${type === 'login' ? 'noAccount' : 'existingAccount'}`)}
         </span>
-        <Link href={ROUTES[type === 'login' ? 'signup' : 'login']}>
-          <span className='text-primary cursor-pointer'>
-            {type === 'login' && t('auth.signup')}
-            {type === 'signup' && t('auth.login')}
-          </span>
-        </Link>
+        <TextLink
+          href={ROUTES[type === 'login' ? 'signup' : 'login']}
+          className='text-primary hover:text-primary'
+        >
+          {type === 'login' ? t('auth.signup') : t('auth.login')}
+        </TextLink>
       </p>
     </div>
   );

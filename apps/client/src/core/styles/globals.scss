@@ -15,3 +15,9 @@ input:-webkit-autofill:active{
   color: #94cbff !important;
   caret-color: #fff !important;
 }
+
+.px-page {
+  $padding: 7%;
+  padding-left: $padding;
+  padding-right: $padding;
+}
