@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import Input from '~/core/components/Input';
+import Input from '~/core/components/input/Input';
 import { IconButton, InputAdornment } from '@mui/material';
 import eyeIcon from '~/app/assets/icons/eye.svg';
 import closedEyeIcon from '~/app/assets/icons/closed-eye.svg';
@@ -12,7 +12,7 @@ import { PasswordFormValues } from '~/core/types/auth.types';
 
 const showPaswIconConfig = {
   alt: 'change visibility',
-  size: 25
+  size: 30
 };
 
 interface PasswordInputProps<T extends PasswordFormValues> {
@@ -31,6 +31,7 @@ export default function PasswordInput<T extends PasswordFormValues>({
   } = formHook;
 
   const [isPaswShown, setIsPaswShown] = useState(false);
+
   function handleClickShowPassword() {
     setIsPaswShown((prev) => !prev);
   }
@@ -50,7 +51,10 @@ export default function PasswordInput<T extends PasswordFormValues>({
           input: {
             endAdornment: (
               <InputAdornment position='end'>
-                <IconButton onClick={handleClickShowPassword} sx={{ height: 30 }}>
+                <IconButton
+                  onClick={handleClickShowPassword}
+                  sx={{ height: 40, width: 40 }}
+                >
                   {isPaswShown ? (
                     <Image
                       src={eyeIcon}

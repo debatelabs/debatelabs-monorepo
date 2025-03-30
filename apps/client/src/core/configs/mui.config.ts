@@ -7,7 +7,7 @@ const theme = createTheme({
   cssVariables: true,
   palette: {
     primary: {
-      main: themeConfig.colors.primary
+      main: themeConfig.colors.primary.main
     },
     secondary: {
       main: themeConfig.colors.secondary
@@ -16,16 +16,16 @@ const theme = createTheme({
       main: themeConfig.colors.alert
     },
     background: {
-      default: themeConfig.colors.dark,
-      paper: themeConfig.colors.dark
+      default: themeConfig.colors.dark.main,
+      paper: themeConfig.colors.dark.main
     },
     text: {
       primary: themeConfig.colors.secondary,
-      secondary: themeConfig.colors.primary
+      secondary: themeConfig.colors.primary.main
     },
     action: {
-      disabled: themeConfig.colors.dimmedText,
-      disabledBackground: themeConfig.colors.darkLight
+      disabled: themeConfig.colors.dark.text,
+      disabledBackground: themeConfig.colors.dark.highlight
     }
   },
   typography: {
@@ -42,15 +42,16 @@ const theme = createTheme({
     MuiButton: {
       styleOverrides: {
         root: {
-          borderRadius: 10,
-          color: themeConfig.colors.secondary
+          borderRadius: 15,
+          color: themeConfig.colors.secondary,
+          padding: '8px 18px'
         }
       }
     },
     MuiInputLabel: {
       styleOverrides: {
         root: {
-          color: themeConfig.colors.dimmedText
+          color: themeConfig.colors.dark.text
         }
       }
     },
@@ -58,7 +59,7 @@ const theme = createTheme({
       styleOverrides: {
         underline: {
           '&:before': {
-            borderColor: themeConfig.colors.dimmedText
+            borderColor: themeConfig.colors.dark.text
           }
         }
       }
@@ -66,9 +67,9 @@ const theme = createTheme({
     MuiIconButton: {
       styleOverrides: {
         root: {
+          borderRadius: 15,
           '&:hover': {
-            backgroundColor: themeConfig.colors.darkLight,
-            borderRadius: 8
+            backgroundColor: themeConfig.colors.dark.highlight
           }
         }
       }

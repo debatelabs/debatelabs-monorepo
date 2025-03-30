@@ -9,7 +9,7 @@ export type TextButtonProps = Omit<ButtonProps, 'href'>;
 
 const StyledButton = styled(Button)({
   '&:hover': {
-    backgroundColor: themeConfig.colors.darkLight
+    backgroundColor: themeConfig.colors.dark.highlight
   }
 });
 

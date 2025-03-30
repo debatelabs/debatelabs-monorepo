@@ -10,13 +10,13 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
   const { t } = useTranslation();
 
   return (
-    <div>
-      <div className='p-9'>
+    <main className='px-page'>
+      <div className='py-9'>
         <Link href={ROUTES.home}>
           <BackButton>{t('common.backToHomePage')}</BackButton>
         </Link>
       </div>
-      <div className='w-screen min-h-[80vh] flex-center'>{children}</div>
-    </div>
+      <div className='w-full min-h-[80vh] flex-center'>{children}</div>
+    </main>
   );
 }

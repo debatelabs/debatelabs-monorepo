@@ -3,8 +3,8 @@
 import React from 'react';
 import ExternalAuthSection from '../components/ExternalAuthSection';
 import { useTranslation } from 'react-i18next';
-import Link from 'next/link';
 import ROUTES from '~/core/constants/routes';
+import TextLink from '~/core/components/text-link/TextLink';
 
 interface AuthContentProps {
   children: React.ReactElement<HTMLFormElement>;
@@ -17,15 +17,15 @@ export default function AuthContent({ children, type }: AuthContentProps) {
   return (
     <div className='flex-center flex-col gap-14'>
       <div className='flex-center flex-col relative'>
-        <h2 className='bg-dark text-3xl absolute z-10 px-7 -top-5'>
+        <h2 className='bg-dark-main text-3xl absolute z-10 px-7 -top-5'>
           {type && t(`auth.${type}Title`)}
         </h2>
-        <div className='w-[500px] h-fit border-4 border-primary flex-center flex-col rounded-[4px] px-16 py-14'>
+        <div className='w-[500px] h-fit border-4 border-primary-main flex-center flex-col rounded-[4px] px-16 py-14'>
           <div className='w-full flex-center flex-col gap-6'>
             <ExternalAuthSection />
             <div className='flex-center relative w-1/2'>
               <div className='w-full h-[1px] absolute bg-secondary'></div>
-              <span className='bg-dark z-10 relative px-4'>{t('auth.or')}</span>
+              <span className='bg-dark-main z-10 relative px-4'>{t('auth.or')}</span>
             </div>
             {children}
           </div>
@@ -35,12 +35,12 @@ export default function AuthContent({ children, type }: AuthContentProps) {
         <span className='mr-2'>
           {t(`auth.${type === 'login' ? 'noAccount' : 'existingAccount'}`)}
         </span>
-        <Link href={ROUTES[type === 'login' ? 'signup' : 'login']}>
-          <span className='text-primary cursor-pointer'>
-            {type === 'login' && t('auth.signup')}
-            {type === 'signup' && t('auth.login')}
-          </span>
-        </Link>
+        <TextLink
+          href={ROUTES[type === 'login' ? 'signup' : 'login']}
+          className='text-primary-main hover:!text-primary-main'
+        >
+          {type === 'login' ? t('auth.signup') : t('auth.login')}
+        </TextLink>
       </p>
     </div>
   );
