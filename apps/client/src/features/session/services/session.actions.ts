@@ -16,7 +16,6 @@ export const getSessionPayloadFromCookie = createService({
     const sessionCookieValue = cookieStore.get(COOKIES.accessToken);
     if (!sessionCookieValue) throw new Error(ERRORS.cookieNotFound(COOKIES.accessToken));
     const payload = await decodeToken(sessionCookieValue.value);
-    console.log(payload);
     return SessionPayloadSchema.parse(payload);
   },
   log: false
