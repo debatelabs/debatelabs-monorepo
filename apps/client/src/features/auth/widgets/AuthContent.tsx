@@ -1,8 +1,7 @@
 'use client';
 
-import React, { useRef } from 'react';
+import React from 'react';
 import ExternalAuthSection from '../components/ExternalAuthSection';
-import ContainedButton from '~/core/components/buttons/ContainedButton';
 import { useTranslation } from 'react-i18next';
 import Link from 'next/link';
 import ROUTES from '~/core/constants/routes';
@@ -14,15 +13,6 @@ interface AuthContentProps {
 
 export default function AuthContent({ children, type }: AuthContentProps) {
   const { t } = useTranslation();
-  const formRef = useRef<HTMLFormElement>(null);
-
-  const handleSubmitForm = (e: React.MouseEvent) => {
-    e.preventDefault();
-    if (!formRef.current) return;
-    formRef.current.dispatchEvent(
-      new Event('submit', { cancelable: true, bubbles: true })
-    );
-  };
 
   return (
     <div className='flex-center flex-col gap-14'>
@@ -37,13 +27,8 @@ export default function AuthContent({ children, type }: AuthContentProps) {
               <div className='w-full h-[1px] absolute bg-secondary'></div>
               <span className='bg-dark z-10 relative px-4'>{t('auth.or')}</span>
             </div>
-            {React.cloneElement(children, { ref: formRef })}
+            {children}
           </div>
-        </div>
-        <div className='absolute -bottom-[18px] bg-dark px-7'>
-          <ContainedButton onClick={handleSubmitForm}>
-            {type && t(`auth.${type}`)}
-          </ContainedButton>
         </div>
       </div>
       <p>
