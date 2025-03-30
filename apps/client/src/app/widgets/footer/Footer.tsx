@@ -3,9 +3,9 @@ import Image from 'next/image';
 import debatelabsLogo from '~/app/assets/icons/debatelabs-logo.svg';
 import telegramIcon from '~/app/assets/icons/telegram.svg';
 import instagramIcon from '~/app/assets/icons/instagram.svg';
-// import langIcon from '~/app/assets/icons/language.svg';
 import TextLink from '~/core/components/text-link/TextLink';
 import { IconButton } from '@mui/material';
+import { LanguageSelect } from '~/core/components/language-select/LanguageSelect';
 
 export default function Footer() {
   return (
@@ -29,19 +29,19 @@ export default function Footer() {
               </li>
             </ul>
           </div>
-          <div className='flex flex-col justify-end gap-2'>
+          <div className='flex flex-col justify-end'>
             <IconButton sx={{ height: 40, width: 40 }}>
-              <Image src={telegramIcon} alt='Telegram' width={22} />
+              <Image src={telegramIcon} alt='Telegram' width={20} />
             </IconButton>
             <IconButton sx={{ height: 40, width: 40 }}>
-              <Image src={instagramIcon} alt='Instagram' width={22} />
+              <Image src={instagramIcon} alt='Instagram' width={20} />
             </IconButton>
           </div>
         </div>
       </div>
       <div className='w-full h-full flex-center justify-between'>
         <p className='text-sm uppercase'>© 2025 DebateLabs</p>
-        <p>Українська</p>
+        <LanguageSelect />
       </div>
     </footer>
   );

@@ -6,15 +6,36 @@
 @tailwind utilities;
 
 input:-webkit-autofill,
-input:-webkit-autofill:hover, 
-input:-webkit-autofill:focus, 
-input:-webkit-autofill:active{
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
   box-shadow: 0 0 0 1000px #121212 inset !important;
   -webkit-box-shadow: 0 0 0 1000px #121212 inset !important;
   -webkit-text-fill-color: #94cbff !important;
   color: #94cbff !important;
   caret-color: #fff !important;
 }
+
+select {
+  border-radius: 12px;
+  outline: none;
+  background: transparent;
+  appearance: none;
+  width: fit-content;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
+  clip: rect(0, 0, 0, 0);
+  overflow: hidden;
+  white-space: nowrap;
+}
+
 
 .px-page {
   $padding: 7%;

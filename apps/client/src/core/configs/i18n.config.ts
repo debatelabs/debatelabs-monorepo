@@ -6,3 +6,8 @@ export const i18nConfig = {
 export const namespaces = {
   translations: 'translations'
 } as const;
+
+export const languages = {
+  uk: 'Українська',
+  en: 'English'
+};
