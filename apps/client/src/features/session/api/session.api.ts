@@ -6,7 +6,9 @@ const routes = API_ROUTES.auth;
 
 const sessionApi = {
   async refresh() {
-    return apiClient.get<IAccessToken>(routes.refresh);
+    return apiClient.get<IAccessToken>(routes.refresh, {
+      skipAuthCheck: true
+    });
   }
 };
 

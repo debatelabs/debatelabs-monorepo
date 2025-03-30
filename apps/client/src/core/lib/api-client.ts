@@ -7,16 +7,22 @@ import axios, {
 } from 'axios';
 import { BASE_URL } from '~/core/configs/api-url.config';
 import applicationMapper from '~/infrastructure/mappers/application.mapper';
-import { ResponseDTO } from '~/core/types/application.types';
+import { BaseDTO, ResponseDTO } from '~/core/types/application.types';
 import responseMapper from '~/infrastructure/mappers/response.mapper';
-import { store } from '~/core/store/redux/store';
-import { refreshSession } from '~/features/session';
+import { refreshSession, logout } from '~/features/session';
 import logger from '~/core/utils/logger';
-import ERRORS from '../constants/errors';
+import ERRORS from '~/core/constants/errors';
+import ROUTES from '~/core/constants/routes';
+import checkEnvAndRedirectTo from '~/core/utils/env-based-redirect';
 
-interface InternalAxiosRequestConfigExtended extends InternalAxiosRequestConfig {
-  _retry?: boolean;
+interface AxiosRequestConfigExtended extends AxiosRequestConfig {
+  skipAuthCheck?: boolean;
 }
+
+type InternalAxiosRequestConfigExtended = AxiosRequestConfigExtended &
+  InternalAxiosRequestConfig & {
+    _retry?: boolean;
+  };
 
 type ApiClientMethodsReturnType<T> = Promise<ResponseDTO<T>>;
 
@@ -42,30 +48,42 @@ export class ApiClient {
 
   private responseErrorInterceptor = async (error: AxiosError) => {
     if (!error?.response) return Promise.reject(this.appMapper.toFailDTO(error));
-    const response = this.resMapper.toDTO(error.response);
+    let response: ResponseDTO<unknown> | BaseDTO<unknown> = this.resMapper.toDTO(
+      error.response
+    );
 
-    const authResChecked = await this.checkAuthAndRefresh(error, response);
-    const checkSuccess =
-      authResChecked && 'success' in authResChecked && authResChecked.success === true;
-    if (checkSuccess) return authResChecked;
+    const originalRequest = error.config as InternalAxiosRequestConfigExtended;
 
-    return Promise.reject(authResChecked);
+    switch (response.status) {
+      case 401:
+        response = await this.checkAndRefreshAuth(originalRequest, response);
+        if (response && 'success' in response && response.success === true)
+          return response;
+        break;
+    }
+
+    return Promise.reject(response);
   };
 
-  private async checkAuthAndRefresh(error: AxiosError, response: ResponseDTO<unknown>) {
+  private async checkAndRefreshAuth(
+    originalRequest: InternalAxiosRequestConfigExtended,
+    response: ResponseDTO<unknown> | BaseDTO<unknown>
+  ) {
     try {
-      const originalRequest = error.config as InternalAxiosRequestConfigExtended;
+      if (originalRequest._retry || originalRequest.skipAuthCheck) return response;
 
-      if (response.status !== 401 || originalRequest._retry) return response;
       originalRequest._retry = true;
 
-      const { isAuthorized } = store.getState().session;
-      if (!isAuthorized) return response;
-
       const refreshSessionResponse = await refreshSession();
-      if (!refreshSessionResponse.success || !originalRequest) return response;
+      if (!refreshSessionResponse.success || !originalRequest) {
+        await logout();
+        await checkEnvAndRedirectTo(ROUTES.login);
+        return response;
+      }
 
-      return await this.axiosInstance(originalRequest);
+      return (await this.axiosInstance(originalRequest)) as
+        | ResponseDTO<unknown>
+        | BaseDTO<unknown>;
     } catch (err) {
       logger.error(err);
       return this.appMapper.toFailDTO({
@@ -76,7 +94,7 @@ export class ApiClient {
 
   get<T extends object>(
     url: string,
-    config?: AxiosRequestConfig
+    config?: AxiosRequestConfigExtended
   ): ApiClientMethodsReturnType<T> {
     return this.axiosInstance.get(url, config);
   }
@@ -84,7 +102,7 @@ export class ApiClient {
   post<T extends object>(
     url: string,
     data?: unknown,
-    config?: AxiosRequestConfig
+    config?: AxiosRequestConfigExtended
   ): ApiClientMethodsReturnType<T> {
     return this.axiosInstance.post(url, data, config);
   }
@@ -92,7 +110,7 @@ export class ApiClient {
   put<T extends object>(
     url: string,
     data?: unknown,
-    config?: AxiosRequestConfig
+    config?: AxiosRequestConfigExtended
   ): ApiClientMethodsReturnType<T> {
     return this.axiosInstance.put(url, data, config);
   }
@@ -100,14 +118,14 @@ export class ApiClient {
   patch<T extends object>(
     url: string,
     data?: unknown,
-    config?: AxiosRequestConfig
+    config?: AxiosRequestConfigExtended
   ): ApiClientMethodsReturnType<T> {
     return this.axiosInstance.patch(url, data, config);
   }
 
   delete(
     url: string,
-    config?: AxiosRequestConfig
+    config?: AxiosRequestConfigExtended
   ): ApiClientMethodsReturnType<Record<string, unknown>> {
     return this.axiosInstance.delete(url, config);
   }
