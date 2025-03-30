@@ -49,7 +49,7 @@ export default function AuthFormContainer<T extends FieldValues, R = unknown>({
     >
       {React.cloneElement(children, { formHook })}
 
-      <div className='absolute -bottom-[18px] bg-dark px-7'>
+      <div className='absolute -bottom-[18px] bg-dark-main px-7'>
         <ContainedButton type='submit' loading={isSubmitting} loadingPosition='end'>
           {t(`auth.${type}`)}
         </ContainedButton>

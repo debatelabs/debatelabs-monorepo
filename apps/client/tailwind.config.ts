@@ -11,15 +11,10 @@ export default {
     extend: {
       colors: {
         primary: themeConfig.colors.primary,
-        primaryGradient: themeConfig.colors.primaryGradient,
         secondary: themeConfig.colors.secondary,
         dark: themeConfig.colors.dark,
-        darkLighter: themeConfig.colors.darkLighter,
-        darkHighlight: themeConfig.colors.darkHighlight,
         light: themeConfig.colors.light,
-        alert: themeConfig.colors.alert,
-        dimmedScreen: themeConfig.colors.dimmedScreen,
-        dimmedText: themeConfig.colors.dimmedText
+        alert: themeConfig.colors.alert
       },
       fontFamily: {
         namu: [themeConfig.fonts.namu],
