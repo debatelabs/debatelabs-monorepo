@@ -6,7 +6,7 @@ services:
       dockerfile: Dockerfile
     working_dir: /app
     expose:
-      - "3000"
+      - "3090"
     command: /app/shell/start-dev.sh
     volumes:
       - ./apps/client/:/app

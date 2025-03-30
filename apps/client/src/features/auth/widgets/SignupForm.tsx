@@ -1,24 +1,54 @@
 'use client';
 
-import React, { forwardRef, ForwardedRef } from 'react';
-import Input from '~/shared/components/Input';
+import React from 'react';
+import Input from '~/core/components/Input';
 import PasswordInput from '../components/PasswordInput';
 import { useTranslation } from 'react-i18next';
+import { UseFormReturn } from 'react-hook-form';
+import { SignupForm as SignupFormType } from '~/core/types/auth.types';
+import * as authService from '../services/auth.services';
+import createSignupFormSchema from '../validations/signup-form.schema';
+import AuthFormContainer from '../components/AuthFormContainer';
 
-function SignupForm(_props, ref: ForwardedRef<HTMLFormElement>) {
-  const { t } = useTranslation('auth');
+function SignupFormContent({ formHook }: { formHook?: UseFormReturn<SignupFormType> }) {
+  const { t } = useTranslation();
 
-  async function onSubmit(e: React.FormEvent) {
-    e.preventDefault();
-  }
+  if (!formHook) return null;
+
+  const {
+    register,
+    formState: { errors }
+  } = formHook;
 
   return (
-    <form ref={ref} onSubmit={onSubmit} className='w-full flex flex-col gap-4'>
-      <Input label={t('inputs.name')} fullWidth />
-      <Input label={t('inputs.email')} fullWidth />
-      <PasswordInput confirm />
-    </form>
+    <>
+      <Input
+        label={t('auth.inputs.name')}
+        fullWidth
+        {...register('name')}
+        error={!!errors.name?.message}
+        helperText={errors.name?.message}
+      />
+      <Input
+        label={t('auth.inputs.email')}
+        fullWidth
+        {...register('email')}
+        error={!!errors.email?.message}
+        helperText={errors.email?.message}
+      />
+      <PasswordInput formHook={formHook} confirm />
+    </>
   );
 }
 
-export default forwardRef<HTMLFormElement>(SignupForm);
+export default function SignupForm() {
+  return (
+    <AuthFormContainer
+      type='signup'
+      createSchemaFn={createSignupFormSchema}
+      service={authService.signup}
+    >
+      <SignupFormContent />
+    </AuthFormContainer>
+  );
+}

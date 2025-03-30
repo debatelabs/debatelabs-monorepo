@@ -1,10 +1,14 @@
 import common from './common.json';
 import auth from './auth.json';
-import { LocaleNamespaces } from '~/core/configs/i18n.config';
+import validation from './validation.json';
+import { LocaleNamespaces } from '~/core/types/i18n.types';
 
 const en = {
-  common,
-  auth
+  translations: {
+    common,
+    auth,
+    validation
+  }
 } satisfies LocaleNamespaces;
 
 export default en;

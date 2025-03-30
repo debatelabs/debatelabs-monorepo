@@ -1,23 +1,47 @@
 'use client';
 
-import React, { forwardRef, ForwardedRef } from 'react';
-import Input from '~/shared/components/Input';
+import React from 'react';
+import Input from '~/core/components/Input';
 import PasswordInput from '../components/PasswordInput';
 import { useTranslation } from 'react-i18next';
+import { UseFormReturn } from 'react-hook-form';
+import { LoginForm as LoginFormType } from '~/core/types/auth.types';
+import * as authService from '../services/auth.services';
+import createLoginFormSchema from '../validations/login-form.schema';
+import AuthFormContainer from '../components/AuthFormContainer';
 
-function LoginForm(_props, ref: ForwardedRef<HTMLFormElement>) {
-  const { t } = useTranslation('auth');
+function LoginFormContent({ formHook }: { formHook?: UseFormReturn<LoginFormType> }) {
+  const { t } = useTranslation();
 
-  async function onSubmit(e: React.FormEvent) {
-    e.preventDefault();
-  }
+  if (!formHook) return null;
+
+  const {
+    register,
+    formState: { errors }
+  } = formHook;
 
   return (
-    <form ref={ref} onSubmit={onSubmit} className='w-full flex flex-col gap-4'>
-      <Input label={t('inputs.email')} fullWidth />
-      <PasswordInput />
-    </form>
+    <>
+      <Input
+        label={t('auth.inputs.email')}
+        fullWidth
+        {...register('email')}
+        error={!!errors.email?.message}
+        helperText={errors.email?.message}
+      />
+      <PasswordInput formHook={formHook} />
+    </>
   );
 }
 
-export default forwardRef<HTMLFormElement>(LoginForm);
+export default function LoginForm() {
+  return (
+    <AuthFormContainer
+      type='login'
+      createSchemaFn={createLoginFormSchema}
+      service={authService.login}
+    >
+      <LoginFormContent />
+    </AuthFormContainer>
+  );
+}

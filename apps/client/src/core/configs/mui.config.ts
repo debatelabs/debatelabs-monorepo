@@ -22,6 +22,10 @@ const theme = createTheme({
     text: {
       primary: themeConfig.colors.secondary,
       secondary: themeConfig.colors.primary
+    },
+    action: {
+      disabled: themeConfig.colors.dimmedText,
+      disabledBackground: themeConfig.colors.darkLight
     }
   },
   typography: {

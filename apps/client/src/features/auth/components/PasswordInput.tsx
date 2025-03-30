@@ -1,22 +1,34 @@
+'use client';
+
 import React, { useState } from 'react';
-import Input from '~/shared/components/Input';
+import Input from '~/core/components/Input';
 import { IconButton, InputAdornment } from '@mui/material';
-import eyeIcon from '~/core/assets/icons/eye.svg';
-import closedEyeIcon from '~/core/assets/icons/closed-eye.svg';
+import eyeIcon from '~/app/assets/icons/eye.svg';
+import closedEyeIcon from '~/app/assets/icons/closed-eye.svg';
 import Image from 'next/image';
 import { useTranslation } from 'react-i18next';
+import { Path, UseFormReturn } from 'react-hook-form';
+import { PasswordFormValues } from '~/core/types/auth.types';
 
 const showPaswIconConfig = {
   alt: 'change visibility',
   size: 25
 };
 
-interface PasswordInputProps {
+interface PasswordInputProps<T extends PasswordFormValues> {
+  formHook: UseFormReturn<T>;
   confirm?: boolean;
 }
 
-export default function PasswordInput({ confirm = false }: PasswordInputProps) {
-  const { t } = useTranslation('auth');
+export default function PasswordInput<T extends PasswordFormValues>({
+  formHook,
+  confirm = false
+}: PasswordInputProps<T>) {
+  const { t } = useTranslation();
+  const {
+    register,
+    formState: { errors }
+  } = formHook;
 
   const [isPaswShown, setIsPaswShown] = useState(false);
   function handleClickShowPassword() {
@@ -26,9 +38,14 @@ export default function PasswordInput({ confirm = false }: PasswordInputProps) {
   return (
     <>
       <Input
+        {...register('password' as Path<T>)}
+        error={!!errors.password?.message}
+        helperText={
+          typeof errors.password?.message === 'string' ? errors.password.message : ''
+        }
         fullWidth
         type={isPaswShown ? 'text' : 'password'}
-        label={t('inputs.password')}
+        label={t('auth.inputs.password')}
         slotProps={{
           input: {
             endAdornment: (
@@ -57,9 +74,16 @@ export default function PasswordInput({ confirm = false }: PasswordInputProps) {
       />
       {confirm && (
         <Input
+          {...register('confirmPassword' as Path<T>)}
           fullWidth
           type={isPaswShown ? 'text' : 'password'}
-          label={t('inputs.confirmPassword')}
+          label={t('auth.inputs.confirmPassword')}
+          error={!!errors.confirmPassword?.message}
+          helperText={
+            typeof errors.confirmPassword?.message === 'string'
+              ? errors.confirmPassword.message
+              : ''
+          }
         />
       )}
     </>

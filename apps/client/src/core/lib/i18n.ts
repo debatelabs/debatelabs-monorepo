@@ -1,6 +1,6 @@
 import { createInstance, i18n as I18nType } from 'i18next';
 import { initReactI18next } from 'react-i18next';
-import { Locale } from '~/shared/types/common.types';
+import { Locale } from '~/core/types/common.types';
 import { i18nConfig, namespaces } from '~/core/configs/i18n.config';
 import resources from '~/core/constants/locales';
 
@@ -23,7 +23,7 @@ export class I18n {
       lng: locale,
       fallbackLng: i18nConfig.defaultLocale,
       ns: Object.values(namespaces),
-      defaultNS: namespaces.common,
+      defaultNS: namespaces.translations,
       supportedLngs: i18nConfig.locales,
       interpolation: {
         escapeValue: false

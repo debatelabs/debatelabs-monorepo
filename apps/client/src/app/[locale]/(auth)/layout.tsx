@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import BackButton from '~/shared/components/buttons/BackButton';
+import BackButton from '~/core/components/buttons/BackButton';
 import { useTranslation } from 'react-i18next';
 import ROUTES from '~/core/constants/routes';
 import Link from 'next/link';
@@ -13,7 +13,7 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
     <div>
       <div className='p-9'>
         <Link href={ROUTES.home}>
-          <BackButton>{t('backToHomePage')}</BackButton>
+          <BackButton>{t('common.backToHomePage')}</BackButton>
         </Link>
       </div>
       <div className='w-screen min-h-[80vh] flex-center'>{children}</div>
