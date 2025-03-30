@@ -14,6 +14,7 @@ const StyledButton = styled(Button)({
   color: themeConfig.colors.dark.main,
   width: '100%',
   minHeight: 55,
+  borderRadius: 16,
   '&:hover': {
     backgroundColor: `${themeConfig.colors.light}d8`
   }

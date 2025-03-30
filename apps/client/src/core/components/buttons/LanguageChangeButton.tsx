@@ -6,8 +6,20 @@ import React, { useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { i18nConfig, languages } from '~/core/configs/i18n.config';
 import { usePathname, useRouter } from 'next/navigation';
+import TextButton from '~/core/components/buttons/TextButton';
+import { styled } from '@mui/material';
 
-export const LanguageSelect = () => {
+const StyledTextButton = styled(TextButton)({
+  position: 'relative',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  gap: '9px',
+  fontSize: '16px',
+  cursor: 'pointer'
+});
+
+export const LanguageChangeButton = () => {
   const { i18n } = useTranslation();
   const router = useRouter();
   const pathname = usePathname();
@@ -23,17 +35,14 @@ export const LanguageSelect = () => {
   };
 
   return (
-    <div
-      className='relative flex-center gap-2 text-base cursor-pointer px-6 py-2.5 hover:bg-dark-highlight rounded-full'
-      onClick={() => selectRef.current?.showPicker()}
-    >
+    <StyledTextButton onClick={() => selectRef.current?.showPicker()}>
       <Image src={langIcon} alt='lang' height={16} />
       <span>{languages[locale]}</span>
 
       <select
-        className='visually-hidden left-[20%]'
+        className='visually-hidden left-[15%]'
         ref={selectRef}
-        defaultValue={locale}
+        value={locale}
         onInput={handleChangeLang}
       >
         {Object.entries(languages).map(([key, value]) => (
@@ -42,6 +51,6 @@ export const LanguageSelect = () => {
           </option>
         ))}
       </select>
-    </div>
+    </StyledTextButton>
   );
 };

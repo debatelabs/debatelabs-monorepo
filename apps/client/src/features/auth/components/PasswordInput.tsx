@@ -53,7 +53,7 @@ export default function PasswordInput<T extends PasswordFormValues>({
               <InputAdornment position='end'>
                 <IconButton
                   onClick={handleClickShowPassword}
-                  sx={{ height: 40, width: 40, borderRadius: '10px !important' }}
+                  sx={{ height: 40, width: 40 }}
                 >
                   {isPaswShown ? (
                     <Image

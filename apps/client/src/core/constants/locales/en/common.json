@@ -1,4 +1,8 @@
 {
   "welcome": "Welcome!",
-  "backToHomePage": "Back to home page"
+  "backToHomePage": "Back to home page",
+  "info": "Information",
+  "aboutUs": "About us",
+  "sponsorship": "Sponsorship",
+  "support": "Support"
 }

@@ -42,9 +42,9 @@ const theme = createTheme({
     MuiButton: {
       styleOverrides: {
         root: {
-          borderRadius: 11,
+          borderRadius: 15,
           color: themeConfig.colors.secondary,
-          padding: '8px 16px'
+          padding: '8px 18px'
         }
       }
     },
@@ -67,7 +67,7 @@ const theme = createTheme({
     MuiIconButton: {
       styleOverrides: {
         root: {
-          borderRadius: 11,
+          borderRadius: 15,
           '&:hover': {
             backgroundColor: themeConfig.colors.dark.highlight
           }
