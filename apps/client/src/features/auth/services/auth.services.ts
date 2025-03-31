@@ -7,8 +7,7 @@ import { createService } from '~/core/utils/create-service';
 export const login = createService({
   fn: async ({ data }: ServiceActionProps<LoginForm>) => {
     const userLoginDTO = userMapper.toLoginDTO(data);
-    const response = await authApi.login(userLoginDTO);
-    return response;
+    return await authApi.login(userLoginDTO);
   }
 });
 
