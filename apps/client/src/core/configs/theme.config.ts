@@ -6,16 +6,16 @@
 const themeConfig = {
   colors: {
     primary: {
-      main: '#6375e8',
+      main: '#6073ec',
       gradient: 'linear-gradient(95deg, #2e46df 7.98%, #586be3 52.47%, #8d99e3 80.33%)'
     },
     secondary: '#ffffff',
     dark: {
-      main: '#121212',
-      lighter: '#1A1A1A',
-      highlight: 'rgba(199, 199, 199, 0.08)',
+      main: '#0f0f10',
+      lighter: '#1c1c1f',
+      highlight: 'rgba(168, 180, 195, 0.08)',
       text: 'rgba(179, 179, 179, 0.5)',
-      textLighter: 'rgba(179,179,179,0.78)'
+      textLighter: '#B3B3B3C7'
     },
     light: '#d9d9d9',
     alert: '#d45058',
