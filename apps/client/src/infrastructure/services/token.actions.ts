@@ -40,6 +40,5 @@ export const checkToken = async ({
 
 export const decodeToken = async (token: string | undefined) => {
   if (!token) throw new Error(ERRORS.undefinedToken);
-  const payload = jose.decodeJwt<SessionPayloadDTO>(token);
-  return payload;
+  return jose.decodeJwt<SessionPayloadDTO>(token);
 };
