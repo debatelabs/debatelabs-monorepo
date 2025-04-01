@@ -15,7 +15,9 @@ const authApi = {
     return apiClient.post<IAccessToken>(routes.signup, data);
   },
 
-  async google() {}
+  async google() {
+    return apiClient.get(routes.google);
+  }
 };
 
 export default authApi;

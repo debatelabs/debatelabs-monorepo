@@ -17,9 +17,3 @@ export const signup = createService({
     return await authApi.signup(userSignupDTO);
   }
 });
-
-export const google = createService({
-  fn: async () => {
-    return {};
-  }
-});
