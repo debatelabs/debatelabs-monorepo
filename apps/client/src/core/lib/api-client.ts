@@ -5,7 +5,7 @@ import axios, {
   AxiosResponse,
   InternalAxiosRequestConfig
 } from 'axios';
-import { BASE_URL } from '~/core/configs/api-url.config';
+import { BASE_URL } from '~/core/constants/api-url';
 import applicationMapper from '~/infrastructure/mappers/application.mapper';
 import { BaseDTO, ResponseDTO } from '~/core/types/application.types';
 import responseMapper from '~/infrastructure/mappers/response.mapper';

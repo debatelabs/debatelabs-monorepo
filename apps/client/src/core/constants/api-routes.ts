@@ -1,11 +1,14 @@
-const API_ROUTES = {
+import { BASE_URL } from '~/core/constants/api-url';
+
+export const API_ROUTES = {
   example: '/example',
   auth: {
     login: '/auth/login',
     signup: '/auth/register',
-    refresh: '/auth/refresh',
-    google: '/auth/google'
+    refresh: '/auth/refresh'
   }
 };
 
-export default API_ROUTES;
+export const GOOGLE_API_ROUTES = {
+  auth: `${BASE_URL}/auth/google`
+};

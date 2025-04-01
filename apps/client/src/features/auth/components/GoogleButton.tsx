@@ -6,7 +6,7 @@ import googleIcon from '~/app/assets/icons/google.svg';
 import { Button, ButtonProps, styled } from '@mui/material';
 import themeConfig from '~/core/configs/theme.config';
 import { useTranslation } from 'react-i18next';
-import authApi from '~/features/auth/api/auth.api';
+import { GOOGLE_API_ROUTES } from '~/core/constants/api-routes';
 
 const googleIconSize = 32;
 
@@ -25,7 +25,7 @@ export default function GoogleButton({ ...props }: ButtonProps) {
   const { t } = useTranslation();
 
   const handleClick = async () => {
-    await authApi.google();
+    window.location.replace(GOOGLE_API_ROUTES.auth);
   };
 
   return (
