@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "user_device" ALTER COLUMN "access_token" SET DATA TYPE VARCHAR(1000),
+ALTER COLUMN "refresh_token" SET DATA TYPE VARCHAR(1000);

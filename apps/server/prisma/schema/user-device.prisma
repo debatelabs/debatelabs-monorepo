@@ -2,8 +2,8 @@ model UserDevice {
   id           Int      @id @default(autoincrement())
   details      Json?
   ipAddress    String   @default("unknown") @map("ip_address") @db.VarChar(100)
-  accessToken  String?  @map("access_token") @db.VarChar(256)
-  refreshToken String?  @map("refresh_token") @db.VarChar(256)
+  accessToken  String?  @map("access_token") @db.VarChar(1000)
+  refreshToken String?  @map("refresh_token") @db.VarChar(1000)
   createdAt    DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
   updatedAt    DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
