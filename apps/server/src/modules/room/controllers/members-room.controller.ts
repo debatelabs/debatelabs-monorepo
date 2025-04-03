@@ -25,7 +25,7 @@ import { AcceptLinkResponse } from '../swagger/invite-link.response';
 import { Lang } from '../../../common/decorator/lang.decorator';
 
 @ApiTags('Room')
-@Controller('room')
+@Controller('room/member')
 export class MembersRoomController {
   constructor(private membersRoomService: MembersRoomService) {}
 

@@ -32,7 +32,7 @@ import { RoomResponse } from '../swagger/room.response';
 import { RoomUpdateDto } from '../dto/room.update.dto';
 import { Lang } from '../../../common/decorator/lang.decorator';
 import { Language } from '../../../common/enum/language.enum';
-import { RoomsResponse } from '../swagger/rooms.response';
+import { OneRoomResponse, RoomsResponse } from '../swagger/rooms.response';
 import { QuerySearchDto } from '../../../common/dto/query-search.dto';
 
 @ApiTags('Room')
@@ -46,7 +46,7 @@ export class CrudRoomController {
   })
   @ApiOkResponse({
     description: 'Successfully created room',
-    type: RoomResponse,
+    type: OneRoomResponse,
   })
   @ApiBearerAuth()
   @ApiUnauthorizedResponse({
@@ -79,14 +79,15 @@ export class CrudRoomController {
   @ApiForbiddenResponse({
     description: AuthErrorMessage[Language.EN].USER_BLOCKED,
   })
-  @Get('/:id')
+  @Get('/:roomId')
   @HttpCode(HttpStatus.OK)
   async getById(
     @Req() req: ProtectReqType,
-    @Param('id', new JoiPipe(Joi.string().uuid().required())) id: string,
+    @Param('roomId', new JoiPipe(Joi.string().uuid().required()))
+    roomId: string,
     @Lang() lang: Language,
   ): Promise<Room> {
-    return this.roomService.getById(req.user, id, lang);
+    return this.roomService.getById(req.user, roomId, lang);
   }
 
   @ApiOperation({
@@ -121,7 +122,7 @@ export class CrudRoomController {
   })
   @ApiOkResponse({
     description: 'Successfully updated room',
-    type: RoomResponse,
+    type: OneRoomResponse,
   })
   @ApiBearerAuth()
   @ApiUnauthorizedResponse({
@@ -130,15 +131,16 @@ export class CrudRoomController {
   @ApiForbiddenResponse({
     description: AuthErrorMessage[Language.EN].USER_BLOCKED,
   })
-  @Patch('/:id')
+  @Patch('/:roomId')
   @HttpCode(HttpStatus.OK)
   async update(
     @Req() req: ProtectReqType,
-    @Param('id', new JoiPipe(Joi.string().uuid().required())) id: string,
+    @Param('roomId', new JoiPipe(Joi.string().uuid().required()))
+    roomId: string,
     @Body(JoiPipe) body: RoomUpdateDto,
     @Lang() lang: Language,
   ): Promise<Room> {
-    return this.roomService.update(req.user, id, body, lang);
+    return this.roomService.update(req.user, roomId, body, lang);
   }
 
   @ApiOperation({
@@ -155,13 +157,14 @@ export class CrudRoomController {
   @ApiForbiddenResponse({
     description: AuthErrorMessage[Language.EN].USER_BLOCKED,
   })
-  @Delete('/:id')
+  @Delete('/:roomId')
   @HttpCode(HttpStatus.NO_CONTENT)
   async deleteById(
     @Req() req: ProtectReqType,
-    @Param('id', new JoiPipe(Joi.string().uuid().required())) id: string,
+    @Param('roomId', new JoiPipe(Joi.string().uuid().required()))
+    roomId: string,
     @Lang() lang: Language,
   ): Promise<void> {
-    return this.roomService.deleteById(req.user, id, lang);
+    return this.roomService.deleteById(req.user, roomId, lang);
   }
 }

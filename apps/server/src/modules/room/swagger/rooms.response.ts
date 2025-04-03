@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { RoomStatus, RoomType } from '@prisma/client';
 
-class RoomResponse {
+export class OneRoomResponse {
   @ApiProperty({
     example: '50e68e75-aa0b-4f59-a592-c6424864aba6',
     type: String,
@@ -61,9 +61,9 @@ class RoomResponse {
 
 export class RoomsResponse {
   @ApiProperty({
-    type: [RoomResponse],
+    type: [OneRoomResponse],
   })
-  data: RoomResponse[];
+  data: OneRoomResponse[];
 
   @ApiProperty({
     example: 10,

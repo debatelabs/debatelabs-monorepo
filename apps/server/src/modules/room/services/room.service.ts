@@ -17,22 +17,6 @@ export class RoomService {
 
   async create(user: TUserAuth, body: RoomCreateDto): Promise<Room> {
     return this.prisma.$transaction(async (tx) => {
-      // await tx.roomUser.create({
-      //   data: {
-      //     user: {
-      //       connect: {
-      //         id: user.id,
-      //       },
-      //     },
-      //     room: {
-      //       connect: {
-      //         id: newRoom.id,
-      //       },
-      //     },
-      //     isJudge: false,
-      //   },
-      // });
-
       return await tx.room.create({
         data: {
           ...body,
@@ -205,7 +189,7 @@ export class RoomService {
     return;
   }
 
-  private async getByIdUserOwner(
+  async getByIdUserOwner(
     userId: number,
     roomId: string,
     lang: Language,
