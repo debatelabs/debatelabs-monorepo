@@ -1,10 +1,10 @@
 import React from 'react';
 import localFont from 'next/font/local';
-import { mainMetadata } from '~/core/constants/metadata/main';
-import '~/core/styles/globals.scss';
+import { mainMetadata } from '~/shared/config/constants/metadata/main';
+import '~/shared/ui/styles/globals.scss';
 import AppProvider from '~/app/[locale]/provider';
-import { Locale } from '~/core/types/common.types';
-import Footer from '~/app/widgets/footer/Footer';
+import { Locale } from '~/shared/model/types/common.types';
+import Footer from '~/widgets/footer/Footer';
 
 const namu = localFont({
   src: '../assets/fonts/NAMU-1850.ttf',

@@ -2,11 +2,11 @@
 
 import React from 'react';
 import Image from 'next/image';
-import googleIcon from '~/app/assets/icons/google.svg';
+import googleIcon from '~/shared/ui/assets/icons/google.svg';
 import { Button, ButtonProps, styled } from '@mui/material';
-import themeConfig from '~/core/configs/theme.config';
+import themeConfig from '~/shared/config/app/theme.config';
 import { useTranslation } from 'react-i18next';
-import { GOOGLE_API_ROUTES } from '~/core/constants/api-routes';
+import { GOOGLE_API_ROUTES } from '~/shared/config/constants/api-routes';
 
 const googleIconSize = 32;
 

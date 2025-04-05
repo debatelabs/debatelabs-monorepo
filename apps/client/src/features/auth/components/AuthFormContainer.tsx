@@ -5,12 +5,12 @@ import { useTranslation } from 'react-i18next';
 import { FieldValues, useForm, UseFormReturn } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';
-import ROUTES from '~/core/constants/routes';
-import ContainedButton from '~/core/components/buttons/ContainedButton';
+import ROUTES from '~/shared/config/constants/routes';
+import ContainedButton from '~/shared/ui/components/buttons/ContainedButton';
 import { TFunction } from 'i18next';
 import * as z from 'zod';
-import { BaseDTO } from '~/core/types/application.types';
-import { ServiceActionProps } from '~/core/types/common.types';
+import { BaseDTO } from '~/shared/model/types/application.types';
+import { ServiceActionProps } from '~/shared/model/types/common.types';
 
 interface AuthFormContainerProps<T extends FieldValues, R = unknown> {
   type: 'login' | 'signup';

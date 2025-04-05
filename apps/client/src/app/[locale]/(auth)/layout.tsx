@@ -1,9 +1,9 @@
 'use client';
 
 import React from 'react';
-import BackButton from '~/core/components/buttons/BackButton';
+import BackButton from '~/shared/ui/components/buttons/BackButton';
 import { useTranslation } from 'react-i18next';
-import ROUTES from '~/core/constants/routes';
+import ROUTES from '~/shared/config/constants/routes';
 import Link from 'next/link';
 
 export default function AuthLayout({ children }: { children: React.ReactNode }) {

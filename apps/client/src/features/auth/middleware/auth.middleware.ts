@@ -1,11 +1,11 @@
 'use server';
 
 import { NextRequest, NextResponse } from 'next/server';
-import ROUTES, { AUTH_ROUTES, PUBLIC_ROUTES } from '~/core/constants/routes';
-import { checkToken } from '~/infrastructure/services/token.actions';
-import { RedirectThrowable } from '~/core/types/common.types';
-import COOKIES from '~/core/constants/cookies';
-import { i18nConfig } from '~/core/configs/i18n.config';
+import ROUTES, { AUTH_ROUTES, PUBLIC_ROUTES } from '~/shared/config/constants/routes';
+import { checkToken } from '~/shared/model/services/token.actions';
+import { RedirectThrowable } from '~/shared/model/types/common.types';
+import COOKIES from '~/shared/config/constants/cookies';
+import { i18nConfig } from '~/shared/config/app/i18n.config';
 
 function getPathname(req: NextRequest) {
   const pathname = req.nextUrl.pathname;

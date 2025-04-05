@@ -1,6 +1,6 @@
-import apiClient from '~/core/lib/api-client';
-import { IAccessToken } from '~/core/types/auth.types';
-import { API_ROUTES } from '~/core/constants/api-routes';
+import apiClient from '~/shared/lib/api-client';
+import { IAccessToken } from '~/shared/model/types/token.types';
+import { API_ROUTES } from '~/shared/config/constants/api-routes';
 
 const routes = API_ROUTES.auth;
 

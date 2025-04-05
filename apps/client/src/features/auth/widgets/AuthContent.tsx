@@ -3,8 +3,8 @@
 import React from 'react';
 import ExternalAuthSection from '../components/ExternalAuthSection';
 import { useTranslation } from 'react-i18next';
-import ROUTES from '~/core/constants/routes';
-import TextLink from '~/core/components/text-link/TextLink';
+import ROUTES from '~/shared/config/constants/routes';
+import TextLink from '~/shared/ui/components/text-link/TextLink';
 
 interface AuthContentProps {
   children: React.ReactElement<HTMLFormElement>;
