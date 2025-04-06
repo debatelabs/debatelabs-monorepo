@@ -14,7 +14,7 @@ export default function Footer() {
   const { t } = useTranslation();
 
   return (
-    <footer className='w-screen min-h-40 bg-dark-lighter px-page pt-12 pb-16 flex flex-col gap-14'>
+    <footer className='w-screen min-h-40 bg-dark-lighter px-public-page pt-12 pb-16 flex flex-col gap-14'>
       <div className='w-full h-full flex justify-between'>
         <div>
           <Image src={debatelabsLogo} alt='DebateLabs' width={105} />

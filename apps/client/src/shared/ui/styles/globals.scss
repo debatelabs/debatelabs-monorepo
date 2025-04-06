@@ -37,7 +37,7 @@ select {
 }
 
 
-.px-page {
+.px-public-page {
   $padding: 7%;
   padding-left: $padding;
   padding-right: $padding;
@@ -47,4 +47,10 @@ select {
     padding-left: $padding;
     padding-right: $padding;
   }
+}
+
+.px-app-page {
+  $padding: 3%;
+  padding-left: $padding;
+  padding-right: $padding;
 }

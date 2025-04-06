@@ -1,12 +1,8 @@
 import type { Config } from 'tailwindcss';
-import themeConfig from '~/shared/config/app/theme.config';
+import themeConfig from './src/shared/config/app/theme.config';
 
 export default {
-  content: [
-    './src/app/**/*.{js,ts,jsx,tsx,mdx}',
-    './src/core/**/*.{js,ts,jsx,tsx,mdx}',
-    './src/features/**/*.{js,ts,jsx,tsx,mdx}'
-  ],
+  content: ['./src/**/*.{js,ts,jsx,tsx,mdx}'],
   theme: {
     extend: {
       colors: {
