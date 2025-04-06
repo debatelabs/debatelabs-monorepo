@@ -6,10 +6,10 @@ import React, { useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { i18nConfig, languages } from '~/shared/config/app/i18n.config';
 import { usePathname, useRouter } from 'next/navigation';
-import TextButton from '~/shared/ui/components/buttons/TextButton';
+import TransparentButton from '~/shared/ui/components/buttons/TransparentButton';
 import { styled } from '@mui/material';
 
-const StyledTextButton = styled(TextButton)({
+const StyledTextButton = styled(TransparentButton)({
   position: 'relative',
   display: 'flex',
   alignItems: 'center',

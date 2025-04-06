@@ -1,13 +1,15 @@
 import React from 'react';
 import leftArrowIcon from '~/shared/ui/assets/icons/left-arrow.svg';
 import Image from 'next/image';
-import TextButton, { TextButtonProps } from '~/shared/ui/components/buttons/TextButton';
+import TransparentButton, {
+  TextButtonProps
+} from '~/shared/ui/components/buttons/TransparentButton';
 
 const leftArrowIconSize = 28;
 
 export default function BackButton({ ...props }: TextButtonProps) {
   return (
-    <TextButton
+    <TransparentButton
       startIcon={
         <Image
           src={leftArrowIcon}
@@ -19,6 +21,6 @@ export default function BackButton({ ...props }: TextButtonProps) {
       {...props}
     >
       {props.children}
-    </TextButton>
+    </TransparentButton>
   );
 }

@@ -13,7 +13,7 @@ const StyledButton = styled(Button)({
   }
 });
 
-export default function TextButton(props: TextButtonProps) {
+export default function TransparentButton(props: TextButtonProps) {
   return (
     <StyledButton {...props} disableElevation variant='text'>
       {props.children}
