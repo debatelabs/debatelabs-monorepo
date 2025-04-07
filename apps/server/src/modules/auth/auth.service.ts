@@ -68,6 +68,7 @@ export class AuthService {
         role: newUser.role,
         name,
         avatar: null,
+        email: newUser.email,
       },
       userAgent,
       ipAddress,
@@ -90,6 +91,7 @@ export class AuthService {
         id: true,
         avatar: true,
         password: true,
+        email: true,
         name: true,
         role: true,
         isBlocked: true,
@@ -133,6 +135,7 @@ export class AuthService {
         avatar: true,
         name: true,
         role: true,
+        email: true,
       },
     });
 
@@ -151,6 +154,7 @@ export class AuthService {
           role: true,
           avatar: true,
           name: true,
+          email: true,
         },
       });
     }
