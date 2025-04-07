@@ -9,6 +9,7 @@ import TextLink from '~/shared/ui/components/text-link/TextLink';
 import { IconButton } from '@mui/material';
 import { LanguageChangeButton } from '~/shared/ui/components/buttons/LanguageChangeButton';
 import { useTranslation } from 'react-i18next';
+import ROUTES from '~/shared/config/constants/routes';
 
 export default function Footer() {
   const { t } = useTranslation();
@@ -24,13 +25,13 @@ export default function Footer() {
             <h3 className='text-xl'>{t('common.info')}</h3>
             <ul className='flex flex-col gap-2 mt-6 text-base'>
               <li>
-                <TextLink href='#'>{t('common.aboutUs')}</TextLink>
+                <TextLink href={ROUTES.about}>{t('common.aboutUs')}</TextLink>
               </li>
               <li>
-                <TextLink href='#'>{t('common.sponsorship')}</TextLink>
+                <TextLink href={ROUTES.sponsorship}>{t('common.sponsorship')}</TextLink>
               </li>
               <li>
-                <TextLink href='#'>{t('common.support')}</TextLink>
+                <TextLink href={ROUTES.contacts}>{t('common.contacts')}</TextLink>
               </li>
             </ul>
           </div>

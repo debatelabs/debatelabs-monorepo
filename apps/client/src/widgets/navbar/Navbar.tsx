@@ -24,7 +24,7 @@ function Navbar() {
     <nav className='flex flex-col w-[90px] gap-10'>
       <div className='h-app-header flex-center'>
         <TransparentButton sx={{ height: 50 }}>
-          <Image src={menuIcon} alt='menu' width={25} height={25} />
+          <Image src={menuIcon} alt='menu' width={25} />
         </TransparentButton>
       </div>
       <div className='flex-center flex-col gap-8'>

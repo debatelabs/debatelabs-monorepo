@@ -50,9 +50,9 @@ function NavbarItem({ title, href, icon, filledIcon, onClick }: NavbarItemProps)
           onClick={onClick}
         >
           {filledIcon && isActive ? (
-            <Image src={filledIcon} alt={title.toLowerCase()} width={25} height={25} />
+            <Image src={filledIcon} alt={title.toLowerCase()} width={25} />
           ) : (
-            <Image src={icon} alt={title.toLowerCase()} width={25} height={25} />
+            <Image src={icon} alt={title.toLowerCase()} width={25} />
           )}
         </TransparentButton>
       </Link>

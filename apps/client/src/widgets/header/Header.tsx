@@ -30,7 +30,7 @@ function Header({ profilePopup }: HeaderProps) {
     <header className='flex items-center justify-between h-app-header'>
       <div className='relative bottom-[1px]'>
         <Link href={ROUTES.about}>
-          <Image src={logo} alt='debatelabs' height={42} />
+          <Image src={logo} alt='debatelabs' height={42} priority />
         </Link>
       </div>
       <div className='flex-center relative'>
