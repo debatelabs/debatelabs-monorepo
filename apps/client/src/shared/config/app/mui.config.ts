@@ -17,7 +17,7 @@ const theme = createTheme({
     },
     background: {
       default: themeConfig.colors.dark.main,
-      paper: themeConfig.colors.dark.main
+      paper: themeConfig.colors.paper.main
     },
     text: {
       primary: themeConfig.colors.secondary,
@@ -78,8 +78,8 @@ const theme = createTheme({
       styleOverrides: {
         tooltip: {
           borderRadius: 8,
-          backgroundColor: themeConfig.colors.popup.main,
-          border: `1px solid ${themeConfig.colors.popup.border}`
+          backgroundColor: themeConfig.colors.paper.main,
+          border: `1px solid ${themeConfig.colors.paper.border}`
         }
       }
     }

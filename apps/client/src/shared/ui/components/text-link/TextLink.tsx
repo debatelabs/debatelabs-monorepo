@@ -13,7 +13,7 @@ export default function TextLink({
   return (
     <Link
       href={href}
-      className={`hover:underline underline-offset-8 text-dark-textLighter hover:text-secondary ${className || ''}`}
+      className={`hover:underline underline-offset-8 text-dark-lighter-text hover:text-secondary ${className || ''}`}
     >
       {children}
     </Link>

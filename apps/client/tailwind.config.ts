@@ -10,7 +10,9 @@ export default {
         secondary: themeConfig.colors.secondary,
         dark: themeConfig.colors.dark,
         light: themeConfig.colors.light,
-        alert: themeConfig.colors.alert
+        alert: themeConfig.colors.alert,
+        highlight: themeConfig.colors.highlight,
+        paper: themeConfig.colors.paper
       },
       fontFamily: {
         namu: [themeConfig.fonts.namu],

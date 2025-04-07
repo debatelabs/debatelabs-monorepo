@@ -36,7 +36,7 @@ export const LanguageChangeButton = () => {
 
   return (
     <StyledTextButton onClick={() => selectRef.current?.showPicker()}>
-      <Image src={langIcon} alt='lang' height={16} />
+      <Image src={langIcon} alt='change language' height={16} />
       <span>{languages[locale]}</span>
 
       <select

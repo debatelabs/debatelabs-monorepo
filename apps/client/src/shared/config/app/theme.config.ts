@@ -13,19 +13,22 @@ const themeConfig = {
     dark: {
       main: '#0f0f10',
       text: 'rgba(179, 179, 179, 0.5)',
-      lighter: '#1c1c1f',
-      textLighter: '#B3B3B3C7'
+      lighter: {
+        main: '#1c1c1f',
+        text: '#B3B3B3C7',
+        border: '#2d2d33'
+      }
     },
     highlight: {
       main: 'rgba(168, 180, 195, 0.08)',
       nav: 'rgba(85,105,230,0.18)'
     },
-    popup: {
+    paper: {
       main: '#2d2d33',
       border: '#41414a'
     },
     light: '#d9d9d9',
-    alert: '#d45058',
+    alert: '#C22D21',
     dimmed: {
       screen: 'rgba(0, 0, 0, 0.2)'
     }

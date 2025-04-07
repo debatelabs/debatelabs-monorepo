@@ -13,5 +13,8 @@
   "room": {
     "join": "Join the room",
     "create": "Create a room"
-  }
+  },
+  "toPersonalDashboard": "Go to personal dashboard",
+  "editProfile": "Edit profile",
+  "logout": "Log out"
 }
