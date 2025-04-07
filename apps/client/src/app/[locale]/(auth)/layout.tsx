@@ -12,9 +12,9 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
 
   return (
     <>
-      <main className='px-public-page'>
+      <main className='px-public-page min-h-screen'>
         <div className='py-9'>
-          <Link href={ROUTES.home}>
+          <Link href={ROUTES.about}>
             <BackButton>{t('common.backToHomePage')}</BackButton>
           </Link>
         </div>

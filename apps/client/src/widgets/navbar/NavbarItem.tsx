@@ -19,8 +19,8 @@ const defaultButtonStyles: SxProps = {
 
 const activeButtonStyles: SxProps = {
   ...defaultButtonStyles,
-  backgroundColor: themeConfig.colors.popup.main,
-  border: `1px solid ${themeConfig.colors.popup.border}`,
+  backgroundColor: themeConfig.colors.paper.main,
+  border: `1px solid ${themeConfig.colors.paper.border}`,
   pointerEvents: 'none'
 };
 
@@ -50,9 +50,9 @@ function NavbarItem({ title, href, icon, filledIcon, onClick }: NavbarItemProps)
           onClick={onClick}
         >
           {filledIcon && isActive ? (
-            <Image src={filledIcon} alt={title.toLowerCase()} width={25} height={25} />
+            <Image src={filledIcon} alt={title.toLowerCase()} width={25} />
           ) : (
-            <Image src={icon} alt={title.toLowerCase()} width={25} height={25} />
+            <Image src={icon} alt={title.toLowerCase()} width={25} />
           )}
         </TransparentButton>
       </Link>

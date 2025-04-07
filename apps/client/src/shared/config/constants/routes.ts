@@ -5,7 +5,8 @@ export const AUTH_ROUTES = {
 
 export const PUBLIC_ROUTES = {
   about: '/about',
-  contacts: '/contacts'
+  contacts: '/contacts',
+  sponsorship: '/sponsorship'
 };
 
 const PROTECTED_ROUTES = {

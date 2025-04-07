@@ -9,12 +9,13 @@ import TextLink from '~/shared/ui/components/text-link/TextLink';
 import { IconButton } from '@mui/material';
 import { LanguageChangeButton } from '~/shared/ui/components/buttons/LanguageChangeButton';
 import { useTranslation } from 'react-i18next';
+import ROUTES from '~/shared/config/constants/routes';
 
 export default function Footer() {
   const { t } = useTranslation();
 
   return (
-    <footer className='w-screen min-h-40 bg-dark-lighter px-public-page pt-12 pb-16 flex flex-col gap-14'>
+    <footer className='w-screen min-h-40 bg-dark-lighter-main px-public-page pt-12 pb-16 flex flex-col gap-14'>
       <div className='w-full h-full flex justify-between'>
         <div>
           <Image src={debatelabsLogo} alt='DebateLabs' width={105} />
@@ -24,13 +25,13 @@ export default function Footer() {
             <h3 className='text-xl'>{t('common.info')}</h3>
             <ul className='flex flex-col gap-2 mt-6 text-base'>
               <li>
-                <TextLink href='#'>{t('common.aboutUs')}</TextLink>
+                <TextLink href={ROUTES.about}>{t('common.aboutUs')}</TextLink>
               </li>
               <li>
-                <TextLink href='#'>{t('common.sponsorship')}</TextLink>
+                <TextLink href={ROUTES.sponsorship}>{t('common.sponsorship')}</TextLink>
               </li>
               <li>
-                <TextLink href='#'>{t('common.support')}</TextLink>
+                <TextLink href={ROUTES.contacts}>{t('common.contacts')}</TextLink>
               </li>
             </ul>
           </div>
@@ -45,7 +46,7 @@ export default function Footer() {
         </div>
       </div>
       <div className='w-full h-full flex-center justify-between'>
-        <p className='text-dark-textLighter text-xs uppercase'>© 2025 DebateLabs</p>
+        <p className='text-dark-lighter-text text-xs uppercase'>© 2025 DebateLabs</p>
         <LanguageChangeButton />
       </div>
     </footer>

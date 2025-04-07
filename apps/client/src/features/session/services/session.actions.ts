@@ -27,7 +27,9 @@ export const logout = async () => {
     cookieStore.delete(COOKIES.accessToken);
     cookieStore.delete(COOKIES.refreshToken);
     store.dispatch(setSession(null));
+    return true;
   } catch (err) {
     logger.error(err);
+    return false;
   }
 };

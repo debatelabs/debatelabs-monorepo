@@ -24,11 +24,11 @@ function Navbar() {
     <nav className='flex flex-col w-[90px] gap-10'>
       <div className='h-app-header flex-center'>
         <TransparentButton sx={{ height: 50 }}>
-          <Image src={menuIcon} alt='menu' width={25} height={25} />
+          <Image src={menuIcon} alt='menu' width={25} />
         </TransparentButton>
       </div>
       <div className='flex-center flex-col gap-8'>
-        <div className='flex-center flex-col gap-1'>
+        <section className='flex-center flex-col gap-1'>
           <NavbarItem
             href={ROUTES.home}
             title={t('common.nav.home')}
@@ -47,12 +47,12 @@ function Navbar() {
             icon={settingsIcon}
             filledIcon={settingsIconFilled}
           />
-        </div>
+        </section>
         <div className='h-[1px] w-1/4 bg-dark-text'></div>
-        <div className='flex-center flex-col gap-1'>
+        <section className='flex-center flex-col gap-1'>
           <NavbarItem title={t('common.room.join')} icon={joinRoomIcon} />
           <NavbarItem title={t('common.room.create')} icon={createRoomIcon} />
-        </div>
+        </section>
       </div>
     </nav>
   );

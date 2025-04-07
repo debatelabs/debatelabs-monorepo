@@ -18,8 +18,8 @@ export const refreshSession = async (): Promise<BaseDTO<SessionPayloadDTO | null
       return SessionPayloadSchema.parse(payload);
     },
     errorFn: async () => {
-      await logout();
-      await checkEnvAndRedirectTo(ROUTES.login);
+      const success = await logout();
+      if (success) await checkEnvAndRedirectTo(ROUTES.login);
     }
   });
   const response = await updateToken();
