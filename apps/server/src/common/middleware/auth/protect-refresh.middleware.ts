@@ -43,6 +43,7 @@ export class ProtectRefreshMiddleware
       select: {
         id: true,
         avatar: true,
+        email: true,
         isBlocked: true,
         role: true,
         devices: true,
@@ -55,7 +56,7 @@ export class ProtectRefreshMiddleware
         HttpStatus.UNAUTHORIZED,
         AuthErrorMessage[lang].TOKEN_UNAUTHORIZED,
       );
-    const { isBlocked, devices, ...userr } = user;
+    const { isBlocked, devices, ...user_t } = user;
     if (isBlocked)
       throw new CustomExceptionUtil(
         HttpStatus.FORBIDDEN,
@@ -69,7 +70,7 @@ export class ProtectRefreshMiddleware
         AuthErrorMessage[lang].TOKEN_UNAUTHORIZED,
       );
 
-    req.user = { ...userr, deviceId: device.id };
+    req.user = { ...user_t, deviceId: device.id };
     req.device = device;
     next();
   }
