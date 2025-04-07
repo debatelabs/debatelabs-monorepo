@@ -14,7 +14,7 @@ function Avatar({ className = '' }: AvatarProps) {
 
   return payload ? (
     <div
-      className={`rounded-full  bg-paper-main h-[43px] aspect-square flex-center ${className}`}
+      className={`rounded-full  bg-paper-main h-[40px] aspect-square flex-center ${className}`}
     >
       <span className='relative bottom-[1px]'>
         {payload?.name.slice(0, 1).toUpperCase()}

@@ -75,8 +75,8 @@ export class ApiClient {
 
       const refreshSessionResponse = await sessionEvents.emitRefreshSession();
       if (!refreshSessionResponse?.success || !originalRequest) {
-        await sessionEvents.emitLogout();
-        await checkEnvAndRedirectTo(ROUTES.login);
+        const success = await sessionEvents.emitLogout();
+        if (success) await checkEnvAndRedirectTo(ROUTES.login);
         return response;
       }
 

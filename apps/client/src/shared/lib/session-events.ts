@@ -2,7 +2,7 @@ import { BaseDTO } from '~/shared/model/types/application.types';
 
 interface SessionEvents {
   onRefreshSession: () => Promise<BaseDTO<unknown>>;
-  onLogout: () => Promise<void>;
+  onLogout: () => Promise<boolean>;
 }
 
 const defaultHandlers: SessionEvents = {
@@ -13,8 +13,9 @@ const defaultHandlers: SessionEvents = {
       data: null
     };
   },
-  onLogout: async (): Promise<void> => {
+  onLogout: async (): Promise<boolean> => {
     console.warn('No handler registered for logout event');
+    return false;
   }
 };
 
