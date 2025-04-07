@@ -1,12 +1,23 @@
-const ROUTES = {
-  home: '/',
+export const AUTH_ROUTES = {
   login: '/login',
-  signup: '/signup',
-  landing: '/landing'
+  signup: '/signup'
 };
 
-export const AUTH_ROUTES = [ROUTES.login, ROUTES.signup];
+export const PUBLIC_ROUTES = {
+  about: '/about',
+  contacts: '/contacts'
+};
 
-export const PUBLIC_ROUTES = [ROUTES.landing];
+const PROTECTED_ROUTES = {
+  home: '/',
+  dashboard: '/dashboard',
+  settings: '/settings'
+};
+
+const ROUTES = {
+  ...AUTH_ROUTES,
+  ...PUBLIC_ROUTES,
+  ...PROTECTED_ROUTES
+};
 
 export default ROUTES;

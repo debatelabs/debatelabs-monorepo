@@ -25,7 +25,7 @@ const theme = createTheme({
     },
     action: {
       disabled: themeConfig.colors.dark.text,
-      disabledBackground: themeConfig.colors.dark.highlight
+      disabledBackground: themeConfig.colors.highlight.main
     }
   },
   typography: {
@@ -69,8 +69,17 @@ const theme = createTheme({
         root: {
           borderRadius: 15,
           '&:hover': {
-            backgroundColor: themeConfig.colors.dark.highlight
+            backgroundColor: themeConfig.colors.highlight.main
           }
+        }
+      }
+    },
+    MuiTooltip: {
+      styleOverrides: {
+        tooltip: {
+          borderRadius: 8,
+          backgroundColor: themeConfig.colors.popup.main,
+          border: `1px solid ${themeConfig.colors.popup.border}`
         }
       }
     }

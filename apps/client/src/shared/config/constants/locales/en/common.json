@@ -4,5 +4,14 @@
   "info": "Information",
   "aboutUs": "About us",
   "sponsorship": "Sponsorship",
-  "support": "Support"
+  "support": "Support",
+  "nav": {
+    "home": "Home",
+    "dashboard": "Dashboard",
+    "settings": "Settings"
+  },
+  "room": {
+    "join": "Join the room",
+    "create": "Create a room"
+  }
 }

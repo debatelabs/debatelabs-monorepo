@@ -12,10 +12,17 @@ const themeConfig = {
     secondary: '#ffffff',
     dark: {
       main: '#0f0f10',
-      lighter: '#1c1c1f',
-      highlight: 'rgba(168, 180, 195, 0.08)',
       text: 'rgba(179, 179, 179, 0.5)',
+      lighter: '#1c1c1f',
       textLighter: '#B3B3B3C7'
+    },
+    highlight: {
+      main: 'rgba(168, 180, 195, 0.08)',
+      nav: 'rgba(85,105,230,0.18)'
+    },
+    popup: {
+      main: '#2d2d33',
+      border: '#41414a'
     },
     light: '#d9d9d9',
     alert: '#d45058',
