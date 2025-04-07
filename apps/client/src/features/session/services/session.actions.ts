@@ -1,14 +1,14 @@
 'use server';
 
 import { cookies } from 'next/headers';
-import { createService } from '~/core/utils/create-service';
-import SessionPayloadSchema from '~/infrastructure/validations/session-payload.schema';
-import { decodeToken } from '~/infrastructure/services/token.actions';
-import ERRORS from '~/core/constants/errors';
-import COOKIES from '~/core/constants/cookies';
-import { store } from '~/core/store/redux/store';
+import { createService } from '~/shared/lib/utils/create-service';
+import SessionPayloadSchema from '~/features/session/validations/session-payload.schema';
+import { decodeToken } from '~/shared/model/services/token.actions';
+import ERRORS from '~/shared/config/constants/errors';
+import COOKIES from '~/shared/config/constants/cookies';
+import { store } from '~/shared/model/store/redux/store';
 import { setSession } from '../store/session.store';
-import logger from '~/core/utils/logger';
+import logger from '~/shared/lib/utils/logger';
 
 export const getSessionPayloadFromCookie = createService({
   fn: async () => {

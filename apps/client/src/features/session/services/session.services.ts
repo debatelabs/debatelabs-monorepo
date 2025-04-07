@@ -1,13 +1,16 @@
-import { createService } from '~/core/utils/create-service';
+import { createService } from '~/shared/lib/utils/create-service';
 import sessionApi from '../api/session.api';
-import { decodeToken } from '~/infrastructure/services/token.actions';
-import SessionPayloadSchema from '~/infrastructure/validations/session-payload.schema';
+import { decodeToken } from '~/shared/model/services/token.actions';
+import SessionPayloadSchema, {
+  SessionPayloadDTO
+} from '~/features/session/validations/session-payload.schema';
 import { setSession } from '../store/session.store';
 import { logout } from './session.actions';
-import ROUTES from '~/core/constants/routes';
-import checkEnvAndRedirectTo from '~/core/utils/env-based-redirect';
+import ROUTES from '~/shared/config/constants/routes';
+import checkEnvAndRedirectTo from '~/shared/lib/utils/env-based-redirect';
+import { BaseDTO } from '~/shared/model/types/application.types';
 
-export const refreshSession = async () => {
+export const refreshSession = async (): Promise<BaseDTO<SessionPayloadDTO | null>> => {
   const updateToken = createService({
     fn: async () => {
       const response = await sessionApi.refresh();

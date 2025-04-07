@@ -1,7 +1,8 @@
-import apiClientInstance from '~/core/lib/api-client';
-import { API_ROUTES } from '~/core/constants/api-routes';
-import { IAccessToken } from '~/core/types/auth.types';
-import { UserLoginDTO, UserSignupDTO } from '~/core/types/user.types';
+import apiClientInstance from '~/shared/lib/api-client';
+import { API_ROUTES } from '~/shared/config/constants/api-routes';
+import { IAccessToken } from '~/shared/model/types/token.types';
+
+import { UserLoginDTO, UserSignupDTO } from '~/features/auth/types/auth.types';
 
 const apiClient = apiClientInstance;
 const routes = API_ROUTES.auth;

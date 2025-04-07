@@ -1,9 +1,9 @@
 import { i18nRouter } from 'next-i18n-router';
-import { i18nConfig } from '~/core/configs/i18n.config';
+import { i18nConfig } from '~/shared/config/app/i18n.config';
 import { NextRequest, NextResponse } from 'next/server';
 import { authMiddleware } from '~/features/auth';
-import ROUTES from '~/core/constants/routes';
-import { RedirectThrowable } from '~/core/types/common.types';
+import ROUTES from '~/shared/config/constants/routes';
+import { RedirectThrowable } from '~/shared/model/types/common.types';
 
 export async function middleware(req: NextRequest) {
   try {

@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import { getSessionPayloadFromCookie } from '../services/session.actions';
 import { ISessionStore } from '~/features/session/types/session.types';
-import { SessionPayloadDTO } from '~/infrastructure/validations/session-payload.schema';
+import { SessionPayloadDTO } from '~/features/session/validations/session-payload.schema';
 
 export const getSession = createAsyncThunk('session/getSession', () => {
   return getSessionPayloadFromCookie();

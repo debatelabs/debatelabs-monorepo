@@ -1,14 +1,14 @@
 'use client';
 
 import React from 'react';
-import Input from '~/core/components/input/Input';
+import Input from '~/shared/ui/components/input/Input';
 import PasswordInput from '../components/PasswordInput';
 import { useTranslation } from 'react-i18next';
 import { UseFormReturn } from 'react-hook-form';
-import { SignupForm as SignupFormType } from '~/core/types/auth.types';
 import * as authService from '../services/auth.services';
 import createSignupFormSchema from '../validations/signup-form.schema';
 import AuthFormContainer from '../components/AuthFormContainer';
+import { SignupForm as SignupFormType } from '~/features/auth/types/auth.types';
 
 function SignupFormContent({ formHook }: { formHook?: UseFormReturn<SignupFormType> }) {
   const { t } = useTranslation();
