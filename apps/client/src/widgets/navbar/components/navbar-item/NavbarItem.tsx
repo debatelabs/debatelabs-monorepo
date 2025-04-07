@@ -12,6 +12,8 @@ import getPathnameWithoutLocale from '~/shared/lib/utils/get-pathname-without-lo
 
 const defaultButtonStyles: SxProps = {
   height: 50,
+  justifyContent: 'start',
+  gap: 1.2,
   '&:hover': {
     backgroundColor: themeConfig.colors.highlight.nav
   }
@@ -30,9 +32,17 @@ interface NavbarItemProps {
   icon: StaticImport;
   filledIcon?: StaticImport;
   onClick?: () => void;
+  minimized?: boolean;
 }
 
-function NavbarItem({ title, href, icon, filledIcon, onClick }: NavbarItemProps) {
+function NavbarItem({
+  title,
+  href,
+  icon,
+  filledIcon,
+  onClick,
+  minimized = false
+}: NavbarItemProps) {
   let pathname = usePathname();
   pathname = getPathnameWithoutLocale(pathname);
   const isActive = pathname === href;
@@ -42,18 +52,32 @@ function NavbarItem({ title, href, icon, filledIcon, onClick }: NavbarItemProps)
     if (onClick) onClick();
   };
 
+  const renderIcon = () => {
+    if (filledIcon && isActive)
+      return <Image src={filledIcon} alt={title.toLowerCase()} width={25} />;
+    return <Image src={icon} alt={title.toLowerCase()} width={25} />;
+  };
+
   return (
-    <Tooltip title={title} placement='right'>
-      <Link href={href || '#'} className='w-fit' onClick={handleClick}>
+    <Tooltip
+      disableHoverListener={!minimized}
+      disableFocusListener={!minimized}
+      disableTouchListener={!minimized}
+      title={title}
+      placement='right'
+    >
+      <Link
+        href={href || '#'}
+        className={minimized ? 'w-fit' : 'w-full'}
+        onClick={handleClick}
+      >
         <TransparentButton
           sx={isActive ? { ...activeButtonStyles } : defaultButtonStyles}
           onClick={onClick}
+          startIcon={!minimized && renderIcon()}
+          fullWidth={!minimized}
         >
-          {filledIcon && isActive ? (
-            <Image src={filledIcon} alt={title.toLowerCase()} width={25} />
-          ) : (
-            <Image src={icon} alt={title.toLowerCase()} width={25} />
-          )}
+          {minimized ? renderIcon() : title}
         </TransparentButton>
       </Link>
     </Tooltip>
