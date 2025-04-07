@@ -17,7 +17,7 @@ const theme = createTheme({
     },
     background: {
       default: themeConfig.colors.dark.main,
-      paper: themeConfig.colors.paper.main
+      paper: themeConfig.colors.dark.lighter.main
     },
     text: {
       primary: themeConfig.colors.secondary,

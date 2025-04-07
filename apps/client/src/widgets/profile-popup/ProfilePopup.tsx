@@ -29,7 +29,7 @@ function ProfilePopup() {
   };
 
   return (
-    <div className='shadow-2xl bg-dark-lighter-main border border-dark-lighter-border w-[380px] px-4 py-3 rounded-3xl flex flex-col gap-4'>
+    <div className='bg-dark-lighter-main border border-dark-lighter-border w-[380px] px-4 py-3 rounded-3xl flex flex-col gap-4'>
       <section className='flex items-center gap-4'>
         <div className='h-[68px]'>
           <Avatar className='!h-full !text-3xl' />

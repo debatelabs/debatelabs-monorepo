@@ -3,13 +3,12 @@
 import React from 'react';
 import Image from 'next/image';
 import debatelabsLogo from '~/shared/ui/assets/icons/debatelabs-logo.svg';
-import telegramIcon from '~/shared/ui/assets/icons/telegram.svg';
-import instagramIcon from '~/shared/ui/assets/icons/instagram.svg';
 import TextLink from '~/shared/ui/components/text-link/TextLink';
-import { IconButton } from '@mui/material';
 import { LanguageChangeButton } from '~/shared/ui/components/buttons/LanguageChangeButton';
 import { useTranslation } from 'react-i18next';
 import ROUTES from '~/shared/config/constants/routes';
+import Instagram from '~/shared/ui/components/socials-buttons/Instagram';
+import Telegram from '~/shared/ui/components/socials-buttons/Telegram';
 
 export default function Footer() {
   const { t } = useTranslation();
@@ -36,17 +35,13 @@ export default function Footer() {
             </ul>
           </div>
           <div className='flex flex-col justify-end'>
-            <IconButton sx={{ height: 40, width: 40 }} title='Telegram'>
-              <Image src={telegramIcon} alt='Telegram' width={20} />
-            </IconButton>
-            <IconButton sx={{ height: 40, width: 40 }} title='Instagram'>
-              <Image src={instagramIcon} alt='Instagram' width={20} />
-            </IconButton>
+            <Telegram />
+            <Instagram />
           </div>
         </div>
       </div>
       <div className='w-full h-full flex-center justify-between'>
-        <p className='text-dark-lighter-text text-xs uppercase'>© 2025 DebateLabs</p>
+        <p className='text-dark-lighter-text text-sm uppercase'>© 2025 DebateLabs</p>
         <LanguageChangeButton />
       </div>
     </footer>

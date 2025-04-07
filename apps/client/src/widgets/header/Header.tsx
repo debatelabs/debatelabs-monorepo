@@ -13,7 +13,7 @@ import { ClickAwayListener } from '@mui/material';
 import { usePathname } from 'next/navigation';
 
 interface HeaderProps {
-  profilePopup: React.ReactNode;
+  profilePopup: React.ReactElement;
 }
 
 function Header({ profilePopup }: HeaderProps) {
